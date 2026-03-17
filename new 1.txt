@@ -1,0 +1,114 @@
+function printCard(index){
+
+    let s = students[index];
+
+    // Calculate average (for demo one subject = same score)
+    let average = s.score;
+
+    // Rank calculation
+    let sorted = [...students].sort((a,b)=> b.score - a.score);
+    let rank = sorted.findIndex(st => st.name === s.name) + 1;
+
+    function getComment(score){
+        if(score >= 90) return "እጅግ በጣም ጥሩ";
+        if(score >= 80) return "በጣም ጥሩ";
+        if(score >= 70) return "ጥሩ";
+        if(score >= 60) return "በቂ";
+        if(score >= 50) return "መሻሻል አለበት";
+        return "እገዛ ያስፈልገዋል";
+    }
+
+    let printWindow = window.open('', '', 'width=900,height=700');
+
+    printWindow.document.write(`
+    <html>
+    <head>
+    <title>Report Card</title>
+
+    <style>
+    body { font-family: Arial; padding: 20px; }
+    .card {
+        border: 3px solid black;
+        padding: 20px;
+        width: 700px;
+        margin: auto;
+    }
+    .header {
+        text-align:center;
+    }
+    .logo {
+        width:80px;
+    }
+    table {
+        width:100%;
+        border-collapse: collapse;
+        margin-top:15px;
+    }
+    th, td {
+        border:1px solid black;
+        padding:8px;
+        text-align:center;
+    }
+    .footer {
+        margin-top:40px;
+        display:flex;
+        justify-content: space-between;
+    }
+    </style>
+
+    </head>
+
+    <body>
+
+    <div class="card">
+
+    <div class="header">
+        <img src="logo.png" class="logo"><br>
+        <h2>ጣይቱ ብጡል አካዳሚ</h2>
+        <h3>የተማሪ ሪፖርት ካርድ</h3>
+        <p>📅 የትምህርት ዘመን: 2017 | Term: 1ኛ</p>
+    </div>
+
+    <p><strong>የተማሪ ስም:</strong> ${s.name}</p>
+    <p><strong>የወላጅ ስም:</strong> ${s.parent}</p>
+
+    <table>
+        <tr>
+            <th>ትምህርት</th>
+            <th>ውጤት</th>
+            <th>ደረጃ</th>
+        </tr>
+        <tr>
+            <td>${s.subject}</td>
+            <td>${s.score}</td>
+            <td>${s.grade}</td>
+        </tr>
+    </table>
+
+    <br>
+
+    <p><strong>Average:</strong> ${average}</p>
+    <p><strong>Rank:</strong> ${rank}</p>
+    <p><strong>Teacher Comment:</strong> ${getComment(s.score)}</p>
+
+    <div class="footer">
+        <div>
+            <p>__________________</p>
+            <p>Teacher Signature</p>
+        </div>
+
+        <div>
+            <p>__________________</p>
+            <p>Director Signature</p>
+        </div>
+    </div>
+
+    </div>
+
+    </body>
+    </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.print();
+}
