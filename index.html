@@ -3,287 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ውጤት ማሳወቂያ - ጣይቱ ብጡል አካዳሚ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+    <title>ውጤት መፈለጊያ - ጣይቱ ብጡል አካዳሚ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1a2a6c; /* ጥቁር ሰማያዊ */
-            --gold: #b8860b;    /* ጥቁር የወርቅ ቀለም */
-            --secondary: #27ae60; /* አረንጓዴ */
-            --bg: #f8f9fd;
-            --text: #333;
-        }
+        :root { --primary: #1a2a6c; --gold: #b8860b; --bg: #f8f9fd; }
+        body { font-family: 'Poppins', 'Noto Sans Ethiopic', sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 550px; width: 100%; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 10px solid var(--primary); text-align: center; }
+        
+        .upload-section { background: #fff8e1; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px dashed var(--gold); }
+        input[type="file"] { margin-top: 10px; font-size: 13px; }
+        
+        input[type="text"] { width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; box-sizing: border-box; margin-bottom: 10px; text-align: center; }
+        .btn-main { background: var(--gold); color: white; padding: 15px; border: none; border-radius: 10px; width: 100%; font-size: 17px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-main:hover { background: #966d09; }
 
-        body {
-            font-family: 'Poppins', 'Noto Sans Ethiopic', sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            color: var(--text);
-        }
+        #result-card { display: none; margin-top: 30px; padding: 20px; border-radius: 15px; background: #f1f3f8; border-left: 5px solid var(--primary); text-align: left; }
+        .res-item { margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        .res-label { font-weight: bold; color: var(--primary); }
+        .score-val { color: #27ae60; font-weight: bold; font-size: 22px; }
 
-        .container {
-            max-width: 550px;
-            width: 100%;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border-top: 12px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* የጌጥ መስመር */
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0; right: 0;
-            width: 100px; height: 100px;
-            background: var(--gold);
-            clip-path: circle(50% at 100% 0%);
-            opacity: 0.1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: var(--primary);
-            font-size: 26px;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .header p {
-            color: var(--gold);
-            font-weight: 600;
-            margin: 5px 0;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-
-        .info-bar {
-            background: #f1f3f8;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 13px;
-            text-align: center;
-            margin-bottom: 25px;
-            color: #666;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: var(--primary);
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #edf2f7;
-            border-radius: 12px;
-            box-sizing: border-box;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        input:focus, textarea:focus {
-            border-color: var(--gold);
-            background: #fff;
-            outline: none;
-            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.1);
-        }
-
-        .row {
-            display: flex;
-            gap: 15px;
-        }
-
-        /* ቁልፎች (Buttons) */
-        .calc-btn {
-            background: var(--gold);
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 15px;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        .calc-btn:hover { background: #966d09; }
-
-        .submit-btn {
-            background: var(--primary);
-            color: white;
-            padding: 18px;
-            border: none;
-            border-radius: 15px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 8px 15px rgba(26, 42, 108, 0.2);
-        }
-
-        .submit-btn:hover {
-            background: #121d4d;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 20px rgba(26, 42, 108, 0.3);
-        }
-
-        #result-display {
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--secondary);
-            margin-bottom: 20px;
-            display: none;
-            border: 1px solid #c8e6c9;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 12px;
-            color: #aaa;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
+        .btn-send { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+        footer { margin-top: 40px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>ጣይቱ ብጡል አካዳሚ</h1>
-        <p>የተማሪዎች ውጤት ማሳወቂያ</p>
+    <h1 style="color: var(--primary); font-size: 24px;">ጣይቱ ብጡል አካዳሚ</h1>
+    
+    <div class="upload-section">
+        <label style="font-weight: bold; font-size: 14px;">1. የተማሪዎች ዝርዝር ፋይል (CSV) ይጫኑ</label><br>
+        <input type="file" id="csvFile" accept=".csv">
     </div>
 
-    <div class="info-bar">
-        መምህር ደለለኝ አጥላው | 2018 ዓ.ም
+    <hr>
+
+    <div style="margin-top: 20px;">
+        <label style="font-weight: bold; display: block; margin-bottom: 10px;">2. የተማሪውን ሙሉ ስም ጽፈው ይፈልጉ</label>
+        <input type="text" id="nameSearch" placeholder="ለምሳሌ፡ አበበ ከበደ">
+        <button class="btn-main" onclick="searchStudent()">ውጤት አሳይ</button>
     </div>
 
-    <form id="resultForm">
-        <div class="form-group">
-            <label>የተማሪው ሙሉ ስም</label>
-            <input type="text" id="student_name" placeholder="የተማሪውን ስም ያስገቡ" required>
-        </div>
+    <div id="result-card">
+        <div class="res-item"><span class="res-label">ተማሪ፦</span> <span id="outName"></span></div>
+        <div class="res-item"><span class="res-label">ክፍል፦</span> <span id="outGrade"></span></div>
+        <div class="res-item"><span class="res-label">ውጤት፦</span> <span id="outScore" class="score-val"></span></div>
+        <div class="res-item"><span class="res-label">የመምህር አስተያየት፦</span> <p id="outComment" style="font-style: italic;"></p></div>
+        
+        <textarea id="p_msg" rows="2" style="width:100%; margin-top:10px; border-radius:8px; padding:8px;" placeholder="ለወላጅ አስተያየት..."></textarea>
+        <button class="btn-send" onclick="sendToTelegram()">አስተያየቱን ለባለቤቱ ላክ</button>
+    </div>
 
-        <div class="row">
-            <div class="form-group" style="flex: 1.2;">
-                <label>ትምህርት</label>
-                <input type="text" id="subject" value="እንግሊዝኛ (English)">
-            </div>
-            <div class="form-group" style="flex: 0.8;">
-                <label>ክፍል</label>
-                <input type="text" id="grade" placeholder="ለምሳሌ፡ 6B">
-            </div>
-        </div>
+    <p id="error" style="color: red; display: none; margin-top: 15px;">ይቅርታ፣ ስሙ በፋይሉ ውስጥ አልተገኘም።</p>
 
-        <div class="row">
-            <div class="form-group" style="flex: 1;">
-                <label>ውጤት ከስንት?</label>
-                <select id="scale">
-                    <option value="10">10%</option>
-                    <option value="20" selected>20%</option>
-                    <option value="40">40%</option>
-                    <option value="100">100%</option>
-                </select>
-            </div>
-            <div class="form-group" style="flex: 1;">
-                <label>የተገኘ ውጤት</label>
-                <input type="number" id="score" step="0.1" placeholder="ነጥብ ያስገቡ" required>
-            </div>
-        </div>
-
-        <button type="button" class="calc-btn" onclick="calculateResult()">ውጤት አስላ</button>
-        <div id="result-display"></div>
-
-        <div class="form-group">
-            <label>የመምህሩ አስተያየት</label>
-            <textarea id="t_comment" rows="2" placeholder="ስለ ተማሪው ጥንካሬ..."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label style="color: var(--secondary);">የወላጅ አስተያየት</label>
-            <textarea id="p_comment" rows="2" placeholder="ወላጆች እዚህ ይፃፉ..."></textarea>
-        </div>
-
-        <button type="button" class="submit-btn" onclick="sendToTelegram()">መረጃውን ላክ</button>
-    </form>
-
-    <footer>© 2018 ጣይቱ ብጡል አካዳሚ | Designed by Delelegn</footer>
+    <footer>መ/ር ደለለኝ አጥላው | ጣይቱ ብጡል አካዳሚ 2018 ዓ.ም</footer>
 </div>
 
 <script>
-    // ውጤት የማስላት ተግባር
-    function calculateResult() {
-        const score = document.getElementById('score').value;
-        const scale = document.getElementById('scale').value;
-        const display = document.getElementById('result-display');
+    let studentList = [];
 
-        if(score && scale) {
-            const percent = (score / scale) * 100;
-            display.style.display = "block";
-            display.innerHTML = `የተማሪው ውጤት ከ ${scale}% ውስጥ ${score} ነው (${percent.toFixed(1)}%)`;
+    // ፋይሉን የማንበብ ተግባር
+    document.getElementById('csvFile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const text = event.target.result;
+            processData(text);
+        };
+        reader.readAsText(file);
+    });
+
+    function processData(csvText) {
+        const lines = csvText.split('\n');
+        studentList = lines.slice(1).map(line => {
+            const columns = line.split(',');
+            if(columns.length >= 4) {
+                return {
+                    name: columns[0].trim(),
+                    grade: columns[1].trim(),
+                    score: columns[2].trim(),
+                    comment: columns[3].trim()
+                };
+            }
+        }).filter(item => item !== undefined);
+        alert("የተማሪዎች ፋይል በተሳካ ሁኔታ ተጭኗል!");
+    }
+
+    function searchStudent() {
+        const searchName = document.getElementById('nameSearch').value.trim();
+        const student = studentList.find(s => s.name === searchName);
+        const card = document.getElementById('result-card');
+        const err = document.getElementById('error');
+
+        if(student) {
+            document.getElementById('outName').innerText = student.name;
+            document.getElementById('outGrade').innerText = student.grade;
+            document.getElementById('outScore').innerText = student.score;
+            document.getElementById('outComment').innerText = student.comment;
+            card.style.display = "block";
+            err.style.display = "none";
         } else {
-            alert("እባክዎን ውጤት ያስገቡ!");
+            card.style.display = "none";
+            err.style.display = "block";
         }
     }
 
-    // ወደ ቴሌግራም የመላኪያ ተግባር
     function sendToTelegram() {
-        const token = "8608778734:AAGQpZ3yKghv7HQJxjo7SJVH6WqH5-Y5JD4"; 
-        const chat_id = "7387771308"; 
+        const token = "8608778734:AAGQpZ3yKghv7HQJxjo7SJVH6WqH5-Y5JD4";
+        const chat_id = "7387771308";
+        const name = document.getElementById('outName').innerText;
+        const msg = document.getElementById('p_msg').value;
 
-        const name = document.getElementById('student_name').value;
-        const subject = document.getElementById('subject').value;
-        const grade = document.getElementById('grade').value;
-        const score = document.getElementById('score').value;
-        const scale = document.getElementById('scale').value;
-        const t_comment = document.getElementById('t_comment').value;
-        const p_comment = document.getElementById('p_comment').value;
+        if(!msg) { alert("አስተያየት ይፃፉ!"); return; }
 
-        if(!name || !score) { alert("ስም እና ውጤት መሞላት አለበት!"); return; }
-
-        const message = `🎓 **የጣይቱ ብጡል አካዳሚ የውጤት ሪፖርት**\n\n` +
-                        `👤 **ተማሪ፦** ${name}\n` +
-                        `📚 **ትምህርት፦** ${subject}\n` +
-                        `🏫 **ክፍል፦** ${grade}\n` +
-                        `📊 **ውጤት፦** ${score} / ${scale}\n\n` +
-                        `👨‍🏫 **የመምህሩ አስተያየት፦**\n"${t_comment || '---'}"\n\n` +
-                        `👪 **የወላጅ አስተያየት፦**\n"${p_comment || '---'}"`;
-
-        const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
-
-        fetch(url).then(res => {
-            if(res.ok) {
-                alert("መረጃው በተሳካ ሁኔታ ተልኳል!");
-                document.getElementById('resultForm').reset();
-                document.getElementById('result-display').style.display = "none";
-            } else {
-                alert("ስህተት ተፈጥሯል! ቦትዎን 'Start' ማድረጎን ያረጋግጡ።");
-            }
-        });
+        const telegramMsg = `👪 የወላጅ አስተያየት\n👤 ተማሪ፦ ${name}\n💬 መልእክት፦ ${msg}`;
+        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(telegramMsg)}`)
+        .then(() => alert("አስተያየትዎ ተልኳል!"));
     }
 </script>
 
