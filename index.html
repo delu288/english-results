@@ -3,133 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የውጤት ማሳያ - ጣይቱ ብጡል አካዳሚ</title>
+    <title>አድሚን ገጽ - ጣይቱ ብጡል አካዳሚ</title>
     <style>
         :root {
-            --aqua: #00FFFF;
-            --seafoam: #7FFFD4;
-            --gold: #FFD700;
-            --dark-card: rgba(255, 255, 255, 0.05);
+            --aqua: #00FFFF;       /* ውኃ ሰማያዊ */
+            --seafoam: #7FFFD4;    /* ውኃ አረንጓዴ */
+            --gold: #FFD700;       /* ወርቃማ */
+            --dark-blue: #050a14;
         }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #060c1a;
+            background-color: var(--dark-blue);
             color: var(--aqua);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
+            padding: 0;
         }
 
-        /* ዋናው የውጤት ማሳያ ሳጥን (Result & Comment Box) */
-        .result-container {
-            width: 90%;
-            max-width: 550px;
-            background: var(--dark-card);
+        header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--gold);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .school-name { font-size: 2.5rem; color: #00BFFF; margin: 0; }
+        .admin-title { color: var(--gold); font-size: 1.2rem; margin-top: 5px; }
+
+        /* ጎን ለጎን ማስቀመጫ (Flexbox) */
+        .admin-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-wrap: wrap; /* ለስልክ እንዲመች */
+        }
+
+        .admin-card {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(255, 255, 255, 0.05);
             padding: 30px;
             border-radius: 20px;
-            border: 2px solid var(--aqua);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
-            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .header-label {
+        h3 {
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 10px;
             color: var(--gold);
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-transform: uppercase;
+            margin-top: 0;
         }
 
-        /* የውጤት መጫኛ ሳጥን (The Score Box) */
-        .score-display {
-            background: rgba(127, 255, 212, 0.1);
-            border: 3px solid var(--seafoam);
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+            color: var(--aqua); /* ከሳጥን ውጭ ውኃ ሰማያዊ */
+        }
+
+        /* የመፃፊያ ሳጥኖች */
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid var(--aqua);
+            border-radius: 10px;
+            color: var(--seafoam); /* በሳጥን ውስጥ ውኃ አረንጓዴ */
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* ፋይል መጫኛ ሳጥን */
+        .file-upload {
+            border: 2px dashed var(--gold);
+            padding: 40px 20px;
+            text-align: center;
             border-radius: 15px;
-            padding: 20px;
-            margin: 15px 0;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .score-text {
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: var(--seafoam); /* በሳጥን ውስጥ ውኃ አረንጓዴ */
-            margin: 0;
+        .file-upload:hover {
+            background: rgba(255, 215, 0, 0.1);
         }
 
-        .score-label {
-            color: var(--aqua);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
-
-        /* የመምህሩ አስተያየት ሳጥን (Teacher's Comment Box) */
-        .comment-section {
-            margin-top: 25px;
-            text-align: left;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 5px solid var(--gold);
-        }
-
-        .comment-title {
-            color: var(--gold); /* ወርቃማ */
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .comment-text {
-            color: var(--seafoam); /* በሳጥን ውስጥ ውኃ አረንጓዴ */
+        .btn-save {
+            width: 100%;
+            padding: 15px;
+            background: var(--gold);
+            color: black;
+            border: none;
+            border-radius: 10px;
             font-size: 1.1rem;
-            line-height: 1.5;
-            font-style: italic;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.3s;
         }
 
-        /* የጭነት ምልክት (Loading Animation) - ለተጨማሪ ውበት */
-        .loading-dots:after {
-            content: ' .';
-            animation: dots 1.5s steps(5, end) infinite;
+        .btn-save:hover {
+            background: #e6c200;
+            transform: scale(1.02);
         }
 
-        @keyframes dots {
-            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
-            40% { color: var(--gold); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
-            60% { text-shadow: .25em 0 0 var(--gold), .5em 0 0 rgba(0,0,0,0); }
-            80%, 100% { text-shadow: .25em 0 0 var(--gold), .5em 0 0 var(--gold); }
-        }
+        footer { text-align: center; padding: 40px; opacity: 0.6; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div class="result-container">
-        <div class="header-label">የተማሪው የውጤት መረጃ</div>
-        
-        <!-- ውጤት -->
-        <div class="score-display">
-            <p class="score-label">ጠቅላላ ውጤት</p>
-            <h1 class="score-text">88/100</h1>
-        </div>
+<header>
+    <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
+    <div class="admin-title">የመምህር ደለለኝ አጥላው - የውጤት መቆጣጠሪያ (Admin)</div>
+</header>
 
-        <!-- የመምህሩ አስተያየት -->
-        <div class="comment-section">
-            <div class="comment-title">
-                <span>✍️</span> የመምህር ደለለኝ አስተያየት
-            </div>
-            <div class="comment-text">
-                "በጣም ጎበዝ ተማሪ ነህ! በተለይ በቃላት አጠቃቀምህ ላይ ያሳየኸው መሻሻል የሚደነቅ ነው። በሚቀጥለው ፈተና ደግሞ በጽሕፈት ላይ ብትበረታ ይበልጥ ውጤታማ ትሆናለህ።"
-            </div>
-        </div>
+<div class="admin-wrapper">
+    
+    <div class="admin-card">
+        <h3>1. የውጤት ፋይል መጫኛ</h3>
+        <form>
+            <label>ክፍል ይምረጡ፡</label>
+            <select>
+                <option>1A</option><option>1B</option>
+                <option>2A</option><option>2B</option>
+                <option>3A</option><option>4A</option>
+                <option>5A</option><option>6A</option>
+            </select>
 
-        <p style="font-size: 0.8rem; margin-top: 20px; opacity: 0.6; color: var(--gold);">
-            መረጃው የተጫነው ከጣይቱ ብጡል አካዳሚ ዳታቤዝ ነው <span class="loading-dots"></span>
-        </p>
+            <label>የትምህርት አይነት፡</label>
+            <input type="text" value="ኢንግሊዝኛ (English)" readonly>
+
+            <label>የውጤት ፋይል (Excel/CSV) ይምረጡ፡</label>
+            <div class="file-upload" onclick="document.getElementById('fileIn').click()">
+                <p id="fileName" style="margin: 0;">📁 ፋይሉን እዚህ ይጫኑ ወይም ይጎትቱ</p>
+                <input type="file" id="fileIn" hidden onchange="showName()">
+            </div>
+
+            <label>የውጤት ፐርሰንት (ከ %):</label>
+            <select>
+                <option>10%</option><option>20%</option>
+                <option>40%</option><option>100%</option>
+            </select>
+        </form>
     </div>
+
+    <div class="admin-card">
+        <h3>2. የመምህር አስተያየትና ማጠቃለያ</h3>
+        <form>
+            <label>አጠቃላይ የክፍል አስተያየት (ለሙሉ ክፍል):</label>
+            <textarea rows="4" placeholder="ለምሳሌ፡ በዚህ ሳምንት ሁሉም ተማሪዎች ደብተር እንዲያሟሉ..."></textarea>
+
+            <label>ልዩ ማሳሰቢያ (ካለ):</label>
+            <textarea rows="3" placeholder="ለወላጆች የሚላክ አስቸኳይ መልዕክት..."></textarea>
+
+            <label>የመመዝገቢያ ቀን (Date):</label>
+            <input type="text" value="መጋቢት 20/2018" readonly>
+
+            <button type="submit" class="btn-save">ውጤቱንና አስተያየቱን መዝግብ</button>
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 ጣይቱ ብጡል አካዳሚ | ሲስተሙን ያበለጸጉት መ/ር ደለለኝ አጥላው
+</footer>
+
+<script>
+    function showName() {
+        const file = document.getElementById('fileIn');
+        const label = document.getElementById('fileName');
+        if (file.files.length > 0) {
+            label.innerText = "ተመርጧል፡ " + file.files[0].name;
+            label.style.color = "var(--seafoam)";
+        }
+    }
+</script>
 
 </body>
 </html>
