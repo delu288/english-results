@@ -3,223 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የውጤት መቆጣጠሪያ - መ/ር ደለለኝ አጥላው</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Noto+Sans+Ethiopic:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>ጣይቱ ብጡል አካዳሚ - 3D የውጤት ማሳወቂያ</title>
     <style>
-        :root {
-            --main-blue: #1e3a8a;
-            --accent-gold: #d4af37;
-            --soft-bg: #f8fafc;
-            --white: #ffffff;
-        }
-
+        /* 3D Effects & General Style */
         body {
-            font-family: 'Poppins', 'Noto Sans Ethiopic', sans-serif;
-            background-color: var(--soft-bg);
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d); /* ደመቅ ያለ 3D Background */
+            background-attachment: fixed;
+            perspective: 1000px; /* ለ 3D እይታ ወሳኝ ነው */
+            color: #00FFFF; /* ውኃ ሰማያዊ */
         }
 
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .school-name {
+            font-size: 4.5rem;
+            color: #00BFFF;
+            font-weight: 900;
+            margin: 0;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #0056b3, 4px 4px 0px #004080, 6px 6px 15px rgba(0,0,0,0.5); /* 3D Text */
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #00FFFF;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* 3D የመረጃ ሳጥን (The Main Card) */
         .container {
-            max-width: 550px;
-            width: 100%;
-            background: var(--white);
+            max-width: 600px;
+            margin: 20px auto 60px;
+            background: rgba(20, 30, 48, 0.95);
             padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            border-top: 15px solid var(--main-blue);
-            text-align: center;
+            
+            /* 3D Shadow & Border */
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.7), 
+                        -5px -5px 20px rgba(0, 255, 255, 0.1);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
         }
 
-        .teacher-badge {
-            background: var(--main-blue);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 30px;
+        /* ሳጥኑ ላይ ማውሱን ሲያሳርፉ በትንሹ እንዲዞር */
+        .container:hover {
+            transform: rotateX(5deg) rotateY(-5deg);
         }
 
-        .teacher-badge h1 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 900;
-        }
-
-        .school-tag {
-            color: var(--accent-gold);
+        .teacher-name {
+            font-size: 1.6rem;
+            color: #FFD700; /* ወርቃማ */
             font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
             display: block;
-            margin-top: 5px;
-        }
-
-        /* ፋይል መጫኛ ለባለቤቱ ብቻ */
-        .admin-upload {
-            background: #fff8e1;
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px dashed var(--accent-gold);
-            margin-bottom: 25px;
-            font-size: 13px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         label {
             display: block;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--main-blue);
+            margin-top: 20px;
+            font-weight: bold;
+            color: #00FFFF; 
+            font-size: 1rem;
+            transform: translateZ(20px); /* 3D Layering */
         }
 
-        input[type="text"], select {
+        /* በሳጥን ውስጥ ያሉ ጽሑፎች - ውኃ አረንጓዴ */
+        input, select, textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            box-sizing: border-box;
-            background: #fdfdfd;
-        }
-
-        .btn-search {
-            background: var(--main-blue);
-            color: white;
-            padding: 18px;
+            margin-top: 8px;
             border: none;
             border-radius: 15px;
-            font-size: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #7FFFD4; /* ውኃ አረንጓዴ */
+            font-size: 1.1rem;
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5); /* Inner 3D shadow */
+            box-sizing: border-box;
+        }
+
+        .result-display {
+            background: rgba(127, 255, 212, 0.1);
+            border: 2px solid #7FFFD4;
+            height: 70px;
+            margin-top: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
             font-weight: bold;
+            color: #7FFFD4;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-3d {
+            background: linear-gradient(145deg, #00BFFF, #0080FF);
+            color: white;
+            padding: 18px;
             width: 100%;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
             cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 8px 0 #0056b3, 0 15px 20px rgba(0,0,0,0.4); /* 3D Button look */
+            transition: all 0.2s ease;
+        }
+
+        .btn-3d:active {
+            box-shadow: 0 2px 0 #0056b3;
+            transform: translateY(6px);
+        }
+
+        /* ጋለሪ */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
             transition: 0.3s;
         }
 
-        .btn-search:hover { background: #152a61; }
-
-        /* የውጤት ካርድ (መጀመሪያ የተደበቀ) */
-        #result-card {
-            display: none;
-            margin-top: 30px;
-            padding: 25px;
-            background: #f1f5f9;
-            border-radius: 20px;
-            text-align: left;
-            border-left: 8px solid #10b981;
+        .gallery img:hover {
+            transform: scale(1.1) rotate(3deg);
+            z-index: 10;
         }
-
-        .res-data { display: block; font-size: 20px; color: var(--main-blue); font-weight: 700; margin-bottom: 10px; }
-        .score-big { font-size: 35px; color: #10b981; }
-
-        #errorBox { color: #ef4444; display: none; margin-top: 20px; font-weight: bold; }
-
-        footer { margin-top: 40px; font-size: 12px; color: #94a3b8; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="teacher-badge">
-        <h1>መ/ር ደለለኝ አጥላው</h1>
-        <span class="school-tag">ጣይቱ ብጡል አካዳሚ</span>
+    <header>
+        <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
+        <div class="subtitle">የተማሪዎች ውጤት ማሳወቂያ</div>
+    </header>
+
+    <div class="container">
+        <span class="teacher-name">መምህር፦ ደለለኝ አጥላው</span>
+
+        <form>
+            <label>የተማሪው ሙሉ ስም፡</label>
+            <input type="text" placeholder="ስምዎን እዚህ ያስገቡ...">
+
+            <label>የትምህርት አይነት፡</label>
+            <input type="text" value="ኢንግሊዝኛ (English)" readonly>
+
+            <label>የክፍል ደረጃ ምርጫ፡</label>
+            <select>
+                <option>1A</option><option>1B</option><option>2A</option>
+                <option>2B</option><option>3A</option><option>4A</option>
+                <option>5A</option><option>6A</option>
+            </select>
+
+            <label>የፈተናው ድርሻ (ከ %):</label>
+            <select>
+                <option>10%</option><option>20%</option><option>40%</option><option>100%</option>
+            </select>
+
+            <button type="button" class="btn-3d">ውጤት መጠየቂያ</button>
+
+            <label>የውጤት ማሳያ ሳጥን፦</label>
+            <div class="result-display">-- / --</div>
+
+            <label>የመምህሩ አስተያየት፡</label>
+            <textarea placeholder="የመምህሩ ማስታወሻ..." readonly rows="2"></textarea>
+
+            <label>የወላጅ አስተያየት፡</label>
+            <textarea placeholder="አስተያየትዎን እዚህ ይፃፉ..." rows="2"></textarea>
+
+            <button type="submit" class="btn-3d" style="background: linear-gradient(145deg, #20B2AA, #008B8B); box-shadow: 0 8px 0 #006666;">የወላጅ አስተያየት ላክ</button>
+        </form>
     </div>
 
-    <!-- ይህ ክፍል መምህሩ ፋይሉን እንዲጭን ብቻ ነው -->
-    <div class="admin-upload" id="adminPanel">
-        <label>የተማሪዎች ዝርዝር (CSV) ይጫኑ</label>
-        <input type="file" id="csvUpload" accept=".csv">
+    <div class="gallery">
+        <img src="https://via.placeholder.com/300x200?text=Campus" alt="Pic 1">
+        <img src="https://via.placeholder.com/300x200?text=Library" alt="Pic 2">
+        <img src="https://via.placeholder.com/300x200?text=Students" alt="Pic 3">
     </div>
 
-    <div class="input-group">
-        <label>የተማሪው ሙሉ ስም</label>
-        <input type="text" id="nameInput" placeholder="ስም በትክክል ያስገቡ">
-    </div>
-
-    <div class="input-group">
-        <label>የክፍል ደረጃ</label>
-        <select id="gradeInput">
-            <option value="">-- ክፍል ይምረጡ --</option>
-            <option value="1A">1A</option> <option value="1B">1B</option>
-            <option value="2A">2A</option> <option value="2B">2B</option>
-            <option value="3A">3A</option> <option value="4A">4A</option>
-            <option value="5A">5A</option> <option value="6A">6A</option>
-        </select>
-    </div>
-
-    <button class="btn-search" onclick="searchResult()">ውጤት አሳይ</button>
-
-    <!-- ውጤት ማሳያ -->
-    <div id="result-card">
-        <span style="font-size: 12px; color: #64748b;">የተማሪ ስም፦</span>
-        <span class="res-data" id="outName"></span>
-        
-        <span style="font-size: 12px; color: #64748b;">ውጤት፦</span>
-        <span class="res-data score-big" id="outScore"></span>
-        
-        <span style="font-size: 12px; color: #64748b;">አስተያየት፦</span>
-        <span class="res-data" id="outComment" style="font-weight: 400; font-size: 16px; font-style: italic;"></span>
-    </div>
-
-    <p id="errorBox">⚠️ መረጃው አልተገኘም። እባክዎን ስም እና ክፍል በትክክል መሆኑን ያረጋግጡ።</p>
-
-    <footer>እንግሊዝኛ (English) | 2018 ዓ.ም</footer>
-</div>
-
-<script>
-    let studentDatabase = [];
-
-    // ፋይሉን መጫን
-    document.getElementById('csvUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const rows = event.target.result.split('\n');
-            studentDatabase = rows.slice(1).map(row => {
-                const cols = row.split(',');
-                if(cols.length >= 4) {
-                    return {
-                        name: cols[0].trim(),
-                        grade: cols[1].trim(),
-                        score: cols[2].trim(),
-                        comment: cols[3].trim()
-                    };
-                }
-            }).filter(item => item !== undefined);
-            alert("ዳታቤዙ ተዘጋጅቷል። አሁን ተማሪዎች መፈለግ ይችላሉ።");
-            // ፋይል መጫኛውን መደበቅ ከፈለክ (አማራጭ)
-            // document.getElementById('adminPanel').style.display = 'none';
-        };
-        reader.readAsText(file);
-    });
-
-    function searchResult() {
-        const nameQuery = document.getElementById('nameInput').value.trim();
-        const gradeQuery = document.getElementById('gradeInput').value;
-        const card = document.getElementById('result-card');
-        const err = document.getElementById('errorBox');
-
-        // መፈለግ (በስም እና በክፍል)
-        const student = studentDatabase.find(s => 
-            s.name.toLowerCase() === nameQuery.toLowerCase() && 
-            s.grade === gradeQuery
-        );
-
-        if(student) {
-            document.getElementById('outName').innerText = student.name;
-            document.getElementById('outScore').innerText = student.score;
-            document.getElementById('outComment').innerText = student.comment;
-            card.style.display = 'block';
-            err.style.display = 'none';
-        } else {
-            card.style.display = 'none';
-            err.style.display = 'block';
-        }
-    }
-</script>
+    <footer style="text-align: center; padding: 40px; color: #00FFFF; opacity: 0.6;">
+        &copy; 2026 ጣይቱ ብጡል አካዳሚ | መ/ር ደለለኝ አጥላው
+    </footer>
 
 </body>
 </html>
