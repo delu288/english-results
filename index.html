@@ -254,4 +254,260 @@ updateStats();
 </script>
 
 </body>
+</html><!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<title>Exam System</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<style>
+body {
+    font-family: Arial;
+    background: #eef;
+    padding: 20px;
+}
+.container {
+    background: white;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    border-radius: 10px;
+}
+input, select, button {
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+}
+button {
+    background: green;
+    color: white;
+    border: none;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+.timer {
+    font-size: 20px;
+    color: red;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📊 Exam System</h2>
+
+<div class="timer" id="timer">Time: 10:00</div>
+
+<input type="text" id="name" placeholder="Student Name">
+<input type="text" id="id" placeholder="Student ID">
+
+<select id="timeSelect" onchange="setTime()">
+<option value="10">10 Minutes</option>
+<option value="20">20 Minutes</option>
+<option value="40">40 Minutes</option>
+</select>
+
+<hr>
+
+<!-- Questions -->
+<p>1. She ___ to school every day.</p>
+<select id="q1">
+<option value="">Select</option>
+<option value="B">goes</option>
+<option value="A">go</option>
+</select>
+
+<p>2. Plural of Child?</p>
+<select id="q2">
+<option value="">Select</option>
+<option value="C">Children</option>
+<option value="A">Childs</option>
+</select>
+
+<p>3. ___ apple a day keeps doctor away.</p>
+<select id="q3">
+<option value="">Select</option>
+<option value="B">An</option>
+<option value="A">A</option>
+</select>
+
+<p>4. Correct sentence?</p>
+<select id="q4">
+<option value="">Select</option>
+<option value="C">He doesn’t like coffee.</option>
+<option value="A">He don’t like coffee.</option>
+</select>
+
+<p>5. Synonym of Happy?</p>
+<select id="q5">
+<option value="">Select</option>
+<option value="C">Joyful</option>
+<option value="A">Sad</option>
+</select>
+
+<button onclick="submitExam()">Submit</button>
+
+<h3>📋 Dashboard</h3>
+
+<button onclick="exportExcel()">Export Excel</button>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>ID</th>
+<th>Score</th>
+<th>%</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+<p id="stats"></p>
+
+</div>
+
+<script>
+
+let time = 600; // default 10 min
+let timerInterval;
+
+function setTime(){
+    let val = document.getElementById("timeSelect").value;
+    time = val * 60;
+}
+
+function startTimer(){
+    timerInterval = setInterval(() => {
+        let min = Math.floor(time / 60);
+        let sec = time % 60;
+
+        document.getElementById("timer").innerHTML =
+            "Time: " + min + ":" + (sec < 10 ? "0"+sec : sec);
+
+        time--;
+
+        if(time < 0){
+            clearInterval(timerInterval);
+            submitExam(); // auto submit
+        }
+    }, 1000);
+}
+
+startTimer();
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+function grade(percent){
+    if(percent < 50) return "Fail";
+    if(percent < 75) return "Pass";
+    if(percent < 85) return "Very Good";
+    return "Excellent";
+}
+
+function submitExam(){
+
+    let name = document.getElementById("name").value;
+    let id = document.getElementById("id").value;
+
+    if(name === "" || id === ""){
+        alert("Fill name and ID");
+        return;
+    }
+
+    let score = 0;
+
+    if(document.getElementById("q1").value === "B") score++;
+    if(document.getElementById("q2").value === "C") score++;
+    if(document.getElementById("q3").value === "B") score++;
+    if(document.getElementById("q4").value === "C") score++;
+    if(document.getElementById("q5").value === "C") score++;
+
+    let percent = (score / 5) * 100;
+    let g = grade(percent);
+
+    let student = {name, id, score, percent, grade: g};
+
+    students.push(student);
+    localStorage.setItem("students", JSON.stringify(students));
+
+    renderTable();
+    updateStats();
+
+    alert("Submitted!");
+}
+
+function renderTable(){
+    let table = document.getElementById("table");
+    table.innerHTML = "";
+
+    students.forEach(s => {
+        table.innerHTML += `
+        <tr>
+            <td>${s.name}</td>
+            <td>${s.id}</td>
+            <td>${s.score}</td>
+            <td>${s.percent.toFixed(2)}%</td>
+            <td>${s.grade}</td>
+        </tr>
+        `;
+    });
+}
+
+function updateStats(){
+
+    let total = students.length;
+    let fail = students.filter(s => s.percent < 50).length;
+    let pass = students.filter(s => s.percent >= 50 && s.percent < 75).length;
+    let vg = students.filter(s => s.percent >= 75 && s.percent < 85).length;
+    let ex = students.filter(s => s.percent >= 85).length;
+
+    document.getElementById("stats").innerHTML = `
+    Total: ${total}<br>
+    Fail: ${fail}<br>
+    Pass: ${pass}<br>
+    Very Good: ${vg}<br>
+    Excellent: ${ex}
+    `;
+}
+
+function exportExcel(){
+
+    let data = students.map(s => ({
+        Name: s.name,
+        ID: s.id,
+        Score: s.score,
+        Percentage: s.percent,
+        Grade: s.grade
+    }));
+
+    let ws = XLSX.utils.json_to_sheet(data);
+    let wb = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(wb, ws, "Report");
+
+    XLSX.writeFile(wb, "exam_report.xlsx");
+}
+
+// init
+renderTable();
+updateStats();
+
+</script>
+
+</body>
 </html>
