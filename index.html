@@ -3,217 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>አድሚን ገጽ - መ/ር ደለለኝ አጥላው</title>
+    <title>የውጤት መጠየቂያ - ጣይቱ ብጡል አካዳሚ</title>
     <style>
         :root {
-            --aqua: #00FFFF;       /* ውኃ ሰማያዊ */
-            --seafoam: #7FFFD4;    /* ውኃ አረንጓዴ */
-            --gold: #FFD700;       /* ወርቃማ */
-            --dark-bg: #050a14;    /* ጥቁር ዳራ */
+            --aqua: #00FFFF;       /* ውኃ ሰማያዊ - ከሳጥን ውጭ */
+            --seafoam: #7FFFD4;    /* ውኃ አረንጓዴ - በሳጥን ውስጥ */
+            --gold: #FFD700;       /* ወርቃማ - ለመምህሩ ስም */
+            --bg-dark: #060c1a;    /* ጥቁር ዳራ */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--aqua);
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--aqua);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
 
-        /* የላይኛው ርዕስ */
+        /* ርዕስ (Header) */
         header {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
+            width: 100%;
+            padding: 40px 20px;
             text-align: center;
-            border-bottom: 3px solid var(--gold);
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 2px solid var(--gold);
         }
 
         .school-name { 
-            font-size: 2.8rem; 
+            font-size: 3.5rem; 
             color: #00BFFF; 
             margin: 0; 
-            text-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+            font-weight: 900;
         }
 
-        .admin-label { 
+        .teacher-name { 
             color: var(--gold); 
-            font-size: 1.2rem; 
+            font-size: 1.4rem; 
+            margin-top: 10px; 
             font-weight: bold; 
-            margin-top: 5px;
         }
 
-        /* ጎን ለጎን ማስቀመጫ */
-        .admin-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* ሁለት እኩል ክፍል */
-            gap: 30px;
-            max-width: 1200px;
+        /* ዋናው መጠየቂያ ሳጥን */
+        .query-box {
+            max-width: 600px;
+            width: 90%;
             margin: 40px auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
             border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
 
-        h2 {
-            color: var(--gold);
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 10px;
-            font-size: 1.4rem;
-            margin-top: 0;
+        h2 { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            color: var(--aqua);
+            font-size: 1.8rem;
         }
 
         label {
             display: block;
             margin-top: 20px;
             font-weight: bold;
-            color: var(--aqua); /* ከሳጥን ውጭ ውኃ ሰማያዊ */
+            font-size: 1.1rem;
+            color: var(--aqua); /* ውኃ ሰማያዊ */
         }
 
         /* የመፃፊያ ሳጥኖች */
         input, select, textarea {
             width: 100%;
-            padding: 12px;
-            margin-top: 8px;
+            padding: 14px;
+            margin-top: 10px;
             background: rgba(0, 0, 0, 0.4);
             border: 1.5px solid var(--aqua);
-            border-radius: 8px;
-            color: var(--seafoam); /* በሳጥን ውስጥ ውኃ አረንጓዴ */
+            border-radius: 12px;
+            color: var(--seafoam); /* ውኃ አረንጓዴ */
             font-size: 1.1rem;
             box-sizing: border-box;
             outline: none;
         }
 
-        /* ፋይል መጫኛ ሳጥን */
-        .upload-box {
-            border: 2px dashed var(--gold);
-            padding: 30px;
-            text-align: center;
+        input::placeholder {
+            color: rgba(127, 255, 212, 0.3);
+        }
+
+        /* የውጤት ማሳያ */
+        .result-panel {
+            background: rgba(127, 255, 212, 0.05);
+            border: 2px dashed var(--seafoam);
+            height: 80px;
             margin-top: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--seafoam); /* ውኃ አረንጓዴ */
         }
 
-        .upload-box:hover {
-            background: rgba(255, 215, 0, 0.05);
-        }
-
-        /* መመዝገቢያ ቁልፍ */
-        .save-btn {
+        /* ቁልፎች */
+        .btn {
             width: 100%;
-            padding: 15px;
-            background: var(--gold);
-            color: #000;
+            padding: 18px;
+            margin-top: 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 30px;
             transition: 0.3s;
         }
 
-        .save-btn:hover {
-            background: #fff;
-            box-shadow: 0 0 20px var(--gold);
+        .btn-search {
+            background: #00BFFF;
+            color: white;
+        }
+
+        .btn-search:hover {
+            background: var(--aqua);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .btn-feedback {
+            background: #20B2AA;
+            color: white;
+            margin-top: 15px;
         }
 
         footer {
+            padding: 40px;
             text-align: center;
-            padding: 30px;
-            margin-top: auto;
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
-
-        /* ለስልክ ሲሆን አንዱ ከሌላው በታች እንዲሆን */
-        @media (max-width: 800px) {
-            .admin-grid { grid-template-columns: 1fr; }
+            opacity: 0.6;
+            font-size: 1rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="school-name">ጣይቱ ብጡል አካዳሚ</div>
-        <div class="admin-label">መ/ር ደለለኝ አጥላው - ውጤት መጫኛ (Admin)</div>
+        <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
+        <div class="teacher-name">መ/ር ደለለኝ አጥላው</div>
     </header>
 
-    <div class="admin-grid">
-        
-        <!-- ግራ ክፍል: የውጤት ፋይል መጫኛ -->
-        <div class="card">
-            <h2>📂 1. የውጤት ፋይል መጫኛ</h2>
-            <form>
-                <label>ክፍል ይምረጡ፡</label>
-                <select>
-                    <option>1A</option><option>1B</option>
-                    <option>2A</option><option>2B</option>
-                    <option>3A</option><option>4A</option>
-                    <option>5A</option><option>6A</option>
-                </select>
+    <div class="query-box">
+        <h2>ተማሪዎች ውጤት መጠየቂያ</h2>
 
-                <label>የትምህርት አይነት፡</label>
-                <input type="text" value="ኢንግሊዝኛ (English)" readonly>
+        <form>
+            <label>የተማሪው ሙሉ ስም፡</label>
+            <input type="text" placeholder="ሙሉ ስምዎን እዚህ ያስገቡ...">
 
-                <label>የፈተና ዓይነት፡</label>
-                <select>
-                    <option>የ 10% ፈተና</option>
-                    <option>የ 20% ፈተና</option>
-                    <option>የ 40% ፈተና</option>
-                    <option>ጠቅላላ ውጤት (100%)</option>
-                </select>
+            <label>የክፍል ደረጃ፡</label>
+            <select>
+                <option value="">-- ክፍል ይምረጡ --</option>
+                <option>1A</option><option>1B</option>
+                <option>2A</option><option>2B</option>
+                <option>3A</option><option>4A</option>
+                <option>5A</option><option>6A</option>
+            </select>
 
-                <label>ፋይል (Excel/CSV) መጫኛ፡</label>
-                <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-                    <span id="fileName">📁 ፋይሉን እዚህ ይጫኑ</span>
-                    <input type="file" id="fileInput" hidden onchange="updateName()">
-                </div>
-            </form>
-        </div>
+            <label>የፈተና ዓይነት፡</label>
+            <select>
+                <option>ከ 10%</option>
+                <option>ከ 20%</option>
+                <option>ከ 40%</option>
+                <option>ከ 100% (ጠቅላላ)</option>
+            </select>
 
-        <!-- ቀኝ ክፍል: አስተያየትና ማሳሰቢያ -->
-        <div class="card">
-            <h2>💬 2. አጠቃላይ አስተያየት</h2>
-            <form>
-                <label>የክፍል አስተያየት (ለተማሪዎች):</label>
-                <textarea rows="5" placeholder="ተማሪዎች ውጤታቸውን ሲያዩ አብሮ የሚወጣላቸው አስተያየት..."></textarea>
+            <button type="button" class="btn btn-search">ውጤቴን አሳይ</button>
 
-                <label>ለወላጆች ልዩ ማስታወሻ፡</label>
-                <textarea rows="3" placeholder="ለወላጆች የሚላክ መልዕክት ካለ..."></textarea>
+            <label>የተገኘ ውጤት፦</label>
+            <div class="result-panel">-- / --</div>
 
-                <label>የመዝገብ ቀን (Date):</label>
-                <input type="text" value="መጋቢት 20/2018 ዓ.ም" readonly>
+            <label>የመምህሩ አስተያየት (Teacher's Comment):</label>
+            <textarea rows="2" readonly placeholder="የመምህሩ አስተያየት እዚህ ይጫናል..."></textarea>
 
-                <button type="submit" class="save-btn">ውጤቱንና አስተያየቱን መዝግብ</button>
-            </form>
-        </div>
-
+            <label>የወላጅ አስተያየት (ካለዎት):</label>
+            <textarea rows="2" placeholder="አስተያየትዎን እዚህ ይፃፉ..."></textarea>
+            
+            <button type="submit" class="btn btn-feedback">አስተያየት ላክ</button>
+        </form>
     </div>
 
     <footer>
         &copy; 2026 ጣይቱ ብጡል አካዳሚ | መ/ር ደለለኝ አጥላው
     </footer>
-
-    <script>
-        function updateName() {
-            const file = document.getElementById('fileInput');
-            const nameDisp = document.getElementById('fileName');
-            if (file.files.length > 0) {
-                nameDisp.innerText = "ፋይል ተመርጧል፡ " + file.files[0].name;
-                nameDisp.style.color = "var(--seafoam)";
-            }
-        }
-    </script>
 
 </body>
 </html>
