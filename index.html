@@ -4,84 +4,284 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ውጤት ማሳወቂያ - ጣይቱ ብጡል አካዳሚ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Arial; background: #f0f2f5; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 12px; border-top: 10px solid #2c3e50; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; }
-        .field { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; background: #0088cc; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; font-weight: bold; }
-        .btn:hover { background: #0077b5; }
+        :root {
+            --primary: #1a2a6c; /* ጥቁር ሰማያዊ */
+            --gold: #b8860b;    /* ጥቁር የወርቅ ቀለም */
+            --secondary: #27ae60; /* አረንጓዴ */
+            --bg: #f8f9fd;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans Ethiopic', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 550px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-top: 12px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* የጌጥ መስመር */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0; right: 0;
+            width: 100px; height: 100px;
+            background: var(--gold);
+            clip-path: circle(50% at 100% 0%);
+            opacity: 0.1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 26px;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: var(--gold);
+            font-weight: 600;
+            margin: 5px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .info-bar {
+            background: #f1f3f8;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--primary);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #edf2f7;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--gold);
+            background: #fff;
+            outline: none;
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.1);
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* ቁልፎች (Buttons) */
+        .calc-btn {
+            background: var(--gold);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .calc-btn:hover { background: #966d09; }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 8px 15px rgba(26, 42, 108, 0.2);
+        }
+
+        .submit-btn:hover {
+            background: #121d4d;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(26, 42, 108, 0.3);
+        }
+
+        #result-display {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            display: none;
+            border: 1px solid #c8e6c9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #aaa;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>ጣይቱ ብጡል አካዳሚ</h2>
-    <p style="text-align:center;">መ/ር ደለለኝ አጥላው - እንግሊዝኛ</p>
-    <hr>
+    <div class="header">
+        <h1>ጣይቱ ብጡል አካዳሚ</h1>
+        <p>የተማሪዎች ውጤት ማሳወቂያ</p>
+    </div>
+
+    <div class="info-bar">
+        መምህር ደለለኝ አጥላው | 2018 ዓ.ም
+    </div>
 
     <form id="resultForm">
-        <div class="field">
+        <div class="form-group">
             <label>የተማሪው ሙሉ ስም</label>
-            <input type="text" id="name" required>
+            <input type="text" id="student_name" placeholder="የተማሪውን ስም ያስገቡ" required>
         </div>
-        <div class="field">
-            <label>ክፍል</label>
-            <input type="text" id="grade" placeholder="ለምሳሌ፡ 6A">
-        </div>
-        <div class="field">
-            <label>ውጤት</label>
-            <div style="display:flex; gap:10px;">
-                <input type="number" id="score" style="flex:2;" required>
-                <select id="scale" style="flex:1;">
-                    <option value="10%">ከ 10%</option>
-                    <option value="20%">ከ 20%</option>
-                    <option value="40%">ከ 40%</option>
-                    <option value="100%">ከ 100%</option>
-                </select>
+
+        <div class="row">
+            <div class="form-group" style="flex: 1.2;">
+                <label>ትምህርት</label>
+                <input type="text" id="subject" value="እንግሊዝኛ (English)">
+            </div>
+            <div class="form-group" style="flex: 0.8;">
+                <label>ክፍል</label>
+                <input type="text" id="grade" placeholder="ለምሳሌ፡ 6B">
             </div>
         </div>
-        <div class="field">
-            <label>የመምህሩ አስተያየት</label>
-            <textarea id="t_comment" rows="2"></textarea>
+
+        <div class="row">
+            <div class="form-group" style="flex: 1;">
+                <label>ውጤት ከስንት?</label>
+                <select id="scale">
+                    <option value="10">10%</option>
+                    <option value="20" selected>20%</option>
+                    <option value="40">40%</option>
+                    <option value="100">100%</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>የተገኘ ውጤት</label>
+                <input type="number" id="score" step="0.1" placeholder="ነጥብ ያስገቡ" required>
+            </div>
         </div>
-        <div class="field">
-            <label style="color:green;">የወላጅ አስተያየት</label>
+
+        <button type="button" class="calc-btn" onclick="calculateResult()">ውጤት አስላ</button>
+        <div id="result-display"></div>
+
+        <div class="form-group">
+            <label>የመምህሩ አስተያየት</label>
+            <textarea id="t_comment" rows="2" placeholder="ስለ ተማሪው ጥንካሬ..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label style="color: var(--secondary);">የወላጅ አስተያየት</label>
             <textarea id="p_comment" rows="2" placeholder="ወላጆች እዚህ ይፃፉ..."></textarea>
         </div>
-        <button type="button" class="btn" onclick="sendToTelegram()">አስተያየትና ውጤት ላክ</button>
+
+        <button type="button" class="submit-btn" onclick="sendToTelegram()">መረጃውን ላክ</button>
     </form>
+
+    <footer>© 2018 ጣይቱ ብጡል አካዳሚ | Designed by Delelegn</footer>
 </div>
 
 <script>
+    // ውጤት የማስላት ተግባር
+    function calculateResult() {
+        const score = document.getElementById('score').value;
+        const scale = document.getElementById('scale').value;
+        const display = document.getElementById('result-display');
+
+        if(score && scale) {
+            const percent = (score / scale) * 100;
+            display.style.display = "block";
+            display.innerHTML = `የተማሪው ውጤት ከ ${scale}% ውስጥ ${score} ነው (${percent.toFixed(1)}%)`;
+        } else {
+            alert("እባክዎን ውጤት ያስገቡ!");
+        }
+    }
+
+    // ወደ ቴሌግራም የመላኪያ ተግባር
     function sendToTelegram() {
-        const token = "YOUR_BOT_TOKEN"; // 8608778734:AAGQpZ3yKghv7HQJxjo7SJVH6WqH5-Y5JD4
-        const chat_id = "YOUR_CHAT_ID"; // 7387771308
-        
-        const name = document.getElementById('name').value;
+        const token = "8608778734:AAGQpZ3yKghv7HQJxjo7SJVH6WqH5-Y5JD4"; 
+        const chat_id = "7387771308"; 
+
+        const name = document.getElementById('student_name').value;
+        const subject = document.getElementById('subject').value;
         const grade = document.getElementById('grade').value;
         const score = document.getElementById('score').value;
         const scale = document.getElementById('scale').value;
         const t_comment = document.getElementById('t_comment').value;
         const p_comment = document.getElementById('p_comment').value;
 
-        const message = `📩 **አዲስ የውጤት መረጃ**\n\n` +
-                        `👤 ተማሪ፦ ${name}\n` +
-                        `🏫 ክፍል፦ ${grade}\n` +
-                        `📊 ውጤት፦ ${score}/${scale}\n` +
-                        `👨‍🏫 መምህር፦ ${t_comment}\n` +
-                        `👪 ወላጅ፦ ${p_comment}`;
+        if(!name || !score) { alert("ስም እና ውጤት መሞላት አለበት!"); return; }
+
+        const message = `🎓 **የጣይቱ ብጡል አካዳሚ የውጤት ሪፖርት**\n\n` +
+                        `👤 **ተማሪ፦** ${name}\n` +
+                        `📚 **ትምህርት፦** ${subject}\n` +
+                        `🏫 **ክፍል፦** ${grade}\n` +
+                        `📊 **ውጤት፦** ${score} / ${scale}\n\n` +
+                        `👨‍🏫 **የመምህሩ አስተያየት፦**\n"${t_comment || '---'}"\n\n` +
+                        `👪 **የወላጅ አስተያየት፦**\n"${p_comment || '---'}"`;
 
         const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
 
-        fetch(url).then(response => {
-            if(response.ok) {
-                alert("መረጃው በተሳካ ሁኔታ ወደ መምህሩ ተልኳል!");
+        fetch(url).then(res => {
+            if(res.ok) {
+                alert("መረጃው በተሳካ ሁኔታ ተልኳል!");
                 document.getElementById('resultForm').reset();
+                document.getElementById('result-display').style.display = "none";
             } else {
-                alert("መረጃው አልተላከም፣ እባክዎ በድጋሚ ይሞክሩ።");
+                alert("ስህተት ተፈጥሯል! ቦትዎን 'Start' ማድረጎን ያረጋግጡ።");
             }
         });
     }
