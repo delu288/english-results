@@ -3,196 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጣይቱ ብጡል አካዳሚ - የፊት ገጽ</title>
+    <title>ጣይቱ ብጡል አካዳሚ - የውጤት ሲስተም</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        :root {
+            --main-blue: #00BFFF; /* ውኃ ሰማያዊ */
+            --bg-dark: #050a14;   /* ጥቁር ሰማያዊ */
+            --gold: #FFD700;      /* ወርቃማ */
+            --text-green: #7FFFD4; /* ውኃ አረንጓዴ */
+        }
+
+        body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            overflow: hidden;
-            background-color: #050a14;
-        }
-
-        /* ስላይድሾው መያዣ */
-        .slideshow-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            filter: brightness(40%); /* ምስሉ ጽሑፉን እንዳይሸፍነው */
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        /* የይዘት መያዣ (Main Content) */
-        .overlay {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            z-index: 1;
-            padding: 0 20px;
-        }
-
-        .admin-link {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            color: #FFD700;
-            text-decoration: none;
-            border: 2px solid #FFD700;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .admin-link:hover {
-            background: #FFD700;
-            color: #000;
-        }
-
-        /* የትምህርት ቤቱ ስም አኒሜሽን */
-        .school-name {
-            font-size: 5.5rem;
-            color: #00FFFF; /* ውኃ ሰማያዊ */
-            font-weight: 900;
             margin: 0;
-            text-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
-            animation: fadeInDown 1.5s ease-out;
+            background-color: var(--bg-dark);
+            color: var(--main-blue);
         }
 
-        .motto {
-            font-size: 1.8rem;
-            color: #FFD700; /* ወርቃማ */
-            margin-top: 10px;
-            letter-spacing: 4px;
-            font-weight: 300;
-            animation: fadeInUp 2s ease-out;
-        }
-
-        .btn-box {
+        /* ናቪጌሽን */
+        nav {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 50px;
             display: flex;
-            gap: 20px;
-            margin-top: 50px;
-            animation: fadeIn 3s ease-in;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gold);
         }
 
-        .action-btn {
-            padding: 18px 45px;
-            font-size: 1.2rem;
-            font-weight: bold;
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--main-blue); }
+        
+        .nav-links a {
+            color: var(--gold);
             text-decoration: none;
-            border-radius: 15px;
-            transition: 0.4s;
+            margin-left: 20px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .btn-blue {
-            background: rgba(0, 255, 255, 0.1);
-            border: 2px solid #00FFFF;
-            color: #00FFFF;
+        /* የፊት ገጽ (Home Section) */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(5, 10, 20, 0.8), rgba(5, 10, 20, 0.8)), 
+                        url('https://via.placeholder.com/1920x1080/050a14/00BFFF?text=Taitu+Bitul+Academy');
+            background-size: cover;
         }
 
-        .btn-blue:hover {
-            background: #00FFFF;
+        .school-name { font-size: 4.5rem; margin: 0; color: var(--main-blue); }
+        .subtitle { font-size: 1.8rem; color: white; margin-bottom: 30px; }
+        .teacher-name { color: var(--gold); font-size: 1.3rem; margin-top: 10px; }
+
+        /* የአድሚን ገጽ (Admin Section) */
+        .admin-section {
+            display: none; /* መጀመሪያ ተደብቋል */
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid var(--gold);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--gold);
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+            color: var(--gold);
+        }
+
+        .upload-area:hover { background: rgba(255, 215, 0, 0.1); }
+
+        /* ፎርም ኤለመንቶች */
+        label { display: block; margin-top: 20px; color: var(--main-blue); font-weight: bold; }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid var(--main-blue);
+            background: transparent;
+            color: var(--text-green);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background: var(--main-blue);
             color: #000;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-        }
-
-        .btn-gold {
-            background: rgba(255, 215, 0, 0.1);
-            border: 2px solid #FFD700;
-            color: #FFD700;
-        }
-
-        .btn-gold:hover {
-            background: #FFD700;
-            color: #000;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-        }
-
-        .teacher-footer {
-            position: absolute;
-            bottom: 30px;
-            color: #FFD700;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
             font-size: 1.1rem;
             font-weight: bold;
-            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
         }
 
-        /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .btn-gold { background: var(--gold); }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
+        footer { text-align: center; padding: 40px; opacity: 0.6; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div class="slideshow-container">
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1470')"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1470')"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1504')"></div>
-    </div>
+    <nav>
+        <div class="logo">ጣይቱ ብጡል አካዳሚ</div>
+        <div class="nav-links">
+            <a onclick="showHome()">Home</a>
+            <a onclick="showAdmin()">Admin Login</a>
+        </div>
+    </nav>
 
-    <div class="overlay">
-        <a href="#" class="admin-link">Home / Admin Login</a>
-
+    <!-- የፊት ገጽ -->
+    <div id="homePage" class="hero">
         <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="motto">የጥበብና የልቀት ማዕከል</div>
-
-        <div class="btn-box">
-            <a href="#" class="action-btn btn-blue">ውጤት ለማየት</a>
-            <a href="#" class="action-btn btn-gold">ጋለሪ ለመመልከት</a>
-        </div>
-
-        <div class="teacher-footer">
-            መ/ር ደለለኝ አጥላው | 2018 ዓ.ም
-        </div>
+        <div class="subtitle">የተማሪዎች ውጤት ማሳወቂያ ዌብሳይት</div>
+        <div class="teacher-name">መ/ር ደለለኝ አጥላው</div>
+        <button class="btn" style="width: auto; margin-top: 40px;" onclick="alert('ውጤት መፈለጊያ ገጽ በቅርቡ ይከፈታል!')">ውጤት ለመፈለግ እዚህ ይጫኑ</button>
     </div>
+
+    <!-- የአድሚን ውጤት መጫኛ ገጽ -->
+    <div id="adminPage" class="admin-section">
+        <h2 style="color: var(--gold); text-align: center;">የውጤት መጫኛ (Admin)</h2>
+        <p style="text-align: center;">ውድ መ/ር ደለለኝ፣ የተማሪዎችን ውጤት ፋይል እዚህ ይጫኑ።</p>
+        
+        <label>የውጤት ፋይል (Excel/CSV) መጫኛ፡</label>
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <span id="fileText">ፋይሉን እዚህ ይጎትቱ ወይም ይጫኑ</span>
+            <input type="file" id="fileInput" style="display: none;" onchange="updateFileName()">
+        </div>
+
+        <label>የትምህርት አይነት፡</label>
+        <input type="text" value="ኢንግሊዝኛ (English)" readonly>
+
+        <label>ክፍል፡</label>
+        <select>
+            <option>1A</option><option>1B</option><option>2A</option>
+            <option>2B</option><option>3A</option><option>4A</option>
+            <option>5A</option><option>6A</option>
+        </select>
+
+        <label>አጠቃላይ ማሳሰቢያ፡</label>
+        <textarea rows="3" placeholder="ለመላው ክፍል የሚሆን አስተያየት..."></textarea>
+
+        <button class="btn btn-gold">ውጤቱን መዝግብ</button>
+    </div>
+
+    <footer>
+        &copy; 2026 ጣይቱ ብጡል አካዳሚ | All Rights Reserved
+    </footer>
 
     <script>
-        // ስላይድሾው የሚቀያይር ኮድ
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
+        function showAdmin() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('adminPage').style.display = 'block';
         }
 
-        // በየ 5 ሴኮንዱ ይቀይራል (5000ms)
-        setInterval(nextSlide, 5000);
+        function showHome() {
+            document.getElementById('homePage').style.display = 'flex';
+            document.getElementById('adminPage').style.display = 'none';
+        }
+
+        function updateFileName() {
+            const input = document.getElementById('fileInput');
+            const text = document.getElementById('fileText');
+            if (input.files.length > 0) {
+                text.innerText = "የተመረጠ ፋይል፡ " + input.files[0].name;
+                text.style.color = "#7FFFD4";
+            }
+        }
     </script>
 
 </body>
