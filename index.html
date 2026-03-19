@@ -3,183 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጣይቱ ብጡል አካዳሚ - የውጤት ሲስተም</title>
+    <title>የውጤት ማሳያ - ጣይቱ ብጡል አካዳሚ</title>
     <style>
         :root {
-            --main-blue: #00BFFF; /* ውኃ ሰማያዊ */
-            --bg-dark: #050a14;   /* ጥቁር ሰማያዊ */
-            --gold: #FFD700;      /* ወርቃማ */
-            --text-green: #7FFFD4; /* ውኃ አረንጓዴ */
+            --aqua: #00FFFF;
+            --seafoam: #7FFFD4;
+            --gold: #FFD700;
+            --dark-card: rgba(255, 255, 255, 0.05);
         }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background-color: var(--bg-dark);
-            color: var(--main-blue);
-        }
-
-        /* ናቪጌሽን */
-        nav {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px 50px;
+            background-color: #060c1a;
+            color: var(--aqua);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--main-blue); }
-        
-        .nav-links a {
-            color: var(--gold);
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* የፊት ገጽ (Home Section) */
-        .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(5, 10, 20, 0.8), rgba(5, 10, 20, 0.8)), 
-                        url('https://via.placeholder.com/1920x1080/050a14/00BFFF?text=Taitu+Bitul+Academy');
-            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        .school-name { font-size: 4.5rem; margin: 0; color: var(--main-blue); }
-        .subtitle { font-size: 1.8rem; color: white; margin-bottom: 30px; }
-        .teacher-name { color: var(--gold); font-size: 1.3rem; margin-top: 10px; }
-
-        /* የአድሚን ገጽ (Admin Section) */
-        .admin-section {
-            display: none; /* መጀመሪያ ተደብቋል */
-            max-width: 600px;
-            margin: 50px auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 15px;
-            border: 1px solid var(--gold);
+        /* ዋናው የውጤት ማሳያ ሳጥን (Result & Comment Box) */
+        .result-container {
+            width: 90%;
+            max-width: 550px;
+            background: var(--dark-card);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--aqua);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+            text-align: center;
         }
 
-        .upload-area {
-            border: 2px dashed var(--gold);
-            padding: 40px;
-            text-align: center;
-            border-radius: 10px;
-            margin-top: 20px;
-            cursor: pointer;
+        .header-label {
             color: var(--gold);
-        }
-
-        .upload-area:hover { background: rgba(255, 215, 0, 0.1); }
-
-        /* ፎርም ኤለመንቶች */
-        label { display: block; margin-top: 20px; color: var(--main-blue); font-weight: bold; }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid var(--main-blue);
-            background: transparent;
-            color: var(--text-green);
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            background: var(--main-blue);
-            color: #000;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
+            margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
-        .btn-gold { background: var(--gold); }
+        /* የውጤት መጫኛ ሳጥን (The Score Box) */
+        .score-display {
+            background: rgba(127, 255, 212, 0.1);
+            border: 3px solid var(--seafoam);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+        }
 
-        footer { text-align: center; padding: 40px; opacity: 0.6; font-size: 0.9rem; }
+        .score-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--seafoam); /* በሳጥን ውስጥ ውኃ አረንጓዴ */
+            margin: 0;
+        }
+
+        .score-label {
+            color: var(--aqua);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* የመምህሩ አስተያየት ሳጥን (Teacher's Comment Box) */
+        .comment-section {
+            margin-top: 25px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--gold);
+        }
+
+        .comment-title {
+            color: var(--gold); /* ወርቃማ */
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comment-text {
+            color: var(--seafoam); /* በሳጥን ውስጥ ውኃ አረንጓዴ */
+            font-size: 1.1rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* የጭነት ምልክት (Loading Animation) - ለተጨማሪ ውበት */
+        .loading-dots:after {
+            content: ' .';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: var(--gold); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 var(--gold), .5em 0 0 rgba(0,0,0,0); }
+            80%, 100% { text-shadow: .25em 0 0 var(--gold), .5em 0 0 var(--gold); }
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">ጣይቱ ብጡል አካዳሚ</div>
-        <div class="nav-links">
-            <a onclick="showHome()">Home</a>
-            <a onclick="showAdmin()">Admin Login</a>
-        </div>
-    </nav>
-
-    <!-- የፊት ገጽ -->
-    <div id="homePage" class="hero">
-        <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="subtitle">የተማሪዎች ውጤት ማሳወቂያ ዌብሳይት</div>
-        <div class="teacher-name">መ/ር ደለለኝ አጥላው</div>
-        <button class="btn" style="width: auto; margin-top: 40px;" onclick="alert('ውጤት መፈለጊያ ገጽ በቅርቡ ይከፈታል!')">ውጤት ለመፈለግ እዚህ ይጫኑ</button>
-    </div>
-
-    <!-- የአድሚን ውጤት መጫኛ ገጽ -->
-    <div id="adminPage" class="admin-section">
-        <h2 style="color: var(--gold); text-align: center;">የውጤት መጫኛ (Admin)</h2>
-        <p style="text-align: center;">ውድ መ/ር ደለለኝ፣ የተማሪዎችን ውጤት ፋይል እዚህ ይጫኑ።</p>
+    <div class="result-container">
+        <div class="header-label">የተማሪው የውጤት መረጃ</div>
         
-        <label>የውጤት ፋይል (Excel/CSV) መጫኛ፡</label>
-        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-            <span id="fileText">ፋይሉን እዚህ ይጎትቱ ወይም ይጫኑ</span>
-            <input type="file" id="fileInput" style="display: none;" onchange="updateFileName()">
+        <!-- ውጤት -->
+        <div class="score-display">
+            <p class="score-label">ጠቅላላ ውጤት</p>
+            <h1 class="score-text">88/100</h1>
         </div>
 
-        <label>የትምህርት አይነት፡</label>
-        <input type="text" value="ኢንግሊዝኛ (English)" readonly>
+        <!-- የመምህሩ አስተያየት -->
+        <div class="comment-section">
+            <div class="comment-title">
+                <span>✍️</span> የመምህር ደለለኝ አስተያየት
+            </div>
+            <div class="comment-text">
+                "በጣም ጎበዝ ተማሪ ነህ! በተለይ በቃላት አጠቃቀምህ ላይ ያሳየኸው መሻሻል የሚደነቅ ነው። በሚቀጥለው ፈተና ደግሞ በጽሕፈት ላይ ብትበረታ ይበልጥ ውጤታማ ትሆናለህ።"
+            </div>
+        </div>
 
-        <label>ክፍል፡</label>
-        <select>
-            <option>1A</option><option>1B</option><option>2A</option>
-            <option>2B</option><option>3A</option><option>4A</option>
-            <option>5A</option><option>6A</option>
-        </select>
-
-        <label>አጠቃላይ ማሳሰቢያ፡</label>
-        <textarea rows="3" placeholder="ለመላው ክፍል የሚሆን አስተያየት..."></textarea>
-
-        <button class="btn btn-gold">ውጤቱን መዝግብ</button>
+        <p style="font-size: 0.8rem; margin-top: 20px; opacity: 0.6; color: var(--gold);">
+            መረጃው የተጫነው ከጣይቱ ብጡል አካዳሚ ዳታቤዝ ነው <span class="loading-dots"></span>
+        </p>
     </div>
-
-    <footer>
-        &copy; 2026 ጣይቱ ብጡል አካዳሚ | All Rights Reserved
-    </footer>
-
-    <script>
-        function showAdmin() {
-            document.getElementById('homePage').style.display = 'none';
-            document.getElementById('adminPage').style.display = 'block';
-        }
-
-        function showHome() {
-            document.getElementById('homePage').style.display = 'flex';
-            document.getElementById('adminPage').style.display = 'none';
-        }
-
-        function updateFileName() {
-            const input = document.getElementById('fileInput');
-            const text = document.getElementById('fileText');
-            if (input.files.length > 0) {
-                text.innerText = "የተመረጠ ፋይል፡ " + input.files[0].name;
-                text.style.color = "#7FFFD4";
-            }
-        }
-    </script>
 
 </body>
 </html>
