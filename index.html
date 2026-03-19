@@ -20,11 +20,10 @@
             padding: 20px;
             display: flex;
             justify-content: center;
-            color: #1e293b;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 550px;
             width: 100%;
             background: var(--white);
             padding: 40px;
@@ -34,60 +33,57 @@
             text-align: center;
         }
 
-        /* የመምህሩ ስም ማሳያ */
         .teacher-badge {
             background: var(--main-blue);
             color: white;
             padding: 25px;
             border-radius: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
         }
 
         .teacher-badge h1 {
             margin: 0;
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .school-tag {
             color: var(--accent-gold);
-            font-size: 18px;
             font-weight: bold;
             display: block;
             margin-top: 5px;
         }
 
-        .input-group {
+        /* ፋይል መጫኛ ለባለቤቱ ብቻ */
+        .admin-upload {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px dashed var(--accent-gold);
             margin-bottom: 25px;
+            font-size: 13px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
             text-align: left;
         }
 
         label {
             display: block;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--main-blue);
-            font-size: 15px;
         }
 
         input[type="text"], select {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             border: 2px solid #e2e8f0;
-            border-radius: 15px;
-            font-size: 17px;
-            background: #f1f5f9;
+            border-radius: 12px;
+            font-size: 16px;
             box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--accent-gold);
-            outline: none;
-            background: white;
+            background: #fdfdfd;
         }
 
         .btn-search {
@@ -101,49 +97,27 @@
             width: 100%;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 10px;
         }
 
-        .btn-search:hover {
-            background: #152a61;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        .btn-search:hover { background: #152a61; }
 
-        /* የውጤት ካርድ */
+        /* የውጤት ካርድ (መጀመሪያ የተደበቀ) */
         #result-card {
             display: none;
-            margin-top: 35px;
+            margin-top: 30px;
             padding: 25px;
-            background: #fff;
+            background: #f1f5f9;
             border-radius: 20px;
-            border: 2px solid #f1f5f9;
             text-align: left;
-            animation: fadeIn 0.6s ease;
+            border-left: 8px solid #10b981;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .res-data { display: block; font-size: 20px; color: var(--main-blue); font-weight: 700; margin-bottom: 10px; }
+        .score-big { font-size: 35px; color: #10b981; }
 
-        .res-line {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #f1f5f9;
-        }
+        #errorBox { color: #ef4444; display: none; margin-top: 20px; font-weight: bold; }
 
-        .res-label { font-weight: bold; color: #64748b; font-size: 14px; text-transform: uppercase; }
-        .res-data { display: block; font-size: 19px; color: var(--main-blue); font-weight: 700; }
-        .score-big { font-size: 32px; color: #10b981; }
-
-        .footer {
-            margin-top: 40px;
-            font-size: 13px;
-            color: #94a3b8;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 20px;
-        }
+        footer { margin-top: 40px; font-size: 12px; color: #94a3b8; }
     </style>
 </head>
 <body>
@@ -154,51 +128,51 @@
         <span class="school-tag">ጣይቱ ብጡል አካዳሚ</span>
     </div>
 
-    <div style="background: #fffbeb; padding: 15px; border-radius: 15px; border: 1px dashed #d4af37; margin-bottom: 25px;">
-        <label>የExcel (CSV) ፋይል ይጫኑ</label>
-        <input type="file" id="csvUpload" accept=".csv" style="font-size: 13px;">
+    <!-- ይህ ክፍል መምህሩ ፋይሉን እንዲጭን ብቻ ነው -->
+    <div class="admin-upload" id="adminPanel">
+        <label>የተማሪዎች ዝርዝር (CSV) ይጫኑ</label>
+        <input type="file" id="csvUpload" accept=".csv">
     </div>
 
     <div class="input-group">
         <label>የተማሪው ሙሉ ስም</label>
-        <input type="text" id="nameInput" placeholder="ለምሳሌ፡ አበበ ከበደ">
+        <input type="text" id="nameInput" placeholder="ስም በትክክል ያስገቡ">
     </div>
 
     <div class="input-group">
         <label>የክፍል ደረጃ</label>
         <select id="gradeInput">
             <option value="">-- ክፍል ይምረጡ --</option>
-            <option value="1A">1A</option>
-            <option value="1B">1B</option>
-            <option value="2A">2A</option>
-            <option value="2B">2B</option>
-            <option value="3A">3A</option>
-            <option value="4A">4A</option>
-            <option value="5A">5A</option>
-            <option value="6A">6A</option>
+            <option value="1A">1A</option> <option value="1B">1B</option>
+            <option value="2A">2A</option> <option value="2B">2B</option>
+            <option value="3A">3A</option> <option value="4A">4A</option>
+            <option value="5A">5A</option> <option value="6A">6A</option>
         </select>
     </div>
 
     <button class="btn-search" onclick="searchResult()">ውጤት አሳይ</button>
 
+    <!-- ውጤት ማሳያ -->
     <div id="result-card">
-        <div class="res-line"><span class="res-label">ተማሪ</span><span class="res-data" id="outName"></span></div>
-        <div class="res-line"><span class="res-label">ክፍል</span><span class="res-data" id="outGrade"></span></div>
-        <div class="res-line"><span class="res-label">ውጤት</span><span class="res-data score-big" id="outScore"></span></div>
-        <div class="res-line" style="border:none;"><span class="res-label">አስተያየት</span><span class="res-data" id="outComment" style="font-style: italic; font-weight: 400; font-size: 16px;"></span></div>
+        <span style="font-size: 12px; color: #64748b;">የተማሪ ስም፦</span>
+        <span class="res-data" id="outName"></span>
+        
+        <span style="font-size: 12px; color: #64748b;">ውጤት፦</span>
+        <span class="res-data score-big" id="outScore"></span>
+        
+        <span style="font-size: 12px; color: #64748b;">አስተያየት፦</span>
+        <span class="res-data" id="outComment" style="font-weight: 400; font-size: 16px; font-style: italic;"></span>
     </div>
 
-    <p id="errorBox" style="color: #ef4444; display: none; margin-top: 20px; font-weight: bold;">⚠️ ይቅርታ፣ መረጃው አልተገኘም። ስሙን እና ክፍሉን በትክክል መምረጥዎን ያረጋግጡ።</p>
+    <p id="errorBox">⚠️ መረጃው አልተገኘም። እባክዎን ስም እና ክፍል በትክክል መሆኑን ያረጋግጡ።</p>
 
-    <div class="footer">
-        እንግሊዝኛ (English) | 2018 ዓ.ም የውጤት ሪፖርት
-    </div>
+    <footer>እንግሊዝኛ (English) | 2018 ዓ.ም</footer>
 </div>
 
 <script>
     let studentDatabase = [];
 
-    // ፋይሉን የማንበብ ሂደት
+    // ፋይሉን መጫን
     document.getElementById('csvUpload').addEventListener('change', function(e) {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -215,7 +189,9 @@
                     };
                 }
             }).filter(item => item !== undefined);
-            alert("የተማሪዎች ዝርዝር በተሳካ ሁኔታ ተጭኗል!");
+            alert("ዳታቤዙ ተዘጋጅቷል። አሁን ተማሪዎች መፈለግ ይችላሉ።");
+            // ፋይል መጫኛውን መደበቅ ከፈለክ (አማራጭ)
+            // document.getElementById('adminPanel').style.display = 'none';
         };
         reader.readAsText(file);
     });
@@ -226,12 +202,14 @@
         const card = document.getElementById('result-card');
         const err = document.getElementById('errorBox');
 
-        // በስም እና በክፍል መፈለግ
-        const student = studentDatabase.find(s => s.name === nameQuery && s.grade === gradeQuery);
+        // መፈለግ (በስም እና በክፍል)
+        const student = studentDatabase.find(s => 
+            s.name.toLowerCase() === nameQuery.toLowerCase() && 
+            s.grade === gradeQuery
+        );
 
         if(student) {
             document.getElementById('outName').innerText = student.name;
-            document.getElementById('outGrade').innerText = student.grade;
             document.getElementById('outScore').innerText = student.score;
             document.getElementById('outComment').innerText = student.comment;
             card.style.display = 'block';
