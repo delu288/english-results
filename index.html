@@ -3,207 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጣይቱ ብጡል አካዳሚ - 3D የውጤት ማሳወቂያ</title>
+    <title>ጣይቱ ብጡል አካዳሚ - የፊት ገጽ</title>
     <style>
-        /* 3D Effects & General Style */
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+        body, html {
             margin: 0;
             padding: 0;
-            background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d); /* ደመቅ ያለ 3D Background */
-            background-attachment: fixed;
-            perspective: 1000px; /* ለ 3D እይታ ወሳኝ ነው */
-            color: #00FFFF; /* ውኃ ሰማያዊ */
+            height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            background-color: #050a14;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .school-name {
-            font-size: 4.5rem;
-            color: #00BFFF;
-            font-weight: 900;
-            margin: 0;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0px #0056b3, 4px 4px 0px #004080, 6px 6px 15px rgba(0,0,0,0.5); /* 3D Text */
-        }
-
-        .subtitle {
-            font-size: 1.8rem;
-            color: #00FFFF;
-            margin-top: 10px;
-            font-weight: 300;
-        }
-
-        /* 3D የመረጃ ሳጥን (The Main Card) */
-        .container {
-            max-width: 600px;
-            margin: 20px auto 60px;
-            background: rgba(20, 30, 48, 0.95);
-            padding: 40px;
-            border-radius: 30px;
-            
-            /* 3D Shadow & Border */
-            box-shadow: 20px 20px 60px rgba(0,0,0,0.7), 
-                        -5px -5px 20px rgba(0, 255, 255, 0.1);
-            border-left: 1px solid rgba(255,255,255,0.2);
-            border-top: 1px solid rgba(255,255,255,0.2);
-            
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-        }
-
-        /* ሳጥኑ ላይ ማውሱን ሲያሳርፉ በትንሹ እንዲዞር */
-        .container:hover {
-            transform: rotateX(5deg) rotateY(-5deg);
-        }
-
-        .teacher-name {
-            font-size: 1.6rem;
-            color: #FFD700; /* ወርቃማ */
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-            display: block;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        label {
-            display: block;
-            margin-top: 20px;
-            font-weight: bold;
-            color: #00FFFF; 
-            font-size: 1rem;
-            transform: translateZ(20px); /* 3D Layering */
-        }
-
-        /* በሳጥን ውስጥ ያሉ ጽሑፎች - ውኃ አረንጓዴ */
-        input, select, textarea {
+        /* ስላይድሾው መያዣ */
+        .slideshow-container {
+            position: fixed;
             width: 100%;
-            padding: 15px;
-            margin-top: 8px;
-            border: none;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.08);
-            color: #7FFFD4; /* ውኃ አረንጓዴ */
-            font-size: 1.1rem;
-            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5); /* Inner 3D shadow */
-            box-sizing: border-box;
+            height: 100%;
+            z-index: -1;
         }
 
-        .result-display {
-            background: rgba(127, 255, 212, 0.1);
-            border: 2px solid #7FFFD4;
-            height: 70px;
-            margin-top: 15px;
-            border-radius: 15px;
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            filter: brightness(40%); /* ምስሉ ጽሑፉን እንዳይሸፍነው */
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* የይዘት መያዣ (Main Content) */
+        .overlay {
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            text-align: center;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        .admin-link {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #FFD700;
+            text-decoration: none;
+            border: 2px solid #FFD700;
+            padding: 10px 25px;
+            border-radius: 50px;
             font-weight: bold;
-            color: #7FFFD4;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn-3d {
-            background: linear-gradient(145deg, #00BFFF, #0080FF);
-            color: white;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 30px;
-            box-shadow: 0 8px 0 #0056b3, 0 15px 20px rgba(0,0,0,0.4); /* 3D Button look */
-            transition: all 0.2s ease;
-        }
-
-        .btn-3d:active {
-            box-shadow: 0 2px 0 #0056b3;
-            transform: translateY(6px);
-        }
-
-        /* ጋለሪ */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .gallery img {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
             transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
-        .gallery img:hover {
-            transform: scale(1.1) rotate(3deg);
-            z-index: 10;
+        .admin-link:hover {
+            background: #FFD700;
+            color: #000;
         }
+
+        /* የትምህርት ቤቱ ስም አኒሜሽን */
+        .school-name {
+            font-size: 5.5rem;
+            color: #00FFFF; /* ውኃ ሰማያዊ */
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .motto {
+            font-size: 1.8rem;
+            color: #FFD700; /* ወርቃማ */
+            margin-top: 10px;
+            letter-spacing: 4px;
+            font-weight: 300;
+            animation: fadeInUp 2s ease-out;
+        }
+
+        .btn-box {
+            display: flex;
+            gap: 20px;
+            margin-top: 50px;
+            animation: fadeIn 3s ease-in;
+        }
+
+        .action-btn {
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 15px;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .btn-blue {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00FFFF;
+            color: #00FFFF;
+        }
+
+        .btn-blue:hover {
+            background: #00FFFF;
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .btn-gold {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            color: #FFD700;
+        }
+
+        .btn-gold:hover {
+            background: #FFD700;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .teacher-footer {
+            position: absolute;
+            bottom: 30px;
+            color: #FFD700;
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
 
-    <header>
+    <div class="slideshow-container">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1470')"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1470')"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1504')"></div>
+    </div>
+
+    <div class="overlay">
+        <a href="#" class="admin-link">Home / Admin Login</a>
+
         <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="subtitle">የተማሪዎች ውጤት ማሳወቂያ</div>
-    </header>
+        <div class="motto">የጥበብና የልቀት ማዕከል</div>
 
-    <div class="container">
-        <span class="teacher-name">መምህር፦ ደለለኝ አጥላው</span>
+        <div class="btn-box">
+            <a href="#" class="action-btn btn-blue">ውጤት ለማየት</a>
+            <a href="#" class="action-btn btn-gold">ጋለሪ ለመመልከት</a>
+        </div>
 
-        <form>
-            <label>የተማሪው ሙሉ ስም፡</label>
-            <input type="text" placeholder="ስምዎን እዚህ ያስገቡ...">
-
-            <label>የትምህርት አይነት፡</label>
-            <input type="text" value="ኢንግሊዝኛ (English)" readonly>
-
-            <label>የክፍል ደረጃ ምርጫ፡</label>
-            <select>
-                <option>1A</option><option>1B</option><option>2A</option>
-                <option>2B</option><option>3A</option><option>4A</option>
-                <option>5A</option><option>6A</option>
-            </select>
-
-            <label>የፈተናው ድርሻ (ከ %):</label>
-            <select>
-                <option>10%</option><option>20%</option><option>40%</option><option>100%</option>
-            </select>
-
-            <button type="button" class="btn-3d">ውጤት መጠየቂያ</button>
-
-            <label>የውጤት ማሳያ ሳጥን፦</label>
-            <div class="result-display">-- / --</div>
-
-            <label>የመምህሩ አስተያየት፡</label>
-            <textarea placeholder="የመምህሩ ማስታወሻ..." readonly rows="2"></textarea>
-
-            <label>የወላጅ አስተያየት፡</label>
-            <textarea placeholder="አስተያየትዎን እዚህ ይፃፉ..." rows="2"></textarea>
-
-            <button type="submit" class="btn-3d" style="background: linear-gradient(145deg, #20B2AA, #008B8B); box-shadow: 0 8px 0 #006666;">የወላጅ አስተያየት ላክ</button>
-        </form>
+        <div class="teacher-footer">
+            መ/ር ደለለኝ አጥላው | 2018 ዓ.ም
+        </div>
     </div>
 
-    <div class="gallery">
-        <img src="https://via.placeholder.com/300x200?text=Campus" alt="Pic 1">
-        <img src="https://via.placeholder.com/300x200?text=Library" alt="Pic 2">
-        <img src="https://via.placeholder.com/300x200?text=Students" alt="Pic 3">
-    </div>
+    <script>
+        // ስላይድሾው የሚቀያይር ኮድ
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
 
-    <footer style="text-align: center; padding: 40px; color: #00FFFF; opacity: 0.6;">
-        &copy; 2026 ጣይቱ ብጡል አካዳሚ | መ/ር ደለለኝ አጥላው
-    </footer>
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // በየ 5 ሴኮንዱ ይቀይራል (5000ms)
+        setInterval(nextSlide, 5000);
+    </script>
 
 </body>
 </html>
