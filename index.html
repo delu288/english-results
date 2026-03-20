@@ -2,26 +2,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Student Result</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 
 </head>
 
 <body>
 
-<h2>Login / Signup</h2>
+<h2>Your Result</h2>
 
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-
-<button onclick="signup()">Signup</button>
-<button onclick="login()">Login</button>
+<p id="result"></p>
 
 <script>
 
-// 🔴 YOUR FIREBASE CONFIG
+// 🔴 SAME CONFIG HERE
 const firebaseConfig = {
   apiKey: "YOUR_KEY",
   authDomain: "YOUR_DOMAIN",
@@ -29,25 +26,42 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
+const db = firebase.firestore();
 
-// Signup
-function signup(){
-auth.createUserWithEmailAndPassword(
-    email.value, password.value
-).then(()=>{
-    alert("Signup success");
-});
+// Check login
+auth.onAuthStateChanged(user => {
+
+if(user){
+
+    // Get result from database
+    db.collection("results")
+    .where("email", "==", user.email)
+    .get()
+    .then(snapshot => {
+
+        let text = "";
+
+        snapshot.forEach(doc => {
+            let d = doc.data();
+
+            text += `
+            Score: ${d.score} <br>
+            Subject: ${d.subject} <br>
+            `;
+        });
+
+        document.getElementById("result").innerHTML = text;
+
+    });
+
+}else{
+    alert("Please login first");
+    window.location = "login.html";
 }
 
-// Login
-function login(){
-auth.signInWithEmailAndPassword(
-    email.value, password.value
-).then(()=>{
-    window.location = "result.html";
 });
-}
 
 </script>
 
