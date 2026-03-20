@@ -1,227 +1,55 @@
 <!DOCTYPE html>
-<html lang="am">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጣይቱ ብጡል አካዳሚ - የውጤት ማሳወቂያ</title>
-    <style>
-        /* ጠቅላላ ገጽታ */
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
-            background-size: cover;
-            color: #00FFFF; /* ውኃ ሰማያዊ ለጠቅላላ ጽሑፍ */
-        }
+<meta charset="UTF-8">
+<title>Login</title>
 
-        header {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            text-align: center;
-            border-bottom: 4px solid #FFD700;
-        }
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
 
-        /* የትምህርት ቤቱ ስም - በጣም ትልቅ ሰማያዊ */
-        .school-name {
-            font-size: 4rem;
-            color: #00BFFF; /* Deep Sky Blue */
-            font-weight: 900;
-            margin: 0;
-            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
-        }
-
-        /* የውጤት ማሳወቂያ - መካከለኛ ውኃ ሰማያዊ */
-        .subtitle {
-            font-size: 2rem;
-            color: #00FFFF; /* Aqua/ውኃ ሰማያዊ */
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        /* የመምህሩ ስም - ወርቃማ */
-        .teacher-name {
-            font-size: 1.6rem;
-            color: #FFD700; /* Gold */
-            font-weight: bold;
-            margin: 20px 0;
-            display: inline-block;
-            border: 2px solid #FFD700;
-            padding: 5px 20px;
-            border-radius: 30px;
-        }
-
-        .container {
-            max-width: 650px;
-            margin: 40px auto;
-            background: rgba(20, 30, 48, 0.9); /* ጠቆር ያለ ሳጥን */
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-        }
-
-        /* ከሳጥን ውጭ/ሌብል ያሉ ጽሑፎች - ውኃ ሰማያዊ */
-        label {
-            display: block;
-            margin-top: 20px;
-            font-weight: bold;
-            color: #00FFFF; 
-            font-size: 1.1rem;
-        }
-
-        /* በሳጥን ውስጥ ያሉ ጽሑፎች - ውኃ አረንጓዴ */
-        input, select, textarea {
-            width: 100%;
-            padding: 14px;
-            margin-top: 8px;
-            border: 2px solid #00FFFF;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            font-size: 1.1rem;
-            color: #7FFFD4; /* Aquamarine/ውኃ አረንጓዴ */
-            font-weight: bold;
-            box-sizing: border-box;
-        }
-
-        /* ውጤት ማሳያ ሳጥን - ውኃ አረንጓዴ */
-        .result-display {
-            background: rgba(127, 255, 212, 0.1);
-            border: 2px dashed #7FFFD4;
-            height: 65px;
-            margin-top: 15px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #7FFFD4; /* ውኃ አረንጓዴ */
-        }
-
-        .btn-action {
-            background: #00BFFF;
-            color: white;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 25px;
-            transition: 0.4s;
-        }
-
-        .btn-action:hover {
-            background: #00FFFF;
-            color: #000;
-            box-shadow: 0 0 20px #00FFFF;
-        }
-
-        .admin-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #FFD700;
-            text-decoration: none;
-            font-weight: bold;
-            border: 1px solid #FFD700;
-            padding: 5px 15px;
-            border-radius: 8px;
-        }
-
-        /* ጋለሪ */
-        .gallery-title {
-            text-align: center;
-            color: #00FFFF;
-            margin-top: 50px;
-        }
-
-        .gallery {
-            max-width: 900px;
-            margin: 20px auto;
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 20px;
-        }
-
-        .gallery img {
-            width: 220px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 15px;
-            border: 2px solid #00FFFF;
-        }
-
-        ::placeholder {
-            color: rgba(127, 255, 212, 0.5);
-        }
-    </style>
 </head>
+
 <body>
 
-    <a href="#" class="admin-link">Home / Admin Login</a>
+<h2>Login / Signup</h2>
 
-    <header>
-        <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="subtitle">የተማሪዎች ውጤት ማሳወቂያ</div>
-    </header>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
 
-    <div class="container">
-        <center><div class="teacher-name">መምህር፦ ደለለኝ አጥላው</div></center>
+<button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
 
-        <form>
-            <label>የተማሪው ሙሉ ስም፡</label>
-            <input type="text" placeholder="እዚህ ይፃፉ...">
+<script>
 
-            <label>የትምህርት አይነት፡</label>
-            <input type="text" value="ኢንግሊዝኛ (English)" readonly>
+// 🔴 YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_ID"
+};
 
-            <label>የክፍል ደረጃ ምርጫ፡</label>
-            <select>
-                <option value="">-- ክፍል ይምረጡ --</option>
-                <option value="1A">1A</option> <option value="1B">1B</option>
-                <option value="2A">2A</option> <option value="2B">2B</option>
-                <option value="3A">3A</option> <option value="4A">4A</option>
-                <option value="5A">5A</option> <option value="6A">6A</option>
-            </select>
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
-            <label>ፈተናው የሚይዘው ውጤት፡</label>
-            <select>
-                <option value="10">ከ 10%</option>
-                <option value="20">ከ 20%</option>
-                <option value="40">ከ 40%</option>
-                <option value="100">ከ 100%</option>
-            </select>
+// Signup
+function signup(){
+auth.createUserWithEmailAndPassword(
+    email.value, password.value
+).then(()=>{
+    alert("Signup success");
+});
+}
 
-            <button type="button" class="btn-action">ውጤት መጠየቂያ</button>
+// Login
+function login(){
+auth.signInWithEmailAndPassword(
+    email.value, password.value
+).then(()=>{
+    window.location = "result.html";
+});
+}
 
-            <label>የውጤት ማሳያ ሳጥን፦</label>
-            <div class="result-display">ውጤት እዚህ ይታያል</div>
-
-            <label>የመምህሩ አስተያየት፡</label>
-            <textarea placeholder="የመምህሩ ማስታወሻ..." readonly rows="2"></textarea>
-
-            <label>የወላጅ አስተያየት፡</label>
-            <textarea placeholder="አስተያየትዎን እዚህ ይፃፉ..." rows="2"></textarea>
-
-            <button type="submit" class="btn-action" style="background: #20B2AA;">የወላጅ አስተያየት ላክ</button>
-        </form>
-    </div>
-
-    <h3 class="gallery-title">የተቋሙ ምስሎች (Gallery)</h3>
-    <div class="gallery">
-        <img src="https://via.placeholder.com/220x160/00FFFF/000000?text=Campus+View" alt="Gallery 1">
-        <img src="https://via.placeholder.com/220x160/00FFFF/000000?text=Students" alt="Gallery 2">
-        <img src="https://via.placeholder.com/220x160/00FFFF/000000?text=Classroom" alt="Gallery 3">
-        <img src="https://via.placeholder.com/220x160/00FFFF/000000?text=Library" alt="Gallery 4">
-    </div>
-
-    <footer style="text-align: center; padding: 40px; color: #00FFFF; opacity: 0.7;">
-        &copy; 2026 ጣይቱ ብጡል አካዳሚ | መ/ር ደለለኝ አጥላው
-    </footer>
+</script>
 
 </body>
 </html>
