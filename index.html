@@ -10,9 +10,7 @@
             --primary-blue: #00BFFF;
             --gold: #FFD700;
             --dark-blue: #003366;
-            --text-color: #ffffff;
-            --box-bg: rgba(255, 255, 255, 0.95);
-            --thick-border: 6px solid #003366;
+            --box-bg: rgba(255, 255, 255, 0.97);
         }
 
         body {
@@ -22,145 +20,80 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
-            transition: background 0.5s ease;
+            transition: 0.5s;
         }
 
-        /* Top Corner Buttons */
-        .nav-header {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 15px;
-        }
-
+        /* Top Corner Navigation */
+        .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
-            background: var(--gold);
-            color: var(--dark-blue);
-            border: 3px solid var(--dark-blue);
-            padding: 10px 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            background: var(--gold); color: var(--dark-blue);
+            border: 2px solid var(--dark-blue); padding: 6px 15px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85rem;
         }
 
-        /* Header - 3D & Contrast */
+        /* Header */
         .main-header {
-            text-align: center;
-            padding: 50px 20px;
-            background: rgba(0, 51, 102, 0.85);
-            border-bottom: var(--thick-border);
-            color: white;
+            text-align: center; padding: 25px 10px;
+            background: rgba(0, 51, 102, 0.9); border-bottom: 5px solid var(--dark-blue); color: white;
         }
+        .school-title { font-size: 2.8rem; color: var(--primary-blue); text-shadow: 2px 2px 0px #000; margin: 0; }
+        .sub-header { font-size: 1.4rem; margin-top: 8px; }
+        .teacher-name { color: var(--gold); }
+        .eng-name { color: #ff5722; font-weight: bold; margin-left: 10px; border-left: 2px solid white; padding-left: 10px; }
 
-        .school-title {
-            font-size: 4.5rem;
-            color: var(--primary-blue);
-            text-shadow: 4px 4px 0px #000, 6px 6px 15px rgba(0,0,0,0.5);
-            margin: 0;
-            font-weight: 900;
-        }
-
-        .sub-title {
-            font-size: 2.2rem;
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .eng-tag { color: #ff5722; font-weight: bold; text-transform: uppercase; }
-        .teacher-tag { color: var(--gold); text-shadow: 1px 1px 2px #000; }
-
-        /* Main Container */
+        /* Compact Container */
         .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: var(--box-bg);
-            border: var(--thick-border);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            max-width: 780px; margin: 20px auto;
+            background: var(--box-bg); border: 4px solid var(--dark-blue);
+            border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .card {
-            border: 4px solid var(--dark-blue);
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            background: #fff;
-        }
+        .card { border: 2px solid var(--dark-blue); padding: 15px; border-radius: 12px; margin-bottom: 15px; background: #fff; }
+        h3, h4 { margin: 0 0 10px 0; color: var(--dark-blue); border-bottom: 2px solid var(--gold); }
 
-        h3 { color: var(--dark-blue); border-bottom: 3px solid var(--gold); padding-bottom: 10px; }
-
+        /* Inputs & Buttons */
+        .flex-row { display: flex; gap: 8px; flex-wrap: wrap; }
         input, select, textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 3px solid var(--primary-blue);
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            padding: 10px; border: 2px solid var(--primary-blue);
+            border-radius: 6px; font-size: 0.95rem; flex: 1; min-width: 130px;
+        }
+        textarea { width: 100%; min-height: 60px; box-sizing: border-box; }
+
+        .btn {
+            background: var(--dark-blue); color: white; padding: 12px;
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px;
         }
 
-        .action-btn {
-            background: var(--dark-blue);
-            color: white;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+        /* Action Grid */
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn-excel { background: #1d6f42; }
+        .btn-print { background: #007bff; }
+        .btn-share { background: #0088cc; }
 
-        .action-btn:hover { background: var(--primary-blue); transform: translateY(-3px); }
-
-        /* Gallery Grid */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .gallery img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border: 5px solid var(--gold);
-            border-radius: 15px;
-        }
+        /* Gallery */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .gallery img { width: 100%; height: 110px; object-fit: cover; border: 3px solid var(--gold); border-radius: 8px; }
 
         .hidden { display: none; }
-
-        /* Statistics Table */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
-        th, td { border: 3px solid var(--dark-blue); padding: 15px; text-align: center; font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px; }
+        th, td { border: 1px solid var(--dark-blue); padding: 8px; text-align: center; }
         th { background: var(--primary-blue); color: white; }
 
-        .print-area { margin-top: 20px; text-align: right; }
-        .print-btn { background: #e91e63; color: white; padding: 10px 25px; border-radius: 8px; border: none; cursor: pointer; }
-
-        @media print { .nav-header, .action-btn, .admin-only, .print-btn { display: none; } }
+        @media print { .nav-header, .btn, .no-print { display: none; } }
     </style>
 </head>
 <body id="mainBody">
 
     <div class="nav-header">
-        <button class="nav-btn" onclick="showPage('userPage')">የተማሪዎች ገፅ</button>
+        <button class="nav-btn" onclick="showPage('userPage')">የተማሪ ገፅ</button>
         <button class="nav-btn" onclick="showPage('adminPage')">የአድሚን ገፅ</button>
     </div>
 
     <div class="main-header">
         <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="sub-title">
-            <span class="eng-tag">English</span>
-            <span class="teacher-tag">መ/ር ደለለኝ አጥላው</span>
+        <div class="sub-header">
+            <span class="teacher-name">መ/ር ደለለኝ አጥላው</span>
+            <span class="eng-name">English</span>
         </div>
     </div>
 
@@ -168,201 +101,183 @@
         
         <div id="userPage">
             <div class="card">
-                <h3>የውጤት መጠየቂያ</h3>
-                <input type="text" id="uName" placeholder="ሙሉ ስምዎን እዚህ ይጻፉ...">
-                <select id="uGrade">
-                    <option value="">ክፍልዎን ይምረጡ</option>
-                    <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                    <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
-                </select>
-                <button class="action-btn" onclick="searchResult()">ውጤት መጠየቂያ</button>
+                <h3>ውጤት መጠየቂያ</h3>
+                <div class="flex-row">
+                    <input type="text" id="uName" placeholder="ሙሉ ስም ያስገቡ">
+                    <select id="uGrade">
+                        <option value="">ክፍል ይምረጡ</option>
+                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
+                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="searchResult()">ውጤት አሳይ</button>
             </div>
 
-            <div id="resDisplay" class="hidden card" style="background: #fffde7; border-color: var(--gold);">
+            <div id="resBox" class="hidden card" style="background: #fffde7;">
                 <div id="resText"></div>
             </div>
 
             <div class="card">
-                <h3>የወላጅ አስተያየት መስጫ</h3>
-                <textarea id="pComment" placeholder="ለአስተማሪው የሚልኩትን አስተያየት እዚህ ይጻፉ..."></textarea>
-                <button class="action-btn" style="background: #4caf50;" onclick="submitComment()">አስተያየት ላክ</button>
+                <h4>ለወላጅ አስተያየት መስጫ</h4>
+                <textarea id="pMsg" placeholder="አስተያየትዎን እዚህ ይጻፉ..."></textarea>
+                <button class="btn" style="background:#4caf50;" onclick="sendMsg()">አስተያየት ላክ</button>
             </div>
 
             <div class="card">
-                <h3>የትምህርት ቤቱ ጋለሪ</h3>
+                <h4>የትምህርት ቤቱ ጋለሪ</h4>
                 <div id="userGal" class="gallery"></div>
             </div>
         </div>
 
         <div id="adminPage" class="hidden">
-            <div id="adminLogin" class="card">
-                <h3>አድሚን መግቢያ</h3>
-                <input type="password" id="passCode" placeholder="የይለፍ ቃል ያስገቡ">
-                <button class="action-btn" onclick="checkAdmin()">ግባ</button>
+            <div id="adminLogin" class="card" style="text-align: center;">
+                <input type="password" id="pass" placeholder="ኮድ ያስገቡ" style="max-width: 150px;">
+                <button class="btn" onclick="login()" style="width: auto; padding: 8px 25px;">ግባ</button>
             </div>
 
             <div id="adminDash" class="hidden">
-                <div class="card admin-only">
-                    <h4>1. የጀርባ ምስል መጫኛ</h4>
-                    <input type="file" accept="image/*" onchange="changeBg(event)">
+                <div class="flex-row">
+                    <div class="card" style="flex: 1;">
+                        <h4>1. የጀርባ ምስል</h4>
+                        <input type="file" accept="image/*" onchange="setBg(event)">
+                    </div>
+                    <div class="card" style="flex: 1;">
+                        <h4>2. ተማሪ መረጃ (Excel)</h4>
+                        <input type="file" id="xlIn" accept=".xlsx, .xls">
+                    </div>
                 </div>
 
-                <div class="card admin-only">
-                    <h4>2. የተማሪዎች መረጃ (Excel)</h4>
-                    <input type="file" id="xlInput" accept=".xlsx, .xls">
-                    <p style="font-size: 0.9rem;">* Excel ውስጥ Name, Sex, Grade, Notebook, Quiz1, Quiz2, Mid, Final, Note ሊኖሩ ይገባል።</p>
-                </div>
-
-                <div class="card admin-only">
+                <div class="card">
                     <h4>3. ጋለሪ ማስተዳደሪያ</h4>
-                    <input type="file" accept="image/*" multiple onchange="addToGallery(event)">
+                    <input type="file" accept="image/*" multiple onchange="upGal(event)">
                 </div>
 
                 <div class="card">
                     <h4>4. የውጤት ትንተና</h4>
-                    <select id="statFilter" onchange="updateAnalysis()">
-                        <option value="all">የሁሉም ክፍሎች ትንተና</option>
+                    <select id="stFil" onchange="runStat()" style="max-width: 200px;">
+                        <option value="all">ሁሉም ክፍሎች</option>
                         <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
                         <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
                     </select>
                     <table id="statTable">
-                        <thead>
-                            <tr><th>ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr>
-                        </thead>
-                        <tbody id="statBody"></tbody>
+                        <thead><tr><th>ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr></thead>
+                        <tbody id="stBody"></tbody>
                     </table>
-                    <div class="print-area">
-                        <button class="print-btn" onclick="window.print()">ሪፖርቱን ፕሪንት አድርግ</button>
+                    <div class="action-grid no-print">
+                        <button class="btn btn-excel" onclick="downloadExcel()">Excel አውርድ</button>
+                        <button class="btn btn-print" onclick="window.print()">Print አዝዝ</button>
+                        <button class="btn btn-share" onclick="shareStat()">ወደ ሌላ ላክ</button>
                     </div>
                 </div>
 
                 <div class="card">
                     <h4>5. የወላጆች መልዕክት (Inbox)</h4>
-                    <div id="msgInbox"></div>
+                    <div id="inbox" style="font-size: 0.85rem; max-height: 150px; overflow-y: auto;"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Data Load from LocalStorage
-        let students = JSON.parse(localStorage.getItem('st_db')) || [];
-        let messages = JSON.parse(localStorage.getItem('msg_db')) || [];
-        let photos = JSON.parse(localStorage.getItem('gal_db')) || [];
-        let savedBg = localStorage.getItem('bg_db') || "";
+        // Data Load
+        let sts = JSON.parse(localStorage.getItem('st_db')) || [];
+        let msgs = JSON.parse(localStorage.getItem('ms_db')) || [];
+        let gals = JSON.parse(localStorage.getItem('ga_db')) || [];
+        let bg = localStorage.getItem('bg_db') || "";
 
-        if(savedBg) document.body.style.backgroundImage = `url(${savedBg})`;
+        if(bg) document.body.style.backgroundImage = `url(${bg})`;
 
         function showPage(p) {
             document.getElementById('userPage').classList.toggle('hidden', p !== 'userPage');
             document.getElementById('adminPage').classList.toggle('hidden', p !== 'adminPage');
-            if(p === 'userPage') renderGallery();
+            if(p === 'userPage') drawGal();
         }
 
-        function checkAdmin() {
-            if(document.getElementById('passCode').value === "taitu123") {
+        function login() {
+            if(document.getElementById('pass').value === "taitu123") {
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminDash').classList.remove('hidden');
-                updateAnalysis();
-                renderInbox();
-            } else { alert("የተሳሳተ የይለፍ ቃል!"); }
+                runStat(); drawInbox();
+            } else { alert("ኮድ ተሳስቷል!"); }
         }
 
-        function changeBg(e) {
+        function setBg(e) {
             let r = new FileReader();
-            r.onload = (ev) => {
-                savedBg = ev.target.result;
-                localStorage.setItem('bg_db', savedBg);
-                document.body.style.backgroundImage = `url(${savedBg})`;
-            };
+            r.onload = (ev) => { bg = ev.target.result; localStorage.setItem('bg_db', bg); document.body.style.backgroundImage = `url(${bg})`; };
             r.readAsDataURL(e.target.files[0]);
         }
 
-        document.getElementById('xlInput').addEventListener('change', function(e) {
+        document.getElementById('xlIn').addEventListener('change', function(e) {
             let r = new FileReader();
             r.onload = (ev) => {
-                let data = new Uint8Array(ev.target.result);
-                let wb = XLSX.read(data, {type: 'array'});
+                let d = new Uint8Array(ev.target.result);
+                let wb = XLSX.read(d, {type:'array'});
                 let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                students = rows.map(r => ({
-                    name: r.Name || r.ስም, sex: r.Sex || r.ጾታ, grade: r.Grade || r.ክፍል,
-                    total: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
-                    note: r.Note || r.አስተያየት
+                sts = rows.map(r => ({
+                    n: r.Name || r.ስም, s: r.Sex || r.ጾታ, g: r.Grade || r.ክፍል,
+                    t: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
+                    nt: r.Note || r.አስተያየት
                 }));
-                localStorage.setItem('st_db', JSON.stringify(students));
-                alert("መረጃው ተጭኗል!");
-                updateAnalysis();
+                localStorage.setItem('st_db', JSON.stringify(sts));
+                alert("ተማሪዎች ተጭነዋል!"); runStat();
             };
             r.readAsArrayBuffer(e.target.files[0]);
         });
 
         function searchResult() {
-            let name = document.getElementById('uName').value.trim();
-            let grade = document.getElementById('uGrade').value;
-            let found = students.find(s => s.name.toLowerCase() === name.toLowerCase() && s.grade === grade);
-            let display = document.getElementById('resDisplay');
-            if(found) {
-                display.classList.remove('hidden');
-                document.getElementById('resText').innerHTML = `
-                    <h2 style="color:var(--dark-blue)">የውጤት ማሳያ</h2>
-                    <p><b>ስም፡</b> ${found.name} | <b>ክፍል፡</b> ${found.grade}</p>
-                    <p style="font-size:1.5rem"><b>ጠቅላላ ውጤት፡</b> <span style="color:green">${found.total}%</span></p>
-                    <p><b>የመምህሩ አስተያየት፡</b> ${found.note}</p>
-                `;
-            } else { alert("መረጃው አልተገኘም! እባክዎ ስም እና ክፍል በትክክል መሙላትዎን ያረጋግጡ።"); }
+            let n = document.getElementById('uName').value.trim();
+            let g = document.getElementById('uGrade').value;
+            let f = sts.find(s => s.n && s.n.toLowerCase() === n.toLowerCase() && s.g === g);
+            if(f) {
+                document.getElementById('resBox').classList.remove('hidden');
+                document.getElementById('resText').innerHTML = `<b>ተማሪ:</b> ${f.n} <br> <b>ድምር ውጤት:</b> ${f.t}% <br> <b>መምህር አስተያየት:</b> ${f.nt}`;
+            } else { alert("አልተገኘም!"); }
         }
 
-        function submitComment() {
-            let m = document.getElementById('pComment').value;
-            let n = document.getElementById('uName').value || "ያልታወቀ ወላጅ";
-            messages.push({name: n, text: m, time: new Date().toLocaleString()});
-            localStorage.setItem('msg_db', JSON.stringify(messages));
-            alert("አስተያየትዎ ለመምህሩ ተልኳል!");
-            document.getElementById('pComment').value = "";
+        function sendMsg() {
+            msgs.push({n: document.getElementById('uName').value || "ወላጅ", m: document.getElementById('pMsg').value, d: new Date().toLocaleDateString()});
+            localStorage.setItem('ms_db', JSON.stringify(msgs));
+            alert("አስተያየቱ ተልኳል!"); document.getElementById('pMsg').value = "";
         }
 
-        function updateAnalysis() {
-            let filter = document.getElementById('statFilter').value;
-            let data = filter === 'all' ? students : students.filter(s => s.grade === filter);
-            let ranges = [
-                {l: "ከ 50% በታች", min: 0, max: 49.9},
-                {l: "50% - 74%", min: 50, max: 74.9},
-                {l: "75% - 84%", min: 75, max: 84.9},
-                {l: "85% - 100%", min: 85, max: 100}
-            ];
-            document.getElementById('statBody').innerHTML = ranges.map(r => {
-                let m = data.filter(s => s.sex==='M' && s.total >= r.min && s.total <= r.max).length;
-                let f = data.filter(s => s.sex==='F' && s.total >= r.min && s.total <= r.max).length;
+        function runStat() {
+            let fil = document.getElementById('stFil').value;
+            let d = fil === 'all' ? sts : sts.filter(s => s.g === fil);
+            let rs = [{l:"< 50", n:0, x:49.9},{l:"50-74", n:50, x:74.9},{l:"75-84", n:75, x:84.9},{l:"85-100", n:85, x:100}];
+            document.getElementById('stBody').innerHTML = rs.map(r => {
+                let m = d.filter(s => s.s==='M' && s.t >= r.n && s.t <= r.x).length;
+                let f = d.filter(s => s.s==='F' && s.t >= r.n && s.t <= r.x).length;
                 return `<tr><td>${r.l}</td><td>${m}</td><td>${f}</td><td>${m+f}</td></tr>`;
             }).join('');
         }
 
-        function addToGallery(e) {
+        function downloadExcel() {
+            let wb = XLSX.utils.table_to_book(document.getElementById("statTable"));
+            XLSX.writeFile(wb, "Taitu_Academy_Analysis.xlsx");
+        }
+
+        function shareStat() {
+            let f = document.getElementById('stFil').value;
+            let msg = `📊 ጣይቱ ብጡል አካዳሚ - ትንተና (${f})\n`;
+            document.querySelectorAll("#stBody tr").forEach(r => {
+                let c = r.querySelectorAll("td");
+                msg += `🔹 ${c[0].innerText}: ወ=${c[1].innerText}, ሴ=${c[2].innerText}, ድ=${c[3].innerText}\n`;
+            });
+            navigator.clipboard.writeText(msg);
+            alert("መረጃው ተገልብጧል (Copied)! አሁን Telegram ላይ መላክ ይችላሉ።");
+        }
+
+        function upGal(e) {
             for(let f of e.target.files) {
                 let r = new FileReader();
-                r.onload = (ev) => {
-                    photos.push(ev.target.result);
-                    localStorage.setItem('gal_db', JSON.stringify(photos));
-                    renderGallery();
-                };
+                r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('ga_db', JSON.stringify(gals)); drawGal(); };
                 r.readAsDataURL(f);
             }
         }
 
-        function renderGallery() {
-            document.getElementById('userGal').innerHTML = photos.map(src => `<img src="${src}">`).join('');
-        }
-
-        function renderInbox() {
-            document.getElementById('msgInbox').innerHTML = messages.map(m => `
-                <div style="border-bottom:1px solid #ddd; padding:10px;">
-                    <b>ከ ${m.name} (${m.time})</b><br>${m.text}
-                </div>
-            `).reverse().join('');
-        }
-
-        // Initial Gallery Load
-        renderGallery();
+        function drawGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}">`).join(''); }
+        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<p><b>${m.n}:</b> ${m.m}</p>`).reverse().join(''); }
+        drawGal();
     </script>
 </body>
 </html>
