@@ -7,77 +7,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            --primary-blue: #00BFFF;
-            --gold: #FFD700;
-            --dark-blue: #003366;
-            --box-bg: rgba(255, 255, 255, 0.97);
+            --primary: #00BFFF; --gold: #FFD700; --dark: #003366;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background-color: #e0f2f1;
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            transition: 0.5s;
+            font-family: 'Segoe UI', sans-serif; margin: 0;
+            background-color: #f0f0f0; background-size: cover;
+            background-attachment: fixed; background-position: center;
         }
 
-        /* Top Corner Navigation */
+        /* Navigation */
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
-            background: var(--gold); color: var(--dark-blue);
-            border: 2px solid var(--dark-blue); padding: 6px 15px;
-            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85rem;
+            background: var(--gold); color: var(--dark); border: 2px solid var(--dark);
+            padding: 5px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem;
         }
 
         /* Header */
         .main-header {
-            text-align: center; padding: 25px 10px;
-            background: rgba(0, 51, 102, 0.9); border-bottom: 5px solid var(--dark-blue); color: white;
+            text-align: center; padding: 20px; background: rgba(0, 51, 102, 0.8);
+            color: white; border-bottom: 4px solid var(--gold);
         }
-        .school-title { font-size: 2.8rem; color: var(--primary-blue); text-shadow: 2px 2px 0px #000; margin: 0; }
-        .sub-header { font-size: 1.4rem; margin-top: 8px; }
-        .teacher-name { color: var(--gold); }
-        .eng-name { color: #ff5722; font-weight: bold; margin-left: 10px; border-left: 2px solid white; padding-left: 10px; }
+        .school-title { font-size: 2.2rem; color: var(--primary); margin: 0; text-shadow: 2px 2px #000; }
+        .sub-header { font-size: 1.2rem; margin-top: 5px; }
+        .eng-tag { color: #ff5722; font-weight: bold; margin-left: 10px; border-left: 2px solid #fff; padding-left: 10px; }
 
-        /* Compact Container */
+        /* Compact Rounded Container */
         .container {
-            max-width: 780px; margin: 20px auto;
-            background: var(--box-bg); border: 4px solid var(--dark-blue);
-            border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 800px; margin: 20px auto; padding: 15px;
         }
 
-        .card { border: 2px solid var(--dark-blue); padding: 15px; border-radius: 12px; margin-bottom: 15px; background: #fff; }
-        h3, h4 { margin: 0 0 10px 0; color: var(--dark-blue); border-bottom: 2px solid var(--gold); }
+        .card {
+            background: var(--glass); backdrop-filter: blur(5px);
+            border: 2px solid var(--dark); border-radius: 25px; /* ክብ እንዲሆን */
+            padding: 15px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
 
-        /* Inputs & Buttons */
+        h4 { margin: 0 0 10px 0; color: var(--dark); border-bottom: 2px solid var(--gold); font-size: 1rem; }
+
+        /* Small Inputs */
         .flex-row { display: flex; gap: 8px; flex-wrap: wrap; }
         input, select, textarea {
-            padding: 10px; border: 2px solid var(--primary-blue);
-            border-radius: 6px; font-size: 0.95rem; flex: 1; min-width: 130px;
+            padding: 8px; border: 2px solid var(--primary); border-radius: 12px;
+            font-size: 0.85rem; outline: none; background: white;
         }
-        textarea { width: 100%; min-height: 60px; box-sizing: border-box; }
+        input[type="file"] { font-size: 0.7rem; max-width: 180px; }
+        textarea { width: 100%; min-height: 45px; box-sizing: border-box; }
 
         .btn {
-            background: var(--dark-blue); color: white; padding: 12px;
-            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px;
+            background: var(--dark); color: white; padding: 8px; border: none;
+            border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9rem;
         }
 
-        /* Action Grid */
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .btn-excel { background: #1d6f42; }
-        .btn-print { background: #007bff; }
-        .btn-share { background: #0088cc; }
+        /* Action Buttons Grid */
+        .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-top: 10px; }
+        .btn-ex { background: #1d6f42; } .btn-pr { background: #007bff; } .btn-sh { background: #0088cc; }
 
         /* Gallery */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-        .gallery img { width: 100%; height: 110px; object-fit: cover; border: 3px solid var(--gold); border-radius: 8px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+        .gallery img { width: 100%; height: 80px; object-fit: cover; border: 2px solid var(--gold); border-radius: 15px; }
 
         .hidden { display: none; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px; }
-        th, td { border: 1px solid var(--dark-blue); padding: 8px; text-align: center; }
-        th { background: var(--primary-blue); color: white; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; background: white; border-radius: 10px; overflow: hidden; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
+        th { background: var(--dark); color: white; }
 
         @media print { .nav-header, .btn, .no-print { display: none; } }
     </style>
@@ -85,15 +79,14 @@
 <body id="mainBody">
 
     <div class="nav-header">
-        <button class="nav-btn" onclick="showPage('userPage')">የተማሪ ገፅ</button>
-        <button class="nav-btn" onclick="showPage('adminPage')">የአድሚን ገፅ</button>
+        <button class="nav-btn" onclick="showPage('userPage')">ተማሪ</button>
+        <button class="nav-btn" onclick="showPage('adminPage')">አድሚን</button>
     </div>
 
     <div class="main-header">
         <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
         <div class="sub-header">
-            <span class="teacher-name">መ/ር ደለለኝ አጥላው</span>
-            <span class="eng-name">English</span>
+            <span>መ/ር ደለለኝ አጥላው</span><span class="eng-tag">English</span>
         </div>
     </div>
 
@@ -101,96 +94,90 @@
         
         <div id="userPage">
             <div class="card">
-                <h3>ውጤት መጠየቂያ</h3>
+                <h4>የውጤት መጠየቂያ</h4>
                 <div class="flex-row">
-                    <input type="text" id="uName" placeholder="ሙሉ ስም ያስገቡ">
+                    <input type="text" id="uName" placeholder="ሙሉ ስም...">
                     <select id="uGrade">
-                        <option value="">ክፍል ይምረጡ</option>
+                        <option value="">ክፍል...</option>
                         <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
                         <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
                     </select>
+                    <button class="btn" style="flex: 0.5;" onclick="searchResult()">አሳይ</button>
                 </div>
-                <button class="btn" onclick="searchResult()">ውጤት አሳይ</button>
             </div>
 
-            <div id="resBox" class="hidden card" style="background: #fffde7;">
-                <div id="resText"></div>
-            </div>
-
-            <div class="card">
-                <h4>ለወላጅ አስተያየት መስጫ</h4>
-                <textarea id="pMsg" placeholder="አስተያየትዎን እዚህ ይጻፉ..."></textarea>
-                <button class="btn" style="background:#4caf50;" onclick="sendMsg()">አስተያየት ላክ</button>
+            <div id="resBox" class="hidden card" style="background: rgba(255, 255, 224, 0.9);">
+                <div id="resContent"></div>
             </div>
 
             <div class="card">
-                <h4>የትምህርት ቤቱ ጋለሪ</h4>
+                <h4>የወላጅ አስተያየት መስጫ</h4>
+                <textarea id="pMsg" placeholder="መልዕክትዎን እዚህ ይጻፉ..."></textarea>
+                <button class="btn" style="background:#4caf50; width: 100px; margin-top: 5px;" onclick="sendComment()">ላክ</button>
+            </div>
+
+            <div class="card">
+                <h4>ጋለሪ</h4>
                 <div id="userGal" class="gallery"></div>
             </div>
         </div>
 
         <div id="adminPage" class="hidden">
             <div id="adminLogin" class="card" style="text-align: center;">
-                <input type="password" id="pass" placeholder="ኮድ ያስገቡ" style="max-width: 150px;">
-                <button class="btn" onclick="login()" style="width: auto; padding: 8px 25px;">ግባ</button>
+                <input type="password" id="pass" placeholder="ኮድ" style="width: 100px;">
+                <button class="btn" onclick="login()" style="padding: 5px 15px;">ግባ</button>
             </div>
 
             <div id="adminDash" class="hidden">
-                <div class="flex-row">
-                    <div class="card" style="flex: 1;">
-                        <h4>1. የጀርባ ምስል</h4>
-                        <input type="file" accept="image/*" onchange="setBg(event)">
-                    </div>
-                    <div class="card" style="flex: 1;">
-                        <h4>2. ተማሪ መረጃ (Excel)</h4>
-                        <input type="file" id="xlIn" accept=".xlsx, .xls">
+                <div class="card">
+                    <h4>ፋይልና ምስል መጫኛ</h4>
+                    <div class="flex-row">
+                        <div><small>ጀርባ ምስል:</small><br><input type="file" accept="image/*" onchange="setBg(event)"></div>
+                        <div><small>Excel ፋይል:</small><br><input type="file" id="xlIn" accept=".xlsx, .xls"></div>
+                        <div><small>ጋለሪ ፎቶ:</small><br><input type="file" accept="image/*" multiple onchange="upGal(event)"></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h4>3. ጋለሪ ማስተዳደሪያ</h4>
-                    <input type="file" accept="image/*" multiple onchange="upGal(event)">
-                </div>
-
-                <div class="card">
-                    <h4>4. የውጤት ትንተና</h4>
-                    <select id="stFil" onchange="runStat()" style="max-width: 200px;">
+                    <h4>የውጤት ትንተና (%)</h4>
+                    <select id="stFil" onchange="runStat()" style="margin-bottom: 8px;">
                         <option value="all">ሁሉም ክፍሎች</option>
                         <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
                         <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
                     </select>
                     <table id="statTable">
-                        <thead><tr><th>ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr></thead>
+                        <thead>
+                            <tr><th>ደረጃ</th><th>ወንድ (%)</th><th>ሴት (%)</th><th>ድምር (%)</th></tr>
+                        </thead>
                         <tbody id="stBody"></tbody>
                     </table>
                     <div class="action-grid no-print">
-                        <button class="btn btn-excel" onclick="downloadExcel()">Excel አውርድ</button>
-                        <button class="btn btn-print" onclick="window.print()">Print አዝዝ</button>
-                        <button class="btn btn-share" onclick="shareStat()">ወደ ሌላ ላክ</button>
+                        <button class="btn btn-ex" onclick="dlExcel()">Excel አውርድ</button>
+                        <button class="btn btn-pr" onclick="window.print()">Print</button>
+                        <button class="btn btn-sh" onclick="shareReport()">Report ላክ</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h4>5. የወላጆች መልዕክት (Inbox)</h4>
-                    <div id="inbox" style="font-size: 0.85rem; max-height: 150px; overflow-y: auto;"></div>
+                    <h4>የወላጆች አስተያየት (Inbox)</h4>
+                    <div id="inbox" style="font-size: 0.8rem; max-height: 120px; overflow-y: auto;"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Data Load
-        let sts = JSON.parse(localStorage.getItem('st_db')) || [];
-        let msgs = JSON.parse(localStorage.getItem('ms_db')) || [];
-        let gals = JSON.parse(localStorage.getItem('ga_db')) || [];
-        let bg = localStorage.getItem('bg_db') || "";
+        let sts = JSON.parse(localStorage.getItem('db_s')) || [];
+        let msgs = JSON.parse(localStorage.getItem('db_m')) || [];
+        let gals = JSON.parse(localStorage.getItem('db_g')) || [];
+        let bg = localStorage.getItem('db_b') || "";
 
         if(bg) document.body.style.backgroundImage = `url(${bg})`;
 
         function showPage(p) {
-            document.getElementById('userPage').classList.toggle('hidden', p !== 'userPage');
-            document.getElementById('adminPage').classList.toggle('hidden', p !== 'adminPage');
-            if(p === 'userPage') drawGal();
+            document.getElementById('userPage').classList.toggle('hidden', p!=='userPage');
+            document.getElementById('adminPage').classList.toggle('hidden', p!=='adminPage');
+            if(p==='userPage') drawGal();
         }
 
         function login() {
@@ -198,12 +185,12 @@
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminDash').classList.remove('hidden');
                 runStat(); drawInbox();
-            } else { alert("ኮድ ተሳስቷል!"); }
+            }
         }
 
         function setBg(e) {
             let r = new FileReader();
-            r.onload = (ev) => { bg = ev.target.result; localStorage.setItem('bg_db', bg); document.body.style.backgroundImage = `url(${bg})`; };
+            r.onload = (ev) => { bg = ev.target.result; localStorage.setItem('db_b', bg); document.body.style.backgroundImage = `url(${bg})`; };
             r.readAsDataURL(e.target.files[0]);
         }
 
@@ -214,12 +201,12 @@
                 let wb = XLSX.read(d, {type:'array'});
                 let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
                 sts = rows.map(r => ({
-                    n: r.Name || r.ስም, s: r.Sex || r.ጾታ, g: r.Grade || r.ክፍል,
+                    n: r.Name || r.ስም, s: (r.Sex || r.ጾታ || "").toUpperCase(), g: r.Grade || r.ክፍል,
                     t: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
                     nt: r.Note || r.አስተያየት
                 }));
-                localStorage.setItem('st_db', JSON.stringify(sts));
-                alert("ተማሪዎች ተጭነዋል!"); runStat();
+                localStorage.setItem('db_s', JSON.stringify(sts));
+                alert("ዳታ ተጭኗል!"); runStat();
             };
             r.readAsArrayBuffer(e.target.files[0]);
         });
@@ -228,55 +215,65 @@
             let n = document.getElementById('uName').value.trim();
             let g = document.getElementById('uGrade').value;
             let f = sts.find(s => s.n && s.n.toLowerCase() === n.toLowerCase() && s.g === g);
+            let b = document.getElementById('resBox');
             if(f) {
-                document.getElementById('resBox').classList.remove('hidden');
-                document.getElementById('resText').innerHTML = `<b>ተማሪ:</b> ${f.n} <br> <b>ድምር ውጤት:</b> ${f.t}% <br> <b>መምህር አስተያየት:</b> ${f.nt}`;
+                b.classList.remove('hidden');
+                document.getElementById('resContent').innerHTML = `<b>ስም:</b> ${f.n} | <b>ውጤት:</b> ${f.t}% <br> <b>አስተያየት:</b> ${f.nt || "መልካም"}`;
             } else { alert("አልተገኘም!"); }
         }
 
-        function sendMsg() {
-            msgs.push({n: document.getElementById('uName').value || "ወላጅ", m: document.getElementById('pMsg').value, d: new Date().toLocaleDateString()});
-            localStorage.setItem('ms_db', JSON.stringify(msgs));
+        function sendComment() {
+            let m = document.getElementById('pMsg').value;
+            let n = document.getElementById('uName').value || "ያልታወቀ";
+            if(!m) return;
+            msgs.push({n, m, d: new Date().toLocaleDateString()});
+            localStorage.setItem('db_m', JSON.stringify(msgs));
             alert("አስተያየቱ ተልኳል!"); document.getElementById('pMsg').value = "";
         }
 
         function runStat() {
             let fil = document.getElementById('stFil').value;
             let d = fil === 'all' ? sts : sts.filter(s => s.g === fil);
-            let rs = [{l:"< 50", n:0, x:49.9},{l:"50-74", n:50, x:74.9},{l:"75-84", n:75, x:84.9},{l:"85-100", n:85, x:100}];
+            let totalD = d.length || 1;
+            let mTotal = d.filter(s => s.s === 'M' || s.s === 'ወ').length || 1;
+            let fTotal = d.filter(s => s.s === 'F' || s.s === 'ሴ').length || 1;
+
+            let rs = [{l:"<50", n:0, x:49.9},{l:"50-74", n:50, x:74.9},{l:"75-84", n:75, x:84.9},{l:"85-100", n:85, x:100}];
+            
             document.getElementById('stBody').innerHTML = rs.map(r => {
-                let m = d.filter(s => s.s==='M' && s.t >= r.n && s.t <= r.x).length;
-                let f = d.filter(s => s.s==='F' && s.t >= r.n && s.t <= r.x).length;
-                return `<tr><td>${r.l}</td><td>${m}</td><td>${f}</td><td>${m+f}</td></tr>`;
+                let m = d.filter(s => (s.s==='M'||s.s==='ወ') && s.t >= r.n && s.t <= r.x).length;
+                let f = d.filter(s => (s.s==='F'||s.s==='ሴ') && s.t >= r.n && s.t <= r.x).length;
+                let mPct = ((m/mTotal)*100).toFixed(1);
+                let fPct = ((f/fTotal)*100).toFixed(1);
+                let tPct = (((m+f)/totalD)*100).toFixed(1);
+                return `<tr><td>${r.l}</td><td>${m} (${mPct}%)</td><td>${f} (${fPct}%)</td><td>${m+f} (${tPct}%)</td></tr>`;
             }).join('');
         }
 
-        function downloadExcel() {
+        function dlExcel() {
             let wb = XLSX.utils.table_to_book(document.getElementById("statTable"));
-            XLSX.writeFile(wb, "Taitu_Academy_Analysis.xlsx");
+            XLSX.writeFile(wb, "Analysis.xlsx");
         }
 
-        function shareStat() {
-            let f = document.getElementById('stFil').value;
-            let msg = `📊 ጣይቱ ብጡል አካዳሚ - ትንተና (${f})\n`;
+        function shareReport() {
+            let msg = `📊 የውጤት ትንተና ሪፖርት\n`;
             document.querySelectorAll("#stBody tr").forEach(r => {
                 let c = r.querySelectorAll("td");
                 msg += `🔹 ${c[0].innerText}: ወ=${c[1].innerText}, ሴ=${c[2].innerText}, ድ=${c[3].innerText}\n`;
             });
-            navigator.clipboard.writeText(msg);
-            alert("መረጃው ተገልብጧል (Copied)! አሁን Telegram ላይ መላክ ይችላሉ።");
+            navigator.clipboard.writeText(msg); alert("ሪፖርቱ ኮፒ ተደርጓል!");
         }
 
         function upGal(e) {
             for(let f of e.target.files) {
                 let r = new FileReader();
-                r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('ga_db', JSON.stringify(gals)); drawGal(); };
+                r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('db_g', JSON.stringify(gals)); drawGal(); };
                 r.readAsDataURL(f);
             }
         }
 
         function drawGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}">`).join(''); }
-        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<p><b>${m.n}:</b> ${m.m}</p>`).reverse().join(''); }
+        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<p style="border-bottom:1px solid #ddd; padding:3px;"><b>${m.n}:</b> ${m.m}</p>`).reverse().join(''); }
         drawGal();
     </script>
 </body>
