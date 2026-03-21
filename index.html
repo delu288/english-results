@@ -8,22 +8,26 @@
     <style>
         :root {
             --primary: #00BFFF; --gold: #FFD700; --dark: #003366;
-            --glass: rgba(255, 255, 255, 0.92);
+            /* Watermark/Glass Effect */
+            --glass: rgba(255, 255, 255, 0.2); 
         }
 
         body {
             font-family: 'Segoe UI', sans-serif; margin: 0;
-            background-color: #f0f0f0; background-size: cover;
-            background-attachment: fixed; background-position: center;
+            background-color: #333; /* ምስል ካልተመረጠ የሚታይ */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
         }
 
-        /* 3D Header */
         .main-header {
-            text-align: center; padding: 25px; background: rgba(0, 51, 102, 0.85);
+            text-align: center; padding: 25px; 
+            background: rgba(0, 51, 102, 0.6); /* Header watermark */
             color: white; border-bottom: 5px solid var(--gold);
-            text-shadow: 2px 2px 4px #000;
+            backdrop-filter: blur(5px);
         }
-        .school-title { font-size: 2.5rem; color: var(--primary); margin: 0; }
+        .school-title { font-size: 2.5rem; color: var(--primary); margin: 0; text-shadow: 2px 2px 8px #000; }
+        .sub-header { font-size: 1.2rem; color: var(--gold); margin-top: 5px; font-weight: bold; }
 
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
@@ -31,41 +35,55 @@
             padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: bold;
         }
 
-        .container { max-width: 1150px; margin: 20px auto; padding: 10px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 10px; }
 
-        /* Mirror Card Effect */
+        /* Watermark Card Style */
         .card {
-            background: var(--glass); backdrop-filter: blur(10px);
-            border: 3px solid var(--dark); border-radius: 35px;
-            padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: var(--glass); 
+            backdrop-filter: blur(10px); /* ጀርባውን ትንሽ ያደበዝዛል */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3); /* ቀጭን ነጭ መስመር */
+            border-radius: 35px;
+            padding: 20px; margin-bottom: 20px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            color: white; /* ጽሑፉ በጨለማ ምስል ላይ እንዲታይ */
         }
+        
+        h3, h4 { color: var(--gold); text-shadow: 1px 1px 2px #000; }
 
-        /* Horizontal 4-Maezen Inputs */
         .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .flex-row > div, .flex-row input, .flex-row select { flex: 1; min-width: 150px; height: 40px; border-radius: 12px; border: 2px solid var(--primary); padding: 0 10px; box-sizing: border-box; }
-        .btn-sm { height: 40px; padding: 0 20px; border-radius: 12px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
+        .flex-row input, .flex-row select { 
+            flex: 1; min-width: 150px; height: 40px; border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.2); 
+            color: white; padding: 0 10px; 
+        }
+        ::placeholder { color: #ddd; }
 
-        /* Analysis Table - Exactly like your Image */
+        .btn-sm { height: 40px; padding: 0 20px; border-radius: 12px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
+        .btn-report { padding: 10px 20px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; margin-right: 10px; }
+
+        /* Analysis Table - Watermark Style */
         .table-wrapper { overflow-x: auto; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; background: white; border: 2px solid black; }
-        th, td { border: 1px solid black; padding: 5px; text-align: center; font-size: 11px; }
-        th { background: #eee; font-weight: bold; }
-        .res-box { background: #fffde7; border: 2px dashed var(--gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; height: 40px; min-width: 120px; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255, 255, 255, 0.1); border: 1px solid white; }
+        th, td { border: 1px solid rgba(255,255,255,0.3); padding: 4px; text-align: center; font-size: 11px; color: white; }
+        th { background: rgba(0, 0, 0, 0.4); font-weight: bold; }
+        
+        .res-box { background: rgba(255, 253, 231, 0.2); border: 2px dashed var(--gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; height: 40px; min-width: 120px; }
 
         .hidden { display: none; }
-        @media print { .no-print { display: none; } }
+        @media print { .no-print { display: none; } .card { background: white !important; color: black !important; border: 1px solid #000; } }
     </style>
 </head>
 <body>
 
-    <div class="nav-header">
+    <div class="nav-header no-print">
         <button class="nav-btn" onclick="showPage('userPage')">ተማሪ</button>
         <button class="nav-btn" onclick="showPage('adminPage')">አድሚን</button>
     </div>
 
     <div class="main-header">
         <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
-        <p>ኢንግሊዝኛ - መ/ር ደለለኝ አጥላው</p>
+        <div class="sub-header">መ/ር ደለለኝ አጥላው // Englizgna</div>
     </div>
 
     <div class="container">
@@ -96,17 +114,16 @@
 
             <div id="adminDash" class="hidden">
                 <div class="card no-print">
-                    <h4>መረጃ መጫኛ (4-Maezen)</h4>
+                    <h4>መረጃ መጫኛ</h4>
                     <div class="flex-row">
-                        <div><small>ጀርባ:</small><input type="file" onchange="setBg(event)"></div>
-                        <div><small>Excel:</small><input type="file" id="xlIn"></div>
-                        <div><small>ጋለሪ:</small><input type="file" multiple onchange="upGal(event)"></div>
-                        <button class="btn-sm" style="background: #007bff;" onclick="window.print()">Print Report</button>
+                        <div><small>ጀርባ ምስል:</small><input type="file" onchange="setBg(event)"></div>
+                        <div><small>Excel ፋይል:</small><input type="file" id="xlIn"></div>
+                        <div><small>ጋለሪ ፎቶ:</small><input type="file" multiple onchange="upGal(event)"></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 style="text-align: center;">የውጤት ትንተና</h3>
+                    <h3 style="text-align: center;">ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና</h3>
                     <div class="table-wrapper">
                         <table id="statTable">
                             <thead>
@@ -133,8 +150,16 @@
                             <tbody id="stBody"></tbody>
                         </table>
                     </div>
-                    <div style="margin-top: 15px;">
-                        <p><b>መ/ር ደለለኝ አጥላው</b><br>ፊርማ፡ ________________<br>ቀን፡ ________________</p>
+                    
+                    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p><b>መ/ር ደለለኝ አጥላው</b><br>ፊርማ፡ ________________<br>ቀን፡ ________________</p>
+                        </div>
+                        <div class="no-print">
+                            <button class="btn-report" style="background: #28a745;" onclick="saveReport()">Save Report</button>
+                            <button class="btn-report" style="background: #007bff;" onclick="window.print()">Print Report</button>
+                            <button class="btn-report" style="background: #17a2b8;" onclick="shareReport()">Share Report</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,7 +169,12 @@
     <script>
         let sts = JSON.parse(localStorage.getItem('db_s')) || [];
         let gals = JSON.parse(localStorage.getItem('db_g')) || [];
-        if(localStorage.getItem('db_b')) document.body.style.backgroundImage = `url(${localStorage.getItem('db_b')})`;
+        
+        function updateBg() {
+            let bg = localStorage.getItem('db_b');
+            if(bg) document.body.style.backgroundImage = `url(${bg})`;
+        }
+        updateBg();
 
         function showPage(p) {
             document.getElementById('userPage').classList.toggle('hidden', p!=='userPage');
@@ -198,18 +228,30 @@
             document.getElementById('stBody').innerHTML = h;
         }
 
+        function saveReport() {
+            let table = document.getElementById("statTable");
+            let wb = XLSX.utils.table_to_book(table);
+            XLSX.writeFile(wb, "Analysis_Report.xlsx");
+        }
+
+        function shareReport() {
+            let txt = "📊 ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና\n";
+            document.querySelectorAll("#stBody tr").forEach(r => { txt += r.innerText + "\n"; });
+            navigator.clipboard.writeText(txt); alert("ሪፖርቱ ኮፒ ተደርጓል!");
+        }
+
         function search() {
             let n = document.getElementById('uName').value.trim().toLowerCase();
             let g = document.getElementById('uGrade').value;
             let f = sts.find(s => s.n.toLowerCase() === n && s.g.includes(g));
             let b = document.getElementById('resBox');
-            if(f) { b.style.visibility = "visible"; b.innerText = f.t + "% - " + f.nt; }
+            if(f) { b.style.visibility = "visible"; b.innerHTML = `<span style="color:white">${f.t}% - ${f.nt}</span>`; }
             else { alert("አልተገኘም!"); }
         }
 
         function setBg(e) {
             let r = new FileReader();
-            r.onload = (ev) => { localStorage.setItem('db_b', ev.target.result); document.body.style.backgroundImage = `url(${ev.target.result})`; };
+            r.onload = (ev) => { localStorage.setItem('db_b', ev.target.result); updateBg(); };
             r.readAsDataURL(e.target.files[0]);
         }
 
@@ -221,7 +263,7 @@
             }
         }
 
-        function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:15px; border:2px solid var(--gold);">`).join(''); }
+        function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:15px; border:1px solid rgba(255,255,255,0.5);">`).join(''); }
         renderGal();
     </script>
 </body>
