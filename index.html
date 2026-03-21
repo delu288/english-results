@@ -1,317 +1,77 @@
-<!DOCTYPE html>
-<html lang="am">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eshet - ጣይቱ ብጡል አካዳሚ - English Result</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        :root {
-            --primary: #00BFFF; --gold: #FFD700; --dark: #003366; --white: #ffffff;
-            --main-font: 'Segoe UI', Arial, sans-serif;
-            --glass: rgba(255, 255, 255, 0.9); /* Mirror Effect - Transparent Body */
-        }
+<div class="card" style="overflow-x: auto;">
+    <h4 style="text-align: center;">ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና</h4>
+    <table id="statTable" style="border: 2px solid black; width: 100%; border-collapse: collapse; font-size: 11px;">
+        <thead>
+            <tr style="background: #f2f2f2;">
+                <th rowspan="2" style="border: 2px solid black; width: 50px;">ክፍል</th>
+                <th colspan="3" style="border: 2px solid black;">ጠቅላላ የተማሪ ብዛት</th>
+                <th colspan="3" style="border: 2px solid black;">ከ50% በታች</th>
+                <th colspan="3" style="border: 2px solid black;">አፈፃፀም በ%</th>
+                <th colspan="3" style="border: 2px solid black;">ከ50%-74%</th>
+                <th colspan="3" style="border: 2px solid black;">አፈፃፀም በ%</th>
+                <th colspan="3" style="border: 2px solid black;">75%-84%</th>
+                <th colspan="3" style="border: 2px solid black;">አፈፃፀም በ%</th>
+                <th colspan="3" style="border: 2px solid black;">85%-100%</th>
+                <th colspan="3" style="border: 2px solid black;">አፈፃፀም በ%</th>
+            </tr>
+            <tr style="background: #f9f9f9;">
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+                <th style="border: 1px solid black;">ወ</th><th style="border: 1px solid black;">ሴ</th><th style="border: 1px solid black;">ድ</th>
+            </tr>
+        </thead>
+        <tbody id="stBody">
+            </tbody>
+    </table>
 
-        body {
-            font-family: var(--main-font); margin: 0; padding: 0;
-            background-color: #f0f0f0; background-size: cover;
-            background-attachment: fixed; background-position: center;
-        }
-
-        /* Top Corner Navigation */
-        .nav-header { position: fixed; top: 15px; right: 15px; z-index: 1000; }
-        .nav-btn {
-            background: var(--gold); color: var(--dark); border: 1.5px solid var(--dark);
-            padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-        }
-
-        /* 3D Header Section */
-        .main-header {
-            text-align: center; padding: 30px; background: rgba(0, 51, 102, 0.85);
-            color: white; border-bottom: 5px solid var(--gold);
-            transform-style: preserve-3d;
-        }
-        .school-title {
-            font-size: 3rem; color: var(--primary); margin: 0;
-            text-shadow: 2px 2px 0px #fff, 4px 4px 0px #000;
-            transform: translateZ(20px);
-        }
-        .sub-header { font-size: 1.5rem; margin-top: 8px; font-weight: bold; transform: translateZ(10px); }
-        .teacher-name { color: var(--gold); }
-        .eng-tag { color: #ff5722; font-weight: bold; margin-left: 15px; border-left: 2px solid #fff; padding-left: 15px; }
-
-        /* Compact Mirror Container */
-        .container {
-            max-width: 900px; margin: 20px auto; padding: 15px;
-        }
-
-        /* Glass Card with thick rounded borders */
-        .card {
-            background: var(--glass); backdrop-filter: blur(8px);
-            border: 4px solid var(--dark); border-radius: 35px; /* Rounded Mirror Style */
-            padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            transform-style: preserve-3d;
-        }
-
-        h3, h4 { margin: 0 0 15px 0; color: var(--dark); border-bottom: 3px solid var(--gold); padding-bottom: 5px; transform: translateZ(10px); }
-
-        /* 3D Result Request Box */
-        .search-row {
-            display: flex; gap: 10px; align-items: center; justify-content: space-between;
-            transform: rotateX(10deg);
-        }
-        input, select, textarea {
-            padding: 10px; border: 2px solid var(--primary); border-radius: 15px;
-            font-size: 0.95rem; outline: none; background: white; flex: 1;
-        }
-        .btn-show {
-            background: var(--dark); color: white; padding: 10px 20px; border: none;
-            border-radius: 15px; font-weight: bold; cursor: pointer; transform: translateZ(15px);
-        }
-
-        /* Horizontal Admin Layout - 4 Maezen */
-        .admin-flex {
-            display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap;
-        }
-        .admin-flex > div { flex: 1; min-width: 150px; text-align: left; }
-        .admin-flex small { font-size: 0.8rem; color: var(--dark); font-weight: bold; display: block; margin-bottom: 3px; }
-        input[type="file"] { font-size: 0.75rem; background: #fff; width: 100%; border: 1.5px solid #ccc; }
-
-        /* Inbox Style */
-        .inbox-area { max-height: 150px; overflow-y: auto; font-size: 0.9rem; background: rgba(240, 248, 255, 0.7); padding: 5px; border-radius: 10px; }
-        .inbox-msg { border-bottom: 1px solid #ddd; padding: 5px; }
-
-        /* Table Style */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 15px; overflow: hidden; font-size: 0.8rem; }
-        th, td { border: 1.5px solid #ddd; padding: 10px; text-align: center; }
-        th { background: var(--primary); color: white; }
-        .pct { color: #d32f2f; font-weight: bold; }
-
-        /* Action Grid */
-        .action-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-top: 10px; }
-        .btn-sm { padding: 8px 15px; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
-
-        .hidden { display: none; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-        .gallery-item { width: 100%; height: 100px; object-fit: cover; border: 3px solid var(--gold); border-radius: 15px; }
-
-        @media print { .nav-header, .action-btns, button { display: none; } }
-    </style>
-</head>
-<body id="mainBody">
-
-    <div class="nav-header">
-        <button class="nav-btn" onclick="showPage('userPage')">የተማሪ ገፅ</button>
-        <button class="nav-btn" onclick="showPage('adminPage')">የአድሚን ገፅ</button>
+    <div style="margin-top: 20px; font-weight: bold; font-size: 14px;">
+        <p>መ/ር ደለለኝ አጥላው</p>
+        <p>ፊርማ፡ ___________________</p>
+        <p>ቀን፡ _____________________</p>
     </div>
+</div>
 
-    <div class="main-header">
-        <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="sub-header">
-            <span class="teacher-name">መ/ር ደለለኝ አጥላው</span><span class="eng-tag">English</span>
-        </div>
-    </div>
+<script>
+function runStat() {
+    const grades = ["1A", "1B", "2A", "2B", "3A", "4A", "5A", "6A"];
+    const ranges = [
+        { min: 0, max: 49.9 },
+        { min: 50, max: 74.9 },
+        { min: 75, max: 84.9 },
+        { min: 85, max: 100 }
+    ];
 
-    <div class="container">
+    let html = "";
+    grades.forEach(g => {
+        let d = sts.filter(s => s.g === g || s.g === g.replace('A','ኛ ሀ').replace('B','ኛ ለ'));
         
-        <div id="userPage">
-            <div class="card">
-                <h4>የተማሪ ውጤት መጠየቂያ</h4>
-                <div class="flex-row search-row">
-                    <input type="text" id="uName" placeholder="ሙሉ ስምዎን እዚህ ይፃፉ..." style="flex: 2;">
-                    <select id="uGrade">
-                        <option value="">ክፍል...</option>
-                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
-                    </select>
-                    <button class="btn-show" onclick="searchResult()">አሳይ</button>
-                </div>
-            </div>
+        let mT = d.filter(s => s.s.startsWith('M') || s.s.startsWith('ወ')).length;
+        let fT = d.filter(s => s.s.startsWith('F') || s.s.startsWith('ሴ')).length;
+        let dT = mT + fT;
 
-            <div id="resBox" class="hidden card" style="background: rgba(255, 255, 224, 0.95);">
-                <div id="resText"></div>
-            </div>
+        html += `<tr><td style="border: 2px solid black; font-weight:bold;">${g}</td>
+                 <td style="border: 1px solid black;">${mT}</td><td style="border: 1px solid black;">${fT}</td><td style="border: 1px solid black;">${dT}</td>`;
 
-            <div class="card">
-                <h4>ለወላጅ አስተያየት መስጫ</h4>
-                <textarea id="pMsg" placeholder="አስተያየትዎን እዚህ ይጻፉ..." style="width: 100%; border-radius: 15px; padding: 10px; border: 2px solid var(--primary); min-height: 70px;"></textarea>
-                <button class="btn-show" style="background: #4caf50; margin-top: 10px; width: 120px;" onclick="sendMsg()">አስተያየት ላክ</button>
-            </div>
-
-            <div class="card">
-                <h4>የትምህርት ቤቱ ጋለሪ</h4>
-                <div id="userGal" class="gallery-grid"></div>
-            </div>
-        </div>
-
-        <div id="adminPage" class="hidden">
-            <div id="adminLogin" class="card" style="text-align: center;">
-                <input type="password" id="pass" placeholder="አድሚን ኮድ" style="padding: 10px; border-radius: 10px; width: 150px;">
-                <button class="btn-show" onclick="login()" style="width: 80px;">ግባ</button>
-            </div>
-
-            <div id="adminDash" class="hidden">
-                <div class="card">
-                    <h4>መረጃ ማስተዳደሪያ</h4>
-                    <div class="admin-flex">
-                        <div><small>የጀርባ ምስል:</small><input type="file" accept="image/*" onchange="setBg(event)"></div>
-                        <div><small>Excel ፋይል:</small><input type="file" id="xlIn" accept=".xlsx, .xls"></div>
-                        <div><small>ጋለሪ ፎቶ:</small><input type="file" accept="image/*" multiple onchange="upGal(event)"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h4>የውጤት ትንተና (%)</h4>
-                    <select id="stFil" onchange="runStat()" style="margin-bottom: 10px; border-radius: 10px;">
-                        <option value="all">የሁሉም ክፍሎች ትንተና</option>
-                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
-                    </select>
-                    <table id="statTable">
-                        <thead><tr><th>የውጤት ክልል</th><th>ወንድ (M)</th><th>ሴት (F)</th><th>ድምር</th></tr></thead>
-                        <tbody id="stBody"></tbody>
-                    </table>
-                    <div class="action-btns no-print">
-                        <button class="btn-sm" style="background: #1d6f42;" onclick="downloadExcel()">Excel አውርድ</button>
-                        <button class="btn-sm" style="background: #007bff;" onclick="window.print()">Print</button>
-                        <button class="btn-sm" style="background: #0088cc;" onclick="shareReport()">Report ላክ</button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h4>InBox (ከወላጆች)</h4>
-                    <div id="msgInbox" class="inbox-area"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Data Load
-        let sts = JSON.parse(localStorage.getItem('db_s')) || [];
-        let msgs = JSON.parse(localStorage.getItem('db_m')) || [];
-        let gals = JSON.parse(localStorage.getItem('db_g')) || [];
-        let bg = localStorage.getItem('db_b') || "";
-
-        if(bg) document.body.style.backgroundImage = `url(${bg})`;
-
-        function showPage(p) {
-            document.getElementById('userPage').classList.toggle('hidden', p !== 'userPage');
-            document.getElementById('adminPage').classList.toggle('hidden', p !== 'adminPage');
-            if(p === 'userPage') renderGallery();
-        }
-
-        function login() {
-            if(document.getElementById('pass').value === "Eshet21d") {
-                document.getElementById('adminLogin').classList.add('hidden');
-                document.getElementById('adminDash').classList.remove('hidden');
-                runStat(); renderInbox(); renderGallery();
-            } else { alert("የተሳሳተ ኮድ!"); }
-        }
-
-        function setBg(e) {
-            let r = new FileReader();
-            r.onload = (ev) => { bg = ev.target.result; localStorage.setItem('db_b', bg); document.body.style.backgroundImage = `url(${bg})`; };
-            r.readAsDataURL(e.target.files[0]);
-        }
-
-        document.getElementById('xlIn').addEventListener('change', function(e) {
-            let reader = new FileReader();
-            reader.onload = (ev) => {
-                let data = new Uint8Array(ev.target.result);
-                let wb = XLSX.read(data, {type:'array'});
-                let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                sts = rows.map(r => ({
-                    n: r.Name || r.ስም, s: (r.Sex || r.ጾታ || "").toUpperCase(), g: r.Grade || r.ክፍል,
-                    t: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
-                    nt: r.Note || r.አስተያየት
-                }));
-                localStorage.setItem('db_s', JSON.stringify(sts));
-                alert("መረጃው ተጭኗል!"); runStat();
-            };
-            reader.readAsArrayBuffer(e.target.files[0]);
+        ranges.forEach(r => {
+            let mw = d.filter(s => (s.s.startsWith('M')||s.s.startsWith('ወ')) && s.t >= r.min && s.t <= r.max).length;
+            let ms = d.filter(s => (s.s.startsWith('F')||s.s.startsWith('ሴ')) && s.t >= r.min && s.t <= r.max).length;
+            let md = mw + ms;
+            
+            // ቁጥር
+            html += `<td style="border: 1px solid black;">${mw}</td><td style="border: 1px solid black;">${ms}</td><td style="border: 1px solid black;">${md}</td>`;
+            // ፐርሰንት (%)
+            html += `<td style="border: 1px solid black;">${mT?((mw/mT)*100).toFixed(0):0}%</td>
+                     <td style="border: 1px solid black;">${fT?((ms/fT)*100).toFixed(0):0}%</td>
+                     <td style="border: 1px solid black;">${dT?((md/dT)*100).toFixed(0):0}%</td>`;
         });
-
-        function searchResult() {
-            let n = document.getElementById('uName').value.trim();
-            let g = document.getElementById('uGrade').value;
-            let f = sts.find(s => s.n && s.n.toLowerCase() === n.toLowerCase() && s.g === g);
-            let b = document.getElementById('resBox');
-            if(f) {
-                b.classList.remove('hidden');
-                document.getElementById('resText').innerHTML = `
-                    <h2 style="color:var(--dark); margin:0;">${f.n}</h2>
-                    <p><b>ክፍል:</b> ${f.g} | <b>ጠቅላላ ውጤት:</b> <span style="color:green; font-weight:bold; font-size:1.5rem;">${f.t}%</span></p>
-                    <p><b>አስተያየት:</b> ${f.nt || "መልካም ውጤት ነው!"}</p>
-                `;
-            } else { alert("አልተገኘም!"); b.classList.add('hidden'); }
-        }
-
-        function sendMsg() {
-            let m = document.getElementById('pMsg').value;
-            let n = document.getElementById('uName').value || "ያልታወቀ ወላጅ";
-            if(!m) return;
-            msgs.push({n, m, d: new Date().toLocaleDateString()});
-            localStorage.setItem('db_m', JSON.stringify(msgs));
-            alert("ተልኳል!"); document.getElementById('pMsg').value = "";
-        }
-
-        function runStat() {
-            let fil = document.getElementById('stFil').value;
-            let d = fil === 'all' ? sts : sts.filter(s => s.g === fil);
-            
-            let tD = d.length || 1;
-            let mT = d.filter(s => s.s.startsWith('M') || s.s.startsWith('ወ')).length || 1;
-            let fT = d.filter(s => s.s.startsWith('F') || s.s.startsWith('ሴ')).length || 1;
-
-            let ranges = [{l:"ከ 50% በታች", min: 0, max: 49.9},{l:"50% - 74%", min: 50, max: 74.9},{l:"75% - 84%", min: 75, max: 84.9},{l:"85% - 100%", min: 85, max: 100}];
-            
-            document.getElementById('stBody').innerHTML = ranges.map(r => {
-                let m = d.filter(s => (s.s.startsWith('M')||s.s.startsWith('ወ')) && s.t >= r.min && s.t <= r.max).length;
-                let f = d.filter(s => (s.s.startsWith('F')||s.s.startsWith('ሴ')) && s.t >= r.min && s.t <= r.max).length;
-                let t = m + f;
-                return `<tr><td><b>${r.l}</b></td>
-                    <td>${m} <span class="pct">(${((m/mT)*100).toFixed(1)}%)</span></td>
-                    <td>${f} <span class="pct">(${((f/fT)*100).toFixed(1)}%)</span></td>
-                    <td><b>${t}</b> <span class="pct" style="color:#2e7d32">(${((t/tD)*100).toFixed(1)}%)</span></td></tr>`;
-            }).join('');
-        }
-
-        function downloadExcel() {
-            let table = document.getElementById("statTable");
-            let wb = XLSX.utils.table_to_book(table, {sheet: "የውጤት ትንተና"});
-            XLSX.writeFile(wb, " Student_Analysis_Taitu_Academy.xlsx");
-        }
-
-        function shareReport() {
-            let msg = `📊 ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና\n`;
-            document.querySelectorAll("#stBody tr").forEach(r => {
-                let c = r.querySelectorAll("td");
-                msg += `📍 ${c[0].innerText}: ወ=${c[1].innerText.split('(')[0]}, ሴ=${c[2].innerText.split('(')[0]}, ድ=${c[3].innerText.split('(')[0]}\n`;
-            });
-            navigator.clipboard.writeText(msg); alert("ሪፖርቱ ኮፒ ተደርጓል!");
-        }
-
-        function upGal(e) {
-            for(let file of e.target.files) {
-                let r = new FileReader();
-                r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('db_g', JSON.stringify(gals)); renderGallery(); };
-                r.readAsDataURL(file);
-            }
-        }
-
-        function renderGallery() {
-            const h = gals.map(src => `<img src="${src}" class="gallery-item">`).join('');
-            document.getElementById('userGal').innerHTML = h;
-        }
-
-        function renderInbox() {
-            const h = msgs.map(m => `<div class="inbox-msg"><b>ከ ${m.n} (${m.d})</b><br>${m.m}</div>`).reverse().join('');
-            document.getElementById('msgInbox').innerHTML = h;
-        }
-
-        renderGallery();
-    </script>
-</body>
-</html>
+        html += `</tr>`;
+    });
+    document.getElementById('stBody').innerHTML = html;
+}
+</script>
