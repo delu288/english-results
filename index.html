@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary: #00BFFF; --gold: #FFD700; --dark: #003366;
-            --glass: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.92);
         }
 
         body {
@@ -17,66 +17,77 @@
             background-attachment: fixed; background-position: center;
         }
 
-        /* Nav */
+        /* Top Nav */
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
-            background: var(--gold); color: var(--dark); border: 2px solid var(--dark);
-            padding: 5px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem;
+            background: var(--gold); color: var(--dark); border: 1px solid var(--dark);
+            padding: 4px 10px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 0.75rem;
         }
 
         /* Header */
         .main-header {
-            text-align: center; padding: 20px; background: rgba(0, 51, 102, 0.85);
-            color: white; border-bottom: 4px solid var(--gold);
+            text-align: center; padding: 15px; background: rgba(0, 51, 102, 0.85);
+            color: white; border-bottom: 3px solid var(--gold);
         }
-        .school-title { font-size: 2.2rem; color: var(--primary); margin: 0; text-shadow: 2px 2px #000; }
-        .sub-header { font-size: 1.2rem; margin-top: 5px; }
-        .eng-tag { color: #ff5722; font-weight: bold; margin-left: 10px; border-left: 2px solid #fff; padding-left: 10px; }
+        .school-title { font-size: 2rem; color: var(--primary); margin: 0; text-shadow: 1px 1px #000; }
+        .sub-header { font-size: 1.1rem; margin-top: 5px; }
+        .eng-tag { color: #ff5722; font-weight: bold; margin-left: 8px; border-left: 2px solid #fff; padding-left: 8px; }
 
-        .container { max-width: 850px; margin: 15px auto; padding: 10px; }
+        .container { max-width: 850px; margin: 10px auto; padding: 10px; }
 
         .card {
             background: var(--glass); backdrop-filter: blur(8px);
-            border: 2px solid var(--dark); border-radius: 25px;
-            padding: 15px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border: 1.5px solid var(--dark); border-radius: 20px;
+            padding: 12px; margin-bottom: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
 
-        h4 { margin: 0 0 10px 0; color: var(--dark); border-bottom: 2px solid var(--gold); font-size: 1rem; }
+        h4 { margin: 0 0 8px 0; color: var(--dark); border-bottom: 1.5px solid var(--gold); font-size: 0.9rem; }
 
-        /* Student Section - Row Layout */
-        .student-flex { display: flex; flex-direction: column; gap: 10px; }
-        #uName { 
-            padding: 12px; font-size: 1.1rem; border-radius: 15px; 
-            border: 2px solid var(--primary); width: 100%; box-sizing: border-box; 
-        }
-        
-        .action-row { 
-            display: flex; align-items: center; gap: 10px; flex-wrap: wrap; 
-        }
-        #uGrade { padding: 8px; border-radius: 12px; border: 2px solid var(--primary); flex: 1; }
-        .btn-show { 
-            padding: 10px 20px; border-radius: 15px; background: var(--dark); 
-            color: white; font-weight: bold; cursor: pointer; border: none; 
+        /* Shared Flex Style for Horizontal Elements */
+        .flex-row-centered {
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
         }
 
-        /* Mini Result Box (The one you asked for) */
-        #resBox {
-            flex: 2; min-width: 150px; background: #fffde7; 
-            border: 2px dashed var(--gold); border-radius: 15px; 
-            padding: 8px; font-size: 0.85rem; display: none; /* Initially hidden */
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        /* Inputs & Buttons */
+        input[type="text"], select, .btn-sm, .mini-box {
+            height: 35px; border-radius: 10px; border: 1.5px solid var(--primary);
+            padding: 0 10px; font-size: 0.85rem; box-sizing: border-box;
         }
 
-        /* Admin/Analysis */
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; margin-top: 5px; }
-        th, td { border: 1px solid #eee; padding: 8px; text-align: center; font-size: 0.8rem; }
+        input[type="text"] { flex: 2; min-width: 150px; }
+        select { flex: 1; min-width: 100px; }
+
+        .btn-sm {
+            background: var(--dark); color: white; border: none;
+            cursor: pointer; font-weight: bold; min-width: 70px;
+        }
+
+        /* Small Result Box */
+        .mini-box {
+            flex: 1.5; background: #fffde7; border: 1.5px dashed var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: #2e7d32; font-size: 0.8rem; overflow: hidden;
+        }
+
+        /* Admin Grid for File Inputs */
+        .admin-grid {
+            display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;
+        }
+        .admin-grid div { flex: 1; min-width: 120px; }
+        .admin-grid small { font-size: 0.7rem; color: var(--dark); font-weight: bold; }
+        input[type="file"] { width: 100%; font-size: 0.7rem; }
+
+        /* Analysis Table */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        th, td { border: 1px solid #eee; padding: 6px; text-align: center; font-size: 0.75rem; }
         th { background: var(--dark); color: white; }
-        .pct { color: #d32f2f; font-weight: bold; font-size: 0.75rem; display: block; }
+        .pct { color: #d32f2f; font-weight: bold; font-size: 0.7rem; display: block; }
 
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
-        .gallery img { width: 100%; height: 90px; object-fit: cover; border-radius: 12px; border: 2px solid var(--gold); }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+        .gallery img { width: 100%; height: 80px; object-fit: cover; border-radius: 10px; border: 2px solid var(--gold); }
 
         .hidden { display: none; }
+        @media (max-width: 500px) { .flex-row-centered { flex-direction: column; align-items: stretch; } }
     </style>
 </head>
 <body id="mainBody">
@@ -98,27 +109,28 @@
         <div id="userPage">
             <div class="card">
                 <h4>ውጤት መፈለጊያ</h4>
-                <div class="student-flex">
-                    <input type="text" id="uName" placeholder="ሙሉ ስምዎን ያስገቡ...">
-                    <div class="action-row">
-                        <select id="uGrade">
-                            <option value="">ክፍል...</option>
-                            <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                            <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
-                        </select>
-                        <button class="btn-show" onclick="searchResult()">አሳይ</button>
-                        
-                        <div id="resBox">
-                            <div id="resContent"></div>
-                        </div>
+                <div class="flex-row-centered" style="margin-bottom: 10px;">
+                    <input type="text" id="uName" placeholder="ሙሉ ስም...">
+                </div>
+                <div class="flex-row-centered">
+                    <select id="uGrade">
+                        <option value="">ክፍል...</option>
+                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
+                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
+                    </select>
+                    <button class="btn-sm" onclick="searchResult()">አሳይ</button>
+                    <div id="resBox" class="mini-box" style="visibility: hidden;">
+                        <span id="resContent">--</span>
                     </div>
                 </div>
             </div>
 
             <div class="card">
                 <h4>የወላጅ አስተያየት</h4>
-                <textarea id="pMsg" placeholder="መልዕክትዎን እዚህ ይፃፉ..." style="width:100%; border-radius:15px; padding:10px; border:2px solid var(--primary); min-height:50px;"></textarea>
-                <button class="btn-show" style="background:#4caf50; margin-top:8px;" onclick="sendComment()">ላክ</button>
+                <div class="flex-row-centered">
+                    <input type="text" id="pMsg" placeholder="መልዕክትዎን እዚህ ይፃፉ..." style="flex: 4;">
+                    <button class="btn-sm" style="background:#4caf50;" onclick="sendComment()">ላክ</button>
+                </div>
             </div>
 
             <div class="card">
@@ -129,43 +141,43 @@
 
         <div id="adminPage" class="hidden">
             <div id="adminLogin" class="card" style="text-align: center;">
-                <input type="password" id="pass" placeholder="Password" style="padding:8px; border-radius:10px; border:1px solid #ccc;">
-                <button class="btn-show" onclick="login()">ግባ</button>
+                <input type="password" id="pass" placeholder="Password" style="width: 120px; height: 30px;">
+                <button class="btn-sm" onclick="login()">ግባ</button>
             </div>
 
             <div id="adminDash" class="hidden">
                 <div class="card">
-                    <h4>መረጃ መጫኛ</h4>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:0.8rem;">
-                        <div>ጀርባ: <input type="file" accept="image/*" onchange="setBg(event)"></div>
-                        <div>Excel: <input type="file" id="xlIn" accept=".xlsx, .xls"></div>
-                        <div>ጋለሪ: <input type="file" accept="image/*" multiple onchange="upGal(event)"></div>
+                    <h4>መረጃ መጫኛ (Files)</h4>
+                    <div class="admin-grid">
+                        <div><small>ጀርባ ምስል:</small><input type="file" accept="image/*" onchange="setBg(event)"></div>
+                        <div><small>Excel መረጃ:</small><input type="file" id="xlIn" accept=".xlsx, .xls"></div>
+                        <div><small>ጋለሪ ፎቶ:</small><input type="file" accept="image/*" multiple onchange="upGal(event)"></div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h4>ትንተና (ቁጥር እና %)</h4>
-                    <select id="stFil" onchange="runStat()" style="margin-bottom:10px;">
-                        <option value="all">ሁሉም ክፍሎች</option>
-                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
-                    </select>
+                    <div class="flex-row-centered" style="margin-bottom: 8px;">
+                        <select id="stFil" onchange="runStat()">
+                            <option value="all">ሁሉም ክፍሎች</option>
+                            <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
+                            <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
+                        </select>
+                        <button class="btn-sm" style="background:#1d6f42" onclick="dlExcel()">Excel</button>
+                        <button class="btn-sm" style="background:#007bff" onclick="window.print()">Print</button>
+                        <button class="btn-sm" style="background:#0088cc" onclick="shareReport()">Share</button>
+                    </div>
                     <table id="statTable">
                         <thead>
                             <tr><th>ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr>
                         </thead>
                         <tbody id="stBody"></tbody>
                     </table>
-                    <div style="margin-top:10px; display:flex; gap:5px;">
-                        <button class="btn-show" style="background:#1d6f42; font-size:0.8rem;" onclick="dlExcel()">Excel</button>
-                        <button class="btn-show" style="background:#007bff; font-size:0.8rem;" onclick="window.print()">Print</button>
-                        <button class="btn-show" style="background:#0088cc; font-size:0.8rem;" onclick="shareReport()">Share</button>
-                    </div>
                 </div>
 
                 <div class="card">
                     <h4>Inbox</h4>
-                    <div id="inbox" style="font-size:0.8rem; max-height:100px; overflow-y:auto;"></div>
+                    <div id="inbox" style="font-size:0.75rem; max-height:80px; overflow-y:auto;"></div>
                 </div>
             </div>
         </div>
@@ -207,7 +219,7 @@
                 let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
                 sts = rows.map(r => ({
                     n: r.Name || r.ስም, s: (String(r.Sex || r.ጾታ || "")).toUpperCase(), g: r.Grade || r.ክፍል,
-                    t: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
+                    t: (Number(r.Notebook||0)+Number(r.Quiz1||0)+Number(r.Quiz2||0)+Number(r.Mid||0)+Number(r.Final||0)),
                     nt: r.Note || r.አስተያየት
                 }));
                 localStorage.setItem('db_s', JSON.stringify(sts));
@@ -222,18 +234,15 @@
             let f = sts.find(s => s.n && s.n.toLowerCase() === n.toLowerCase() && s.g === g);
             let b = document.getElementById('resBox');
             if(f) {
-                b.style.display = "block";
-                document.getElementById('resContent').innerHTML = `
-                    <b>${f.n}</b>: <span style="color:green; font-weight:bold;">${f.t}%</span><br>
-                    <small>${f.nt || "በርታ!"}</small>
-                `;
-            } else { alert("አልተገኘም!"); b.style.display = "none"; }
+                b.style.visibility = "visible";
+                document.getElementById('resContent').innerText = `${f.t}% - ${f.nt || "በርታ!"}`;
+            } else { alert("አልተገኘም!"); b.style.visibility = "hidden"; }
         }
 
         function sendComment() {
             let m = document.getElementById('pMsg').value;
             if(!m) return;
-            msgs.push({n: document.getElementById('uName').value || "ወላጅ", m, d: new Date().toLocaleString()});
+            msgs.push({n: document.getElementById('uName').value || "ወላጅ", m, d: new Date().toLocaleDateString()});
             localStorage.setItem('db_m', JSON.stringify(msgs));
             alert("ተልኳል!"); document.getElementById('pMsg').value = "";
         }
@@ -251,9 +260,9 @@
                 let f = d.filter(s => (s.s.startsWith('F')||s.s.startsWith('ሴ')) && s.t >= r.n && s.t <= r.x).length;
                 let t = m + f;
                 return `<tr><td>${r.l}</td>
-                    <td>${m}<span class="pct">(${((m/mTot)*100).toFixed(1)}%)</span></td>
-                    <td>${f}<span class="pct">(${((f/fTot)*100).toFixed(1)}%)</span></td>
-                    <td>${t}<span class="pct" style="color:green">(${((t/gTot)*100).toFixed(1)}%)</span></td></tr>`;
+                    <td>${m}<span class="pct">(${((m/mTot)*100).toFixed(0)}%)</span></td>
+                    <td>${f}<span class="pct">(${((f/fTot)*100).toFixed(0)}%)</span></td>
+                    <td>${t}<span class="pct" style="color:green">(${((t/gTot)*100).toFixed(0)}%)</span></td></tr>`;
             }).join('');
         }
 
@@ -273,7 +282,7 @@
         }
 
         function drawGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}">`).join(''); }
-        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<div style="border-bottom:1px solid #eee; margin-bottom:5px;"><b>${m.n}:</b> ${m.m}</div>`).reverse().join(''); }
+        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<div style="border-bottom:1px solid #eee; margin-bottom:3px;"><b>${m.n}:</b> ${m.m}</div>`).reverse().join(''); }
         drawGal();
     </script>
 </body>
