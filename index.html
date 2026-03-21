@@ -42,11 +42,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
-        /* Spacing for User Page */
         .user-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 20px; }
         @media (max-width: 768px) { .user-grid { grid-template-columns: 1fr; gap: 20px; } }
 
-        /* File Upload Boxes */
         .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .admin-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); text-align: center; }
         
@@ -58,7 +56,6 @@
         .upload-box input { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
         .status-txt { font-size: 12px; font-weight: bold; }
 
-        /* Inbox */
         .inbox-container { height: 180px; overflow-y: auto; font-size: 13px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #444; text-align: left; }
         .msg-item { border-bottom: 1px solid #555; padding: 10px 0; color: white; }
         .msg-item b { color: var(--gold); }
@@ -88,7 +85,7 @@
     <div class="container">
         <div id="userPage">
             <div class="card no-print">
-                <h4 style="margin-top:0;">የውጤት መፈለጊያ</h4>
+                <h4 style="margin-top:0;">የውጤት መጠየቂያ</h4>
                 <div style="display:flex; gap:10px; margin-bottom:10px;">
                     <input type="text" id="uName" placeholder="የተማሪ ሙሉ ስም..." style="flex:2; height:40px; border-radius:10px; padding:0 10px; border:1px solid var(--primary); background:#000; color:#fff;">
                     <select id="uGrade" style="flex:1; border-radius:10px; background:#000; color:#fff; padding: 0 5px;">
@@ -105,7 +102,7 @@
                         <button class="btn-sm" style="width:100%; margin-top:10px; background:#28a745;" onclick="sendMsg()">አስተያየት ላክ</button>
                     </div>
                     <div style="border:2px dashed var(--gold); border-radius:20px; padding:20px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,255,255,0.05);">
-                        <div id="resBoxLarge" style="color:var(--gold); font-weight:bold; font-size:1.2rem;">ውጤት አልተፈለገም</div>
+                        <div id="resBoxLarge" style="color:var(--gold); font-weight:bold; font-size:1.2rem;">ውጤቱ ለጊዜው ማግኘት አልተቻለም</div>
                     </div>
                 </div>
             </div>
@@ -226,7 +223,7 @@
                     nt: i.Note || ""
                 }));
                 localStorage.setItem('db_s', JSON.stringify(sts));
-                updateUI(); runAnalysis(); alert("ዳታው በትክክል ተጭኗል!");
+                updateUI(); runAnalysis(); alert("ዳታው ተጭኗል!");
             };
             r.readAsArrayBuffer(e.target.files[0]);
         });
@@ -256,17 +253,16 @@
             let n = document.getElementById('uName').value.trim().toLowerCase();
             let g = document.getElementById('uGrade').value;
             let f = sts.find(s => s.n.toLowerCase() === n && s.g.toUpperCase().includes(g));
-            document.getElementById('resBoxLarge').innerHTML = f ? `ተማሪ፡ ${f.n}<br>ውጤት፡ ${f.t}% <br> መምህሩ፡ ${f.nt || "በርታ!"}` : "ተማሪው አልተገኘም!";
+            document.getElementById('resBoxLarge').innerHTML = f ? `<span style="color:white;">ተማሪ፡ ${f.n}</span><br>ውጤት፡ ${f.t}% <br> መምህሩ፡ ${f.nt || "በርታ!"}` : "ተማሪው አልተገኘም!";
         }
 
         function sendMsg() {
             let n = document.getElementById('uName').value.trim();
             let g = document.getElementById('uGrade').value;
             let m = document.getElementById('pMsg').value.trim();
-            if(!n || !g || !m) { alert("እባክዎ መጀመሪያ የተማሪ ስም፣ ክፍል እና አስተያየትዎን ያስገቡ!"); return; }
+            if(!n || !g || !m) { alert("መረጃዎችን በትክክል ያስገቡ!"); return; }
             let dt = new Date().toLocaleString('am-ET');
-            let newMsg = { n, g, dt, m };
-            msgs.push(newMsg);
+            msgs.push({ n, g, dt, m });
             localStorage.setItem('db_m', JSON.stringify(msgs));
             document.getElementById('pMsg').value = ""; 
             alert("አስተያየትዎ ተልኳል!");
@@ -275,24 +271,13 @@
 
         function renderInbox() {
             let box = document.getElementById('msgInbox');
-            if(!box) return;
-            if(msgs.length === 0) { box.innerHTML = "መልእክት የለም..."; return; }
-            box.innerHTML = msgs.map(m => `
-                <div class="msg-item">
-                    <b>ስም:</b> ${m.n} (${m.g}) <br>
-                    <b>ቀን:</b> ${m.dt} <br>
-                    <b>መልእክት:</b> ${m.m}
-                </div>
-            `).reverse().join('');
+            if(!box || msgs.length === 0) return;
+            box.innerHTML = msgs.map(m => `<div class="msg-item"><b>ስም:</b> ${m.n} (${m.g}) <br><b>ቀን:</b> ${m.dt} <br><b>መልእክት:</b> ${m.m}</div>`).reverse().join('');
         }
 
         function setBg(e) {
             let r = new FileReader();
-            r.onload = (ev) => { 
-                localStorage.setItem('db_b', ev.target.result); 
-                document.getElementById('bgLabel').innerText = "ምስል ተቀይሯል";
-                updateUI(); 
-            };
+            r.onload = (ev) => { localStorage.setItem('db_b', ev.target.result); document.getElementById('bgLabel').innerText = "ምስል ተቀይሯል"; updateUI(); };
             r.readAsDataURL(e.target.files[0]);
         }
 
@@ -302,27 +287,18 @@
                 r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('db_g', JSON.stringify(gals)); renderGal(); };
                 r.readAsDataURL(f);
             }
-            alert("ፎቶዎች ተጭነዋል!");
         }
 
         function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:10px; border:1px solid rgba(255,255,255,0.3);">`).join(''); }
         function saveReport() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("statTable")), "English_Analysis.xlsx"); }
-        function shareExcel() { alert("ፋይሉን ለማጋራት መጀመሪያ 'Save Excel' በመጫን ሴቭ ያድርጉት። ከዚያም ለፈለጉት አካል ይላኩ።"); }
+        function shareExcel() { alert("ሴቭ የተደረገውን ፋይል ለሌሎች ማጋራት ይችላሉ።"); }
 
         function printInbox() {
-            if(msgs.length === 0) { alert("ምንም መልእክት የለም!"); return; }
-            let content = msgs.map(m => `
-                <div style="border-bottom:1px solid #000; padding:10px;">
-                    <b>ተማሪ:</b> ${m.n} (${m.g}) <br>
-                    <b>ቀን:</b> ${m.dt} <br>
-                    <b>አስተያየት:</b> ${m.m}
-                </div>`).reverse().join('');
+            if(msgs.length === 0) { alert("መልእክት የለም!"); return; }
+            let content = msgs.map(m => `<div style="border-bottom:1px solid #000; padding:10px;"><b>ተማሪ:</b> ${m.n} (${m.g}) <br><b>ቀን:</b> ${m.dt} <br><b>አስተያየት:</b> ${m.m}</div>`).reverse().join('');
             let win = window.open('', '', 'height=700,width=900');
-            win.document.write('<html><head><title>Inbox Report</title></head><body>');
-            win.document.write('<h2>ጣይቱ ብጡል አካዳሚ - የወላጆች አስተያየት ሪፖርት</h2>' + content);
-            win.document.write('</body></html>');
-            win.document.close();
-            win.print();
+            win.document.write('<html><body><h2>የወላጆች አስተያየት ሪፖርት</h2>' + content + '</body></html>');
+            win.document.close(); win.print();
         }
     </script>
 </body>
