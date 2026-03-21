@@ -1,52 +1,263 @@
 <!DOCTYPE html>
-<html>
+<html lang="am">
 <head>
-<meta charset="UTF-8">
-<title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ጣይቱ ብጡል አካዳሚ - ውጤት ማሳወቂያ</title>
+    <style>
+        :root {
+            --primary-blue: #00BFFF;
+            --gold: #FFD700;
+            --dark-blue: #003366;
+        }
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            transition: background 0.5s;
+        }
 
+        /* 3D Text Styles */
+        .school-name {
+            color: var(--primary-blue);
+            font-size: 3rem;
+            text-align: center;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .teacher-name {
+            color: var(--gold);
+            font-size: 1.5rem;
+            text-align: center;
+            text-shadow: 1px 1px 2px #000;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: var(--dark-blue);
+            color: white;
+            font-weight: bold;
+        }
+
+        .hidden { display: none; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th { background: var(--primary-blue); color: white; }
+
+        .analysis-box {
+            background: #eef;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
+<body id="mainBody">
 
-<body>
+    <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
+    <h2 class="teacher-name">መ/ር ደለለኝ አጥላው</h2>
 
-<h2>Login</h2>
+    <div class="nav-buttons">
+        <button onclick="showPage('userPage')">የተማሪዎች ገፅ</button>
+        <button onclick="showPage('adminPage')">የአድሚን መግቢያ</button>
+    </div>
 
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
+    <div class="container">
+        <div id="userPage">
+            <h3>የተማሪዎች ውጤት መፈለጊያ</h3>
+            <input type="text" id="searchName" placeholder="ሙሉ ስምዎን ያስገቡ...">
+            <select id="userSubject">
+                <option>ኢንግሊዝኛ</option>
+            </select>
+            <select id="userGrade">
+                <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
+                <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option>
+                <option>5ኛ</option><option>6ኛ</option>
+            </select>
+            <button onclick="searchResult()" style="background: green;">ውጤት አሳይ</button>
 
-<button onclick="signup()">Signup</button>
-<button onclick="login()">Login</button>
+            <div id="resultDisplay" class="hidden" style="margin-top:20px; border-top: 2px solid var(--primary-blue);">
+                <h4>የውጤት ዝርዝር፡</h4>
+                <div id="resultContent"></div>
+                <hr>
+                <h5>ለወላጅ አስተያየት መላኪያ፡</h5>
+                <textarea id="parentComment" placeholder="አስተያየትዎን እዚህ ይጻፉ..."></textarea>
+                <button onclick="sendComment()">አስተያየት ላክ</button>
+            </div>
+        </div>
 
-<script>
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID"
-};
+        <div id="adminPage" class="hidden">
+            <h3>የአድሚን ገፅ (የተማሪዎች መረጃ መቆጣጠሪያ)</h3>
+            <div id="adminLogin">
+                <input type="password" id="adminPass" placeholder="የአድሚን ኮድ ያስገቡ">
+                <button onclick="checkAdmin()">ግቡ</button>
+            </div>
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+            <div id="adminContent" class="hidden">
+                <button onclick="toggleBackground()" style="background: orange;">የጀርባ ቀለም ቀይር</button>
+                
+                <h4>አዲስ ተማሪ መመዝገቢያ</h4>
+                <input type="text" id="stName" placeholder="የተማሪ ስም">
+                <select id="stSex"><option value="M">ወንድ</option><option value="F">ሴት</option></select>
+                <input type="number" id="sc1" placeholder="ደብተር (10%)">
+                <input type="number" id="sc2" placeholder="ሙከራ 1 (10%)">
+                <input type="number" id="sc3" placeholder="ሙከራ 2 (10%)">
+                <input type="number" id="sc4" placeholder="አጋማሽ (20%)">
+                <input type="number" id="sc5" placeholder="ማጠቃለያ (40%)">
+                <textarea id="stNote" placeholder="የመምህሩ አስተያየት"></textarea>
+                <button onclick="saveStudent()">መረጃውን መዝግብ</button>
 
-function signup(){
-auth.createUserWithEmailAndPassword(email.value, password.value)
-.then(()=> alert("Signup success"));
-}
+                <hr>
+                <h4>የውጤት ትንተና</h4>
+                <table id="analysisTable">
+                    <thead>
+                        <tr><th>የውጤት ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr>
+                    </thead>
+                    <tbody id="analysisBody"></tbody>
+                </table>
+                <br>
+                <button onclick="window.print()">ሪፖርት ፕሪንት አድርግ</button>
 
-function login(){
-auth.signInWithEmailAndPassword(email.value, password.value)
-.then((userCredential)=>{
-let user = userCredential.user;
+                <h4>የወላጆች አስተያየት (Inbox)</h4>
+                <div id="inbox"></div>
+            </div>
+        </div>
+    </div>
 
-if(user.email === "delelegnatlaw@gmail.com"){
-    window.location = "admin.html";
-}else{
-    window.location = "student.html";
-}
-});
-}
-</script>
+    <script>
+        // Data Storage
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
 
+        function showPage(pageId) {
+            document.getElementById('userPage').classList.add('hidden');
+            document.getElementById('adminPage').classList.add('hidden');
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        function checkAdmin() {
+            if(document.getElementById('adminPass').value === "1234") {
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+                updateAnalysis();
+                loadInbox();
+            } else { alert("የተሳሳተ ኮድ!"); }
+        }
+
+        function saveStudent() {
+            let s = {
+                name: document.getElementById('stName').value,
+                sex: document.getElementById('stSex').value,
+                c1: Number(document.getElementById('sc1').value),
+                c2: Number(document.getElementById('sc2').value),
+                c3: Number(document.getElementById('sc3').value),
+                c4: Number(document.getElementById('sc4').value),
+                c5: Number(document.getElementById('sc5').value),
+                note: document.getElementById('stNote').value
+            };
+            s.total = s.c1 + s.c2 + s.c3 + s.c4 + s.c5;
+            students.push(s);
+            localStorage.setItem('students', JSON.stringify(students));
+            alert("ተማሪው ተመዝግቧል!");
+            updateAnalysis();
+        }
+
+        function searchResult() {
+            let name = document.getElementById('searchName').value;
+            let found = students.find(x => x.name.toLowerCase() === name.toLowerCase());
+            let display = document.getElementById('resultDisplay');
+            let content = document.getElementById('resultContent');
+
+            if(found) {
+                display.classList.remove('hidden');
+                content.innerHTML = `
+                    <p><b>ስም:</b> ${found.name}</p>
+                    <p><b>ድምር ውጤት:</b> ${found.total}%</p>
+                    <p><b>የመምህሩ አስተያየት:</b> ${found.note}</p>
+                `;
+            } else {
+                alert("ይህ ስም በአድሚኑ አልተመዘገበም!");
+                display.classList.add('hidden');
+            }
+        }
+
+        function sendComment() {
+            let msg = document.getElementById('parentComment').value;
+            let name = document.getElementById('searchName').value;
+            messages.push({from: name, text: msg});
+            localStorage.setItem('messages', JSON.stringify(messages));
+            alert("አስተያየትዎ ለመምህሩ ተልኳል!");
+        }
+
+        function updateAnalysis() {
+            let ranges = [
+                {label: "ከ 50% በታች", min: 0, max: 49.9},
+                {label: "50% - 74%", min: 50, max: 74.9},
+                {label: "75% - 84%", min: 75, max: 84.9},
+                {label: "85% - 100%", min: 85, max: 100}
+            ];
+            
+            let html = "";
+            ranges.forEach(r => {
+                let m = students.filter(s => s.sex==='M' && s.total >= r.min && s.total <= r.max).length;
+                let f = students.filter(s => s.sex==='F' && s.total >= r.min && s.total <= r.max).length;
+                html += `<tr><td>${r.label}</td><td>${m}</td><td>${f}</td><td>${m+f}</td></tr>`;
+            });
+            document.getElementById('analysisBody').innerHTML = html;
+        }
+
+        function loadInbox() {
+            document.getElementById('inbox').innerHTML = messages.map(m => 
+                `<p style="border-bottom:1px solid #ccc"><b>ከ ${m.from}:</b> ${m.text}</p>`
+            ).join('');
+        }
+
+        function toggleBackground() {
+            let body = document.getElementById('mainBody');
+            body.style.background = body.style.background === 'rgb(51, 51, 51)' ? '#f4f4f4' : '#333';
+        }
+    </script>
 </body>
 </html>
