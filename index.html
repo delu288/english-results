@@ -42,17 +42,27 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .admin-item { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); }
+        /* Input Styling to hide "No file chosen" */
+        .file-upload-wrapper {
+            position: relative; width: 100%; height: 40px;
+            background: rgba(0,0,0,0.4); border: 1px solid var(--primary);
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; overflow: hidden; margin-top: 5px;
+        }
+        .file-upload-wrapper input[type="file"] {
+            position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;
+        }
+        .file-upload-label { font-size: 12px; color: var(--gold); pointer-events: none; }
 
-        /* Inbox Styling */
-        .inbox-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .inbox-container { height: 200px; overflow-y: auto; font-size: 13px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #444; }
-        .msg-item { border-bottom: 1px solid #555; padding: 10px 0; color: white; line-height: 1.5; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .admin-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); }
+
+        .inbox-container { height: 180px; overflow-y: auto; font-size: 13px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #444; }
+        .msg-item { border-bottom: 1px solid #555; padding: 10px 0; color: white; }
         .msg-item b { color: var(--gold); }
 
         .btn-sm { height: 38px; padding: 0 20px; border-radius: 10px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
-        .btn-print-inbox { background: var(--gold); color: var(--dark); border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 11px; }
+        .btn-action { height: 38px; padding: 0 15px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; color: white; }
 
         table { width: 100%; border-collapse: collapse; background: rgba(0, 0, 0, 0.3); margin-top: 10px; }
         th, td { border: 1px solid rgba(255,255,255,0.3); padding: 4px; text-align: center; font-size: 11px; color: white; }
@@ -60,23 +70,11 @@
 
         .hidden { display: none; }
 
-        /* PRINT LOGIC */
         @media print {
-            .no-print, .nav-header, .main-header, #loginBox, .admin-item:not(.printable-inbox), .btn-print-inbox, .admin-grid > div:not(.printable-inbox) { 
-                display: none !important; 
-            }
+            .no-print { display: none !important; }
             body { background: white !important; color: black !important; }
-            .container { max-width: 100% !important; width: 100%; margin: 0; padding: 0; }
-            .card { border: none !important; background: white !important; color: black !important; box-shadow: none !important; }
-            
-            /* Inbox Print Mode */
-            body.print-inbox-mode #statTable, body.print-inbox-mode .table-title, body.print-inbox-mode h4 { display: none !important; }
-            body.print-inbox-mode .inbox-container { height: auto !important; overflow: visible !important; border: 1px solid black !important; }
-            body.print-inbox-mode .msg-item { color: black !important; border-bottom: 1px solid black !important; }
-
-            /* Table Print Mode */
-            body.print-table-mode .printable-inbox { display: none !important; }
-            body.print-table-mode table, body.print-table-mode th, body.print-table-mode td { border: 1px solid black !important; color: black !important; }
+            .card { border: 1px solid black; background: white; color: black; box-shadow: none; }
+            table, th, td { border: 1px solid black !important; color: black !important; }
         }
     </style>
 </head>
@@ -95,61 +93,74 @@
     <div class="container">
         <div id="userPage">
             <div class="card no-print">
-                <h4>ውጤት መፈለጊያ</h4>
                 <div style="display:flex; gap:10px; margin-bottom:15px;">
                     <input type="text" id="uName" placeholder="የተማሪ ሙሉ ስም..." style="flex:2; height:38px; border-radius:10px; padding:0 10px; border:1px solid var(--primary); background:#000; color:#fff;">
                     <select id="uGrade" style="flex:1; border-radius:10px; background:#000; color:#fff;">
-                        <option value="">ክፍል ይምረጡ...</option>
+                        <option value="">ክፍል...</option>
                         <option>1A</option><option>1B</option><option>2A</option><option>2B</option><option>3A</option><option>4A</option><option>5A</option><option>6A</option>
                     </select>
-                    <button class="btn-sm" onclick="search()">ውጤት አሳይ</button>
+                    <button class="btn-sm" onclick="search()">አሳይ</button>
                 </div>
                 <div style="display:flex; gap:15px; flex-wrap:wrap;">
                     <div style="flex:1; min-width:280px;">
-                        <small>የወላጅ አስተያየት መጻፊያ:</small>
-                        <textarea id="pMsg" placeholder="አስተያየትዎን እዚህ ይጻፉ..." style="width:100%; height:100px; margin-top:5px; border-radius:15px; padding:12px; background:rgba(0,0,0,0.5); color:white; border:1px solid var(--primary); font-family:inherit;"></textarea>
-                        <button class="btn-sm" style="width:100%; margin-top:10px; background:#28a745;" onclick="sendMsg()">አስተያየት ላክ</button>
+                        <small>ለወላጅ አስተያየት መጻፊያ:</small>
+                        <textarea id="pMsg" style="width:100%; height:90px; margin-top:5px; border-radius:15px; padding:12px; background:rgba(0,0,0,0.5); color:white; border:1px solid var(--primary);"></textarea>
+                        <button class="btn-sm" style="width:100%; margin-top:10px; background:#28a745;" onclick="sendMsg()">ላክ</button>
                     </div>
-                    <div style="flex:1; min-width:280px; border:2px dashed var(--gold); border-radius:20px; padding:15px; text-align:center; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.05);">
-                        <div id="resBoxLarge" style="color:var(--gold); font-weight:bold; font-size:1.1rem;">መረጃ አልተፈለገም</div>
+                    <div style="flex:1; min-width:280px; border:2px dashed var(--gold); border-radius:20px; padding:15px; text-align:center; display:flex; align-items:center; justify-content:center;">
+                        <div id="resBoxLarge" style="color:var(--gold); font-weight:bold;">ውጤት አልተፈለገም</div>
                     </div>
                 </div>
             </div>
             <div class="card no-print">
                 <h4>ፎቶ ጋለሪ</h4>
-                <div id="userGal" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:10px;"></div>
+                <div id="userGal" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:10px;"></div>
             </div>
         </div>
 
         <div id="adminPage" class="hidden">
             <div id="loginBox" class="card no-print" style="text-align:center;">
-                <input type="password" id="pass" placeholder="Password" style="width:160px; height:38px; text-align:center; border-radius:10px; border:1px solid #666; background:#000; color:#fff;">
+                <input type="password" id="pass" placeholder="Password" style="width:150px; height:38px; text-align:center; border-radius:10px;">
                 <button class="btn-sm" onclick="login()">ግባ</button>
             </div>
 
             <div id="adminDash" class="hidden">
-                <div class="card">
-                    <div class="admin-grid no-print">
+                <div class="card no-print">
+                    <div class="admin-grid">
                         <div class="admin-item">
-                            <label>ጀርባ ምስል</label><br><input type="file" style="font-size:11px; margin-top:5px;" onchange="setBg(event)">
+                            <label>የጀርባ ምስል ቀይር</label>
+                            <div class="file-upload-wrapper">
+                                <span class="file-upload-label" id="bgLabel">ምስል ምረጥ</span>
+                                <input type="file" onchange="setBg(event)">
+                            </div>
                         </div>
                         <div class="admin-item">
-                            <label>Excel የውጤት ፋይል</label><br><input type="file" id="xlIn" style="font-size:11px; margin-top:5px;" accept=".xlsx, .xls">
+                            <label>Excel የውጤት ፋይል</label>
+                            <div class="file-upload-wrapper">
+                                <span class="file-upload-label" id="xlLabel" style="color:#ff4444;">መረጃ አልተጫነም</span>
+                                <input type="file" id="xlIn" accept=".xlsx, .xls">
+                            </div>
                         </div>
                         <div class="admin-item">
-                            <label>ጋለሪ ፎቶ</label><br><input type="file" multiple style="font-size:11px; margin-top:5px;" onchange="upGal(event)">
+                            <label>ጋለሪ ፎቶ ጨምር</label>
+                            <div class="file-upload-wrapper">
+                                <span class="file-upload-label">ፎቶዎችን ምረጥ</span>
+                                <input type="file" multiple onchange="upGal(event)">
+                            </div>
                         </div>
-                        <div class="admin-item printable-inbox">
-                            <div class="inbox-header">
-                                <label>የወላጆች አስተያየት (Inbox)</label>
-                                <button class="btn-print-inbox no-print" onclick="printInbox()">Print Report</button>
+                        <div class="admin-item" style="grid-column: span 1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                                <label>የወላጆች Inbox</label>
+                                <button class="btn-sm" style="height:25px; padding:0 10px; font-size:10px;" onclick="printInbox()">Print</button>
                             </div>
                             <div id="msgInbox" class="inbox-container">መልእክት የለም...</div>
                         </div>
                     </div>
+                </div>
 
-                    <div style="overflow-x:auto; margin-top:25px;">
-                        <h3 class="table-title" style="text-align:center; color:var(--gold);">ጣይቱ ብጡል አካዳሚ // English Result Analysis</h3>
+                <div class="card">
+                    <div style="overflow-x:auto;">
+                        <h3 style="text-align:center; color:var(--gold);">የውጤት ትንተና - English</h3>
                         <table id="statTable">
                             <thead>
                                 <tr>
@@ -166,8 +177,9 @@
                     <div class="no-print" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
                         <p><b>መ/ር ደለለኝ አጥላው</b><br>ፊርማ፡ ________________</p>
                         <div style="display:flex; gap:10px;">
-                            <button class="btn-sm" style="background:#28a745;" onclick="saveReport()">Save Excel</button>
-                            <button class="btn-sm" style="background:#007bff;" onclick="printTable()">Print Analysis</button>
+                            <button class="btn-action" style="background:#28a745;" onclick="saveReport()">Save Excel</button>
+                            <button class="btn-action" style="background:#17a2b8;" onclick="shareExcel()">Share Excel</button>
+                            <button class="btn-action" style="background:#007bff;" onclick="window.print()">Print Analysis</button>
                         </div>
                     </div>
                 </div>
@@ -183,6 +195,11 @@
         function updateUI() {
             let bg = localStorage.getItem('db_b');
             if(bg) document.body.style.backgroundImage = `url(${bg})`;
+            if(sts.length > 0) {
+                let lbl = document.getElementById('xlLabel');
+                lbl.innerText = "መረጃ ተጭኗል (" + sts.length + ")";
+                lbl.style.color = "#00ff00";
+            }
         }
         updateUI();
 
@@ -211,7 +228,7 @@
                     nt: i.Note || ""
                 }));
                 localStorage.setItem('db_s', JSON.stringify(sts));
-                runAnalysis(); alert("ዳታ ተጭኗል!");
+                updateUI(); runAnalysis(); alert("ዳታው ተጭኗል!");
             };
             r.readAsArrayBuffer(e.target.files[0]);
         });
@@ -237,6 +254,13 @@
             document.getElementById('stBody').innerHTML = h;
         }
 
+        function search() {
+            let n = document.getElementById('uName').value.trim().toLowerCase();
+            let g = document.getElementById('uGrade').value;
+            let f = sts.find(s => s.n.toLowerCase() === n && s.g.toUpperCase().includes(g));
+            document.getElementById('resBoxLarge').innerHTML = f ? `ውጤት፡ ${f.t}% <br> መምህሩ፡ ${f.nt || "በርታ!"}` : "ተማሪው አልተገኘም!";
+        }
+
         function sendMsg() {
             let n = document.getElementById('uName').value.trim();
             let g = document.getElementById('uGrade').value;
@@ -249,40 +273,22 @@
         }
 
         function renderInbox() {
-            let h = "<h3 style='color:black; display:none;' class='show-on-print'>የወላጆች አስተያየት ሪፖርት</h3>";
-            h += msgs.map(m => `
+            document.getElementById('msgInbox').innerHTML = msgs.map(m => `
                 <div class="msg-item">
-                    <b>የተማሪ ስም:</b> ${m.n} <br>
-                    <b>ክፍል:</b> ${m.g} <br>
+                    <b>ስም:</b> ${m.n} (${m.g}) <br>
                     <b>ቀን:</b> ${m.dt} <br>
-                    <b>አስተያየት:</b> ${m.m}
+                    <b>መልእክት:</b> ${m.m}
                 </div>
             `).reverse().join('');
-            document.getElementById('msgInbox').innerHTML = h;
-        }
-
-        function printInbox() {
-            document.body.classList.add('print-inbox-mode');
-            window.print();
-            document.body.classList.remove('print-inbox-mode');
-        }
-
-        function printTable() {
-            document.body.classList.add('print-table-mode');
-            window.print();
-            document.body.classList.remove('print-table-mode');
-        }
-
-        function search() {
-            let n = document.getElementById('uName').value.trim().toLowerCase();
-            let g = document.getElementById('uGrade').value;
-            let f = sts.find(s => s.n.toLowerCase() === n && s.g.toUpperCase().includes(g));
-            document.getElementById('resBoxLarge').innerHTML = f ? `ውጤት፡ ${f.t}% <br> መምህሩ፡ ${f.nt || "በርታ!"}` : "ተማሪው አልተገኘም!";
         }
 
         function setBg(e) {
             let r = new FileReader();
-            r.onload = (ev) => { localStorage.setItem('db_b', ev.target.result); updateUI(); };
+            r.onload = (ev) => { 
+                localStorage.setItem('db_b', ev.target.result); 
+                document.getElementById('bgLabel').innerText = "ምስል ተቀይሯል";
+                updateUI(); 
+            };
             r.readAsDataURL(e.target.files[0]);
         }
 
@@ -292,10 +298,25 @@
                 r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('db_g', JSON.stringify(gals)); renderGal(); };
                 r.readAsDataURL(f);
             }
+            alert("ፎቶዎች ተጭነዋል!");
         }
 
         function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:10px; border:1px solid rgba(255,255,255,0.3);">`).join(''); }
         function saveReport() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("statTable")), "English_Analysis.xlsx"); }
+        
+        function shareExcel() {
+            alert("የኤክሴል ፋይሉን ለማጋራት መጀመሪያ 'Save Excel' የሚለውን በመጫን ሴቭ ያድርጉት። ከዚያም የወረደውን ፋይል ለፈለጉት አካል መላክ ይችላሉ።");
+        }
+
+        function printInbox() {
+            let content = document.getElementById('msgInbox').innerHTML;
+            let win = window.open('', '', 'height=700,width=900');
+            win.document.write('<html><head><title>Parent Comments</title><style>body{font-family:sans-serif; padding:20px;} .msg-item{border-bottom:1px solid #ccc; padding:10px;}</style></head><body>');
+            win.document.write('<h2>የወላጆች አስተያየት ሪፖርት</h2>' + content);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.print();
+        }
     </script>
 </body>
 </html>
