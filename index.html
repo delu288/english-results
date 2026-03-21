@@ -7,286 +7,342 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            --main-bg: #f0f4f8;
-            --box-color: #ffffff;
             --primary-blue: #00BFFF;
             --gold: #FFD700;
             --dark-blue: #003366;
-            --thick-border: 5px solid #003366;
+            --text-color: #ffffff;
+            --box-bg: rgba(255, 255, 255, 0.95);
+            --thick-border: 6px solid #003366;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--main-bg);
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            color: #333;
+            background-color: #e0f2f1;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            transition: background 0.5s ease;
         }
 
-        /* 3D Headers */
-        .header-section { text-align: center; margin-bottom: 40px; }
-        
-        .school-name {
-            font-size: 4rem;
-            color: var(--primary-blue);
-            text-shadow: 3px 3px 0px #fff, 6px 6px 0px rgba(0,0,0,0.1);
-            font-weight: 900;
-            margin: 0;
-        }
-
-        .subject-tag { color: #ff4500; font-size: 2.5rem; font-weight: bold; display: block; }
-
-        .teacher-name {
-            font-size: 2rem;
-            color: var(--gold);
-            text-shadow: 2px 2px 4px #000;
-            margin-top: 5px;
-        }
-
-        /* Navigation in Corners */
-        .nav-container {
-            position: absolute;
+        /* Top Corner Buttons */
+        .nav-header {
+            position: fixed;
             top: 20px;
             right: 20px;
+            z-index: 1000;
             display: flex;
             gap: 15px;
         }
 
         .nav-btn {
-            background: var(--dark-blue);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
+            background: var(--gold);
+            color: var(--dark-blue);
+            border: 3px solid var(--dark-blue);
+            padding: 10px 25px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            border: 2px solid white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
         }
 
-        /* Thick Boxes Design */
-        .main-container {
-            max-width: 950px;
-            margin: auto;
-            background: var(--box-color);
+        /* Header - 3D & Contrast */
+        .main-header {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 51, 102, 0.85);
+            border-bottom: var(--thick-border);
+            color: white;
+        }
+
+        .school-title {
+            font-size: 4.5rem;
+            color: var(--primary-blue);
+            text-shadow: 4px 4px 0px #000, 6px 6px 15px rgba(0,0,0,0.5);
+            margin: 0;
+            font-weight: 900;
+        }
+
+        .sub-title {
+            font-size: 2.2rem;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .eng-tag { color: #ff5722; font-weight: bold; text-transform: uppercase; }
+        .teacher-tag { color: var(--gold); text-shadow: 1px 1px 2px #000; }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: var(--box-bg);
             border: var(--thick-border);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
         }
 
-        .input-group {
-            border: 3px solid var(--primary-blue);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
+        .card {
+            border: 4px solid var(--dark-blue);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            background: #fff;
         }
+
+        h3 { color: var(--dark-blue); border-bottom: 3px solid var(--gold); padding-bottom: 10px; }
 
         input, select, textarea {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .action-btn {
-            background: #28a745;
-            color: white;
-            border: none;
             padding: 15px;
-            border-radius: 10px;
+            margin: 10px 0;
+            border: 3px solid var(--primary-blue);
+            border-radius: 12px;
             font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
             font-weight: bold;
         }
 
-        /* Gallery Grid */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+        .action-btn {
+            background: var(--dark-blue);
+            color: white;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .gallery-item {
+        .action-btn:hover { background: var(--primary-blue); transform: translateY(-3px); }
+
+        /* Gallery Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery img {
             width: 100%;
-            height: 120px;
+            height: 180px;
             object-fit: cover;
-            border: 3px solid var(--gold);
-            border-radius: 8px;
+            border: 5px solid var(--gold);
+            border-radius: 15px;
         }
 
         .hidden { display: none; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 2px solid var(--dark-blue); padding: 12px; text-align: center; }
+
+        /* Statistics Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 3px solid var(--dark-blue); padding: 15px; text-align: center; font-size: 1.1rem; }
         th { background: var(--primary-blue); color: white; }
 
-        @media print { .nav-container, .action-btn { display: none; } }
+        .print-area { margin-top: 20px; text-align: right; }
+        .print-btn { background: #e91e63; color: white; padding: 10px 25px; border-radius: 8px; border: none; cursor: pointer; }
+
+        @media print { .nav-header, .action-btn, .admin-only, .print-btn { display: none; } }
     </style>
 </head>
-<body id="pageBody">
+<body id="mainBody">
 
-    <div class="nav-container">
+    <div class="nav-header">
         <button class="nav-btn" onclick="showPage('userPage')">የተማሪዎች ገፅ</button>
         <button class="nav-btn" onclick="showPage('adminPage')">የአድሚን ገፅ</button>
     </div>
 
-    <div class="header-section">
-        <h1 class="school-name">ጣይቱ ብጡል አካዳሚ</h1>
-        <span class="subject-tag">English</span>
-        <h2 class="teacher-name">መ/ር ደለለኝ አጥላው</h2>
+    <div class="main-header">
+        <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
+        <div class="sub-title">
+            <span class="eng-tag">English</span>
+            <span class="teacher-tag">መ/ር ደለለኝ አጥላው</span>
+        </div>
     </div>
 
-    <div class="main-container">
+    <div class="container">
         
         <div id="userPage">
-            <div class="input-group">
-                <h3 style="color: var(--dark-blue);">የውጤት መጠየቂያ</h3>
-                <input type="text" id="searchName" placeholder="ሙሉ ስምዎን ያስገቡ...">
-                <select id="userGrade">
-                    <option value="">ክፍል ይምረጡ</option>
+            <div class="card">
+                <h3>የውጤት መጠየቂያ</h3>
+                <input type="text" id="uName" placeholder="ሙሉ ስምዎን እዚህ ይጻፉ...">
+                <select id="uGrade">
+                    <option value="">ክፍልዎን ይምረጡ</option>
                     <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                    <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option>
-                    <option>5ኛ</option><option>6ኛ</option>
+                    <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
                 </select>
-                <button class="action-btn" onclick="askResult()">ውጤት መጠየቂያ</button>
+                <button class="action-btn" onclick="searchResult()">ውጤት መጠየቂያ</button>
             </div>
 
-            <div id="resultBox" class="hidden input-group" style="background: #e7f3ff;">
-                <div id="resultOutput"></div>
-                <hr>
-                <h4>የወላጅ አስተያየት መላኪያ</h4>
-                <textarea id="pMsg" placeholder="መልዕክትዎን እዚህ ይጻፉ..."></textarea>
-                <button class="action-btn" style="background: #007bff;" onclick="sendToAdmin()">መልዕክት ላክ</button>
+            <div id="resDisplay" class="hidden card" style="background: #fffde7; border-color: var(--gold);">
+                <div id="resText"></div>
+            </div>
+
+            <div class="card">
+                <h3>የወላጅ አስተያየት መስጫ</h3>
+                <textarea id="pComment" placeholder="ለአስተማሪው የሚልኩትን አስተያየት እዚህ ይጻፉ..."></textarea>
+                <button class="action-btn" style="background: #4caf50;" onclick="submitComment()">አስተያየት ላክ</button>
+            </div>
+
+            <div class="card">
+                <h3>የትምህርት ቤቱ ጋለሪ</h3>
+                <div id="userGal" class="gallery"></div>
             </div>
         </div>
 
         <div id="adminPage" class="hidden">
-            <div id="adminLogin" class="input-group">
+            <div id="adminLogin" class="card">
                 <h3>አድሚን መግቢያ</h3>
-                <input type="password" id="adminKey" placeholder="የይለፍ ቃል ያስገቡ">
-                <button class="action-btn" onclick="accessAdmin()">ግባ</button>
+                <input type="password" id="passCode" placeholder="የይለፍ ቃል ያስገቡ">
+                <button class="action-btn" onclick="checkAdmin()">ግባ</button>
             </div>
 
-            <div id="adminTools" class="hidden">
-                <button onclick="changeBg()" style="margin-bottom: 10px;">የገፅ ቀለም ቀይር</button>
-                
-                <div class="input-group">
-                    <h4>ተማሪ በዶኩመንት መጫኛ (Excel)</h4>
-                    <input type="file" id="excelUpload" accept=".xlsx, .xls">
+            <div id="adminDash" class="hidden">
+                <div class="card admin-only">
+                    <h4>1. የጀርባ ምስል መጫኛ</h4>
+                    <input type="file" accept="image/*" onchange="changeBg(event)">
                 </div>
 
-                <div class="input-group">
-                    <h4>ፎቶ ጋለሪ</h4>
-                    <input type="file" id="imgUpload" accept="image/*" multiple onchange="addGallery(event)">
-                    <div id="galDisplay" class="gallery-grid"></div>
+                <div class="card admin-only">
+                    <h4>2. የተማሪዎች መረጃ (Excel)</h4>
+                    <input type="file" id="xlInput" accept=".xlsx, .xls">
+                    <p style="font-size: 0.9rem;">* Excel ውስጥ Name, Sex, Grade, Notebook, Quiz1, Quiz2, Mid, Final, Note ሊኖሩ ይገባል።</p>
                 </div>
 
-                <div class="input-group">
-                    <h4>የውጤት ትንተና (XLS)</h4>
+                <div class="card admin-only">
+                    <h4>3. ጋለሪ ማስተዳደሪያ</h4>
+                    <input type="file" accept="image/*" multiple onchange="addToGallery(event)">
+                </div>
+
+                <div class="card">
+                    <h4>4. የውጤት ትንተና</h4>
+                    <select id="statFilter" onchange="updateAnalysis()">
+                        <option value="all">የሁሉም ክፍሎች ትንተና</option>
+                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
+                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
+                    </select>
                     <table id="statTable">
                         <thead>
                             <tr><th>ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr>
                         </thead>
                         <tbody id="statBody"></tbody>
                     </table>
-                    <br>
-                    <button class="action-btn" style="background: #1d6f42;" onclick="downloadExcel()">ትንተናውን ወደ Excel አውርድ</button>
+                    <div class="print-area">
+                        <button class="print-btn" onclick="window.print()">ሪፖርቱን ፕሪንት አድርግ</button>
+                    </div>
                 </div>
 
-                <div class="input-group">
-                    <h4>የወላጆች መልዕክት (Inbox)</h4>
-                    <div id="inbox"></div>
+                <div class="card">
+                    <h4>5. የወላጆች መልዕክት (Inbox)</h4>
+                    <div id="msgInbox"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let students = JSON.parse(localStorage.getItem('st_data')) || [];
-        let inbox = JSON.parse(localStorage.getItem('inbox_data')) || [];
-        let gallery = JSON.parse(localStorage.getItem('gal_data')) || [];
+        // Data Load from LocalStorage
+        let students = JSON.parse(localStorage.getItem('st_db')) || [];
+        let messages = JSON.parse(localStorage.getItem('msg_db')) || [];
+        let photos = JSON.parse(localStorage.getItem('gal_db')) || [];
+        let savedBg = localStorage.getItem('bg_db') || "";
+
+        if(savedBg) document.body.style.backgroundImage = `url(${savedBg})`;
 
         function showPage(p) {
             document.getElementById('userPage').classList.toggle('hidden', p !== 'userPage');
             document.getElementById('adminPage').classList.toggle('hidden', p !== 'adminPage');
+            if(p === 'userPage') renderGallery();
         }
 
-        function accessAdmin() {
-            if(document.getElementById('adminKey').value === "taitu123") {
+        function checkAdmin() {
+            if(document.getElementById('passCode').value === "taitu123") {
                 document.getElementById('adminLogin').classList.add('hidden');
-                document.getElementById('adminTools').classList.remove('hidden');
-                renderStats();
-                renderGallery();
+                document.getElementById('adminDash').classList.remove('hidden');
+                updateAnalysis();
                 renderInbox();
             } else { alert("የተሳሳተ የይለፍ ቃል!"); }
         }
 
-        // Excel Upload Logic
-        document.getElementById('excelUpload').addEventListener('change', function(e) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const data = new Uint8Array(event.target.result);
-                const wb = XLSX.read(data, {type: 'array'});
-                const sheet = wb.Sheets[wb.SheetNames[0]];
-                const rows = XLSX.utils.sheet_to_json(sheet);
-                
-                students = rows.map(r => ({
-                    name: r.Name || r.ስም,
-                    sex: r.Sex || r.ጾታ,
-                    grade: r.Grade || r.ክፍል,
-                    total: (r.Notebook||0) + (r.Quiz1||0) + (r.Quiz2||0) + (r.Mid||0) + (r.Final||0),
-                    note: r.Note || r.አስተያየት
-                }));
-                localStorage.setItem('st_data', JSON.stringify(students));
-                alert("መረጃው ተጭኗል!");
-                renderStats();
+        function changeBg(e) {
+            let r = new FileReader();
+            r.onload = (ev) => {
+                savedBg = ev.target.result;
+                localStorage.setItem('bg_db', savedBg);
+                document.body.style.backgroundImage = `url(${savedBg})`;
             };
-            reader.readAsArrayBuffer(e.target.files[0]);
-        });
-
-        function askResult() {
-            let name = document.getElementById('searchName').value.trim();
-            let found = students.find(s => s.name.toLowerCase() === name.toLowerCase());
-            if(found) {
-                document.getElementById('resultBox').classList.remove('hidden');
-                document.getElementById('resultOutput').innerHTML = `
-                    <h3>የውጤት ዝርዝር</h3>
-                    <p><b>ተማሪ፦</b> ${found.name}</p>
-                    <p><b>ድምር ውጤት፦</b> ${found.total}%</p>
-                    <p><b>መምህሩ ያለው፦</b> ${found.note}</p>
-                `;
-            } else { alert("ይህ ስም አልተመዘገበም!"); }
+            r.readAsDataURL(e.target.files[0]);
         }
 
-        function renderStats() {
+        document.getElementById('xlInput').addEventListener('change', function(e) {
+            let r = new FileReader();
+            r.onload = (ev) => {
+                let data = new Uint8Array(ev.target.result);
+                let wb = XLSX.read(data, {type: 'array'});
+                let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+                students = rows.map(r => ({
+                    name: r.Name || r.ስም, sex: r.Sex || r.ጾታ, grade: r.Grade || r.ክፍል,
+                    total: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
+                    note: r.Note || r.አስተያየት
+                }));
+                localStorage.setItem('st_db', JSON.stringify(students));
+                alert("መረጃው ተጭኗል!");
+                updateAnalysis();
+            };
+            r.readAsArrayBuffer(e.target.files[0]);
+        });
+
+        function searchResult() {
+            let name = document.getElementById('uName').value.trim();
+            let grade = document.getElementById('uGrade').value;
+            let found = students.find(s => s.name.toLowerCase() === name.toLowerCase() && s.grade === grade);
+            let display = document.getElementById('resDisplay');
+            if(found) {
+                display.classList.remove('hidden');
+                document.getElementById('resText').innerHTML = `
+                    <h2 style="color:var(--dark-blue)">የውጤት ማሳያ</h2>
+                    <p><b>ስም፡</b> ${found.name} | <b>ክፍል፡</b> ${found.grade}</p>
+                    <p style="font-size:1.5rem"><b>ጠቅላላ ውጤት፡</b> <span style="color:green">${found.total}%</span></p>
+                    <p><b>የመምህሩ አስተያየት፡</b> ${found.note}</p>
+                `;
+            } else { alert("መረጃው አልተገኘም! እባክዎ ስም እና ክፍል በትክክል መሙላትዎን ያረጋግጡ።"); }
+        }
+
+        function submitComment() {
+            let m = document.getElementById('pComment').value;
+            let n = document.getElementById('uName').value || "ያልታወቀ ወላጅ";
+            messages.push({name: n, text: m, time: new Date().toLocaleString()});
+            localStorage.setItem('msg_db', JSON.stringify(messages));
+            alert("አስተያየትዎ ለመምህሩ ተልኳል!");
+            document.getElementById('pComment').value = "";
+        }
+
+        function updateAnalysis() {
+            let filter = document.getElementById('statFilter').value;
+            let data = filter === 'all' ? students : students.filter(s => s.grade === filter);
             let ranges = [
-                {l: "ከ 50% በታች", min: 0, max: 49},
-                {l: "50% - 74%", min: 50, max: 74},
-                {l: "75% - 84%", min: 75, max: 84},
+                {l: "ከ 50% በታች", min: 0, max: 49.9},
+                {l: "50% - 74%", min: 50, max: 74.9},
+                {l: "75% - 84%", min: 75, max: 84.9},
                 {l: "85% - 100%", min: 85, max: 100}
             ];
             document.getElementById('statBody').innerHTML = ranges.map(r => {
-                let m = students.filter(s => s.sex==='M' && s.total >= r.min && s.total <= r.max).length;
-                let f = students.filter(s => s.sex==='F' && s.total >= r.min && s.total <= r.max).length;
+                let m = data.filter(s => s.sex==='M' && s.total >= r.min && s.total <= r.max).length;
+                let f = data.filter(s => s.sex==='F' && s.total >= r.min && s.total <= r.max).length;
                 return `<tr><td>${r.l}</td><td>${m}</td><td>${f}</td><td>${m+f}</td></tr>`;
             }).join('');
         }
 
-        function downloadExcel() {
-            let wb = XLSX.utils.table_to_book(document.getElementById("statTable"));
-            XLSX.writeFile(wb, "Taitu_Academy_Analysis.xlsx");
-        }
-
-        function addGallery(e) {
+        function addToGallery(e) {
             for(let f of e.target.files) {
                 let r = new FileReader();
                 r.onload = (ev) => {
-                    gallery.push(ev.target.result);
-                    localStorage.setItem('gal_data', JSON.stringify(gallery));
+                    photos.push(ev.target.result);
+                    localStorage.setItem('gal_db', JSON.stringify(photos));
                     renderGallery();
                 };
                 r.readAsDataURL(f);
@@ -294,23 +350,19 @@
         }
 
         function renderGallery() {
-            document.getElementById('galDisplay').innerHTML = gallery.map(src => `<img src="${src}" class="gallery-item">`).join('');
-        }
-
-        function sendToAdmin() {
-            inbox.push({from: document.getElementById('searchName').value, msg: document.getElementById('pMsg').value});
-            localStorage.setItem('inbox_data', JSON.stringify(inbox));
-            alert("መልዕክቱ ተልኳል!");
+            document.getElementById('userGal').innerHTML = photos.map(src => `<img src="${src}">`).join('');
         }
 
         function renderInbox() {
-            document.getElementById('inbox').innerHTML = inbox.map(i => `<p><b>${i.from}፦</b> ${i.msg}</p>`).join('');
+            document.getElementById('msgInbox').innerHTML = messages.map(m => `
+                <div style="border-bottom:1px solid #ddd; padding:10px;">
+                    <b>ከ ${m.name} (${m.time})</b><br>${m.text}
+                </div>
+            `).reverse().join('');
         }
 
-        function changeBg() {
-            const colors = ['#f0f4f8', '#e8f5e9', '#fff3e0', '#f3e5f5'];
-            document.body.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        }
+        // Initial Gallery Load
+        renderGallery();
     </script>
 </body>
 </html>
