@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary: #00BFFF; --gold: #FFD700; --dark: #003366;
-            --glass: rgba(255, 255, 255, 0.85);
+            --glass: rgba(255, 255, 255, 0.9);
         }
 
         body {
@@ -17,7 +17,7 @@
             background-attachment: fixed; background-position: center;
         }
 
-        /* Navigation */
+        /* Nav */
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
             background: var(--gold); color: var(--dark); border: 2px solid var(--dark);
@@ -26,54 +26,57 @@
 
         /* Header */
         .main-header {
-            text-align: center; padding: 20px; background: rgba(0, 51, 102, 0.8);
+            text-align: center; padding: 20px; background: rgba(0, 51, 102, 0.85);
             color: white; border-bottom: 4px solid var(--gold);
         }
         .school-title { font-size: 2.2rem; color: var(--primary); margin: 0; text-shadow: 2px 2px #000; }
         .sub-header { font-size: 1.2rem; margin-top: 5px; }
         .eng-tag { color: #ff5722; font-weight: bold; margin-left: 10px; border-left: 2px solid #fff; padding-left: 10px; }
 
-        /* Compact Rounded Container */
-        .container {
-            max-width: 800px; margin: 20px auto; padding: 15px;
-        }
+        .container { max-width: 850px; margin: 15px auto; padding: 10px; }
 
         .card {
-            background: var(--glass); backdrop-filter: blur(5px);
-            border: 2px solid var(--dark); border-radius: 25px; /* ክብ እንዲሆን */
+            background: var(--glass); backdrop-filter: blur(8px);
+            border: 2px solid var(--dark); border-radius: 25px;
             padding: 15px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         h4 { margin: 0 0 10px 0; color: var(--dark); border-bottom: 2px solid var(--gold); font-size: 1rem; }
 
-        /* Small Inputs */
-        .flex-row { display: flex; gap: 8px; flex-wrap: wrap; }
-        input, select, textarea {
-            padding: 8px; border: 2px solid var(--primary); border-radius: 12px;
-            font-size: 0.85rem; outline: none; background: white;
+        /* Student Section - Row Layout */
+        .student-flex { display: flex; flex-direction: column; gap: 10px; }
+        #uName { 
+            padding: 12px; font-size: 1.1rem; border-radius: 15px; 
+            border: 2px solid var(--primary); width: 100%; box-sizing: border-box; 
         }
-        input[type="file"] { font-size: 0.7rem; max-width: 180px; }
-        textarea { width: 100%; min-height: 45px; box-sizing: border-box; }
-
-        .btn {
-            background: var(--dark); color: white; padding: 8px; border: none;
-            border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9rem;
+        
+        .action-row { 
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap; 
+        }
+        #uGrade { padding: 8px; border-radius: 12px; border: 2px solid var(--primary); flex: 1; }
+        .btn-show { 
+            padding: 10px 20px; border-radius: 15px; background: var(--dark); 
+            color: white; font-weight: bold; cursor: pointer; border: none; 
         }
 
-        /* Action Buttons Grid */
-        .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-top: 10px; }
-        .btn-ex { background: #1d6f42; } .btn-pr { background: #007bff; } .btn-sh { background: #0088cc; }
+        /* Mini Result Box (The one you asked for) */
+        #resBox {
+            flex: 2; min-width: 150px; background: #fffde7; 
+            border: 2px dashed var(--gold); border-radius: 15px; 
+            padding: 8px; font-size: 0.85rem; display: none; /* Initially hidden */
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
 
-        /* Gallery */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
-        .gallery img { width: 100%; height: 80px; object-fit: cover; border: 2px solid var(--gold); border-radius: 15px; }
+        /* Admin/Analysis */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; margin-top: 5px; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: center; font-size: 0.8rem; }
+        th { background: var(--dark); color: white; }
+        .pct { color: #d32f2f; font-weight: bold; font-size: 0.75rem; display: block; }
+
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+        .gallery img { width: 100%; height: 90px; object-fit: cover; border-radius: 12px; border: 2px solid var(--gold); }
 
         .hidden { display: none; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; background: white; border-radius: 10px; overflow: hidden; }
-        th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
-        th { background: var(--dark); color: white; }
-
-        @media print { .nav-header, .btn, .no-print { display: none; } }
     </style>
 </head>
 <body id="mainBody">
@@ -94,26 +97,28 @@
         
         <div id="userPage">
             <div class="card">
-                <h4>የውጤት መጠየቂያ</h4>
-                <div class="flex-row">
-                    <input type="text" id="uName" placeholder="ሙሉ ስም...">
-                    <select id="uGrade">
-                        <option value="">ክፍል...</option>
-                        <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
-                        <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
-                    </select>
-                    <button class="btn" style="flex: 0.5;" onclick="searchResult()">አሳይ</button>
+                <h4>ውጤት መፈለጊያ</h4>
+                <div class="student-flex">
+                    <input type="text" id="uName" placeholder="ሙሉ ስምዎን ያስገቡ...">
+                    <div class="action-row">
+                        <select id="uGrade">
+                            <option value="">ክፍል...</option>
+                            <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
+                            <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
+                        </select>
+                        <button class="btn-show" onclick="searchResult()">አሳይ</button>
+                        
+                        <div id="resBox">
+                            <div id="resContent"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="resBox" class="hidden card" style="background: rgba(255, 255, 224, 0.9);">
-                <div id="resContent"></div>
-            </div>
-
             <div class="card">
-                <h4>የወላጅ አስተያየት መስጫ</h4>
-                <textarea id="pMsg" placeholder="መልዕክትዎን እዚህ ይጻፉ..."></textarea>
-                <button class="btn" style="background:#4caf50; width: 100px; margin-top: 5px;" onclick="sendComment()">ላክ</button>
+                <h4>የወላጅ አስተያየት</h4>
+                <textarea id="pMsg" placeholder="መልዕክትዎን እዚህ ይፃፉ..." style="width:100%; border-radius:15px; padding:10px; border:2px solid var(--primary); min-height:50px;"></textarea>
+                <button class="btn-show" style="background:#4caf50; margin-top:8px;" onclick="sendComment()">ላክ</button>
             </div>
 
             <div class="card">
@@ -124,43 +129,43 @@
 
         <div id="adminPage" class="hidden">
             <div id="adminLogin" class="card" style="text-align: center;">
-                <input type="password" id="pass" placeholder="ኮድ" style="width: 100px;">
-                <button class="btn" onclick="login()" style="padding: 5px 15px;">ግባ</button>
+                <input type="password" id="pass" placeholder="Password" style="padding:8px; border-radius:10px; border:1px solid #ccc;">
+                <button class="btn-show" onclick="login()">ግባ</button>
             </div>
 
             <div id="adminDash" class="hidden">
                 <div class="card">
-                    <h4>ፋይልና ምስል መጫኛ</h4>
-                    <div class="flex-row">
-                        <div><small>ጀርባ ምስል:</small><br><input type="file" accept="image/*" onchange="setBg(event)"></div>
-                        <div><small>Excel ፋይል:</small><br><input type="file" id="xlIn" accept=".xlsx, .xls"></div>
-                        <div><small>ጋለሪ ፎቶ:</small><br><input type="file" accept="image/*" multiple onchange="upGal(event)"></div>
+                    <h4>መረጃ መጫኛ</h4>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:0.8rem;">
+                        <div>ጀርባ: <input type="file" accept="image/*" onchange="setBg(event)"></div>
+                        <div>Excel: <input type="file" id="xlIn" accept=".xlsx, .xls"></div>
+                        <div>ጋለሪ: <input type="file" accept="image/*" multiple onchange="upGal(event)"></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h4>የውጤት ትንተና (%)</h4>
-                    <select id="stFil" onchange="runStat()" style="margin-bottom: 8px;">
+                    <h4>ትንተና (ቁጥር እና %)</h4>
+                    <select id="stFil" onchange="runStat()" style="margin-bottom:10px;">
                         <option value="all">ሁሉም ክፍሎች</option>
                         <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option>
                         <option>2ኛ ለ</option><option>3ኛ</option><option>4ኛ</option><option>5ኛ</option><option>6ኛ</option>
                     </select>
                     <table id="statTable">
                         <thead>
-                            <tr><th>ደረጃ</th><th>ወንድ (%)</th><th>ሴት (%)</th><th>ድምር (%)</th></tr>
+                            <tr><th>ደረጃ</th><th>ወንድ</th><th>ሴት</th><th>ድምር</th></tr>
                         </thead>
                         <tbody id="stBody"></tbody>
                     </table>
-                    <div class="action-grid no-print">
-                        <button class="btn btn-ex" onclick="dlExcel()">Excel አውርድ</button>
-                        <button class="btn btn-pr" onclick="window.print()">Print</button>
-                        <button class="btn btn-sh" onclick="shareReport()">Report ላክ</button>
+                    <div style="margin-top:10px; display:flex; gap:5px;">
+                        <button class="btn-show" style="background:#1d6f42; font-size:0.8rem;" onclick="dlExcel()">Excel</button>
+                        <button class="btn-show" style="background:#007bff; font-size:0.8rem;" onclick="window.print()">Print</button>
+                        <button class="btn-show" style="background:#0088cc; font-size:0.8rem;" onclick="shareReport()">Share</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h4>የወላጆች አስተያየት (Inbox)</h4>
-                    <div id="inbox" style="font-size: 0.8rem; max-height: 120px; overflow-y: auto;"></div>
+                    <h4>Inbox</h4>
+                    <div id="inbox" style="font-size:0.8rem; max-height:100px; overflow-y:auto;"></div>
                 </div>
             </div>
         </div>
@@ -181,11 +186,11 @@
         }
 
         function login() {
-            if(document.getElementById('pass').value === "taitu123") {
+            if(document.getElementById('pass').value === "Eshet21d") {
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminDash').classList.remove('hidden');
                 runStat(); drawInbox();
-            }
+            } else { alert("Error!"); }
         }
 
         function setBg(e) {
@@ -201,12 +206,12 @@
                 let wb = XLSX.read(d, {type:'array'});
                 let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
                 sts = rows.map(r => ({
-                    n: r.Name || r.ስም, s: (r.Sex || r.ጾታ || "").toUpperCase(), g: r.Grade || r.ክፍል,
+                    n: r.Name || r.ስም, s: (String(r.Sex || r.ጾታ || "")).toUpperCase(), g: r.Grade || r.ክፍል,
                     t: (r.Notebook||0)+(r.Quiz1||0)+(r.Quiz2||0)+(r.Mid||0)+(r.Final||0),
                     nt: r.Note || r.አስተያየት
                 }));
                 localStorage.setItem('db_s', JSON.stringify(sts));
-                alert("ዳታ ተጭኗል!"); runStat();
+                alert("ተሳክቷል!"); runStat();
             };
             r.readAsArrayBuffer(e.target.files[0]);
         });
@@ -217,51 +222,46 @@
             let f = sts.find(s => s.n && s.n.toLowerCase() === n.toLowerCase() && s.g === g);
             let b = document.getElementById('resBox');
             if(f) {
-                b.classList.remove('hidden');
-                document.getElementById('resContent').innerHTML = `<b>ስም:</b> ${f.n} | <b>ውጤት:</b> ${f.t}% <br> <b>አስተያየት:</b> ${f.nt || "መልካም"}`;
-            } else { alert("አልተገኘም!"); }
+                b.style.display = "block";
+                document.getElementById('resContent').innerHTML = `
+                    <b>${f.n}</b>: <span style="color:green; font-weight:bold;">${f.t}%</span><br>
+                    <small>${f.nt || "በርታ!"}</small>
+                `;
+            } else { alert("አልተገኘም!"); b.style.display = "none"; }
         }
 
         function sendComment() {
             let m = document.getElementById('pMsg').value;
-            let n = document.getElementById('uName').value || "ያልታወቀ";
             if(!m) return;
-            msgs.push({n, m, d: new Date().toLocaleDateString()});
+            msgs.push({n: document.getElementById('uName').value || "ወላጅ", m, d: new Date().toLocaleString()});
             localStorage.setItem('db_m', JSON.stringify(msgs));
-            alert("አስተያየቱ ተልኳል!"); document.getElementById('pMsg').value = "";
+            alert("ተልኳል!"); document.getElementById('pMsg').value = "";
         }
 
         function runStat() {
             let fil = document.getElementById('stFil').value;
             let d = fil === 'all' ? sts : sts.filter(s => s.g === fil);
-            let totalD = d.length || 1;
-            let mTotal = d.filter(s => s.s === 'M' || s.s === 'ወ').length || 1;
-            let fTotal = d.filter(s => s.s === 'F' || s.s === 'ሴ').length || 1;
+            let mTot = d.filter(s => s.s.startsWith('M') || s.s.startsWith('ወ')).length || 1;
+            let fTot = d.filter(s => s.s.startsWith('F') || s.s.startsWith('ሴ')).length || 1;
+            let gTot = d.length || 1;
 
             let rs = [{l:"<50", n:0, x:49.9},{l:"50-74", n:50, x:74.9},{l:"75-84", n:75, x:84.9},{l:"85-100", n:85, x:100}];
-            
             document.getElementById('stBody').innerHTML = rs.map(r => {
-                let m = d.filter(s => (s.s==='M'||s.s==='ወ') && s.t >= r.n && s.t <= r.x).length;
-                let f = d.filter(s => (s.s==='F'||s.s==='ሴ') && s.t >= r.n && s.t <= r.x).length;
-                let mPct = ((m/mTotal)*100).toFixed(1);
-                let fPct = ((f/fTotal)*100).toFixed(1);
-                let tPct = (((m+f)/totalD)*100).toFixed(1);
-                return `<tr><td>${r.l}</td><td>${m} (${mPct}%)</td><td>${f} (${fPct}%)</td><td>${m+f} (${tPct}%)</td></tr>`;
+                let m = d.filter(s => (s.s.startsWith('M')||s.s.startsWith('ወ')) && s.t >= r.n && s.t <= r.x).length;
+                let f = d.filter(s => (s.s.startsWith('F')||s.s.startsWith('ሴ')) && s.t >= r.n && s.t <= r.x).length;
+                let t = m + f;
+                return `<tr><td>${r.l}</td>
+                    <td>${m}<span class="pct">(${((m/mTot)*100).toFixed(1)}%)</span></td>
+                    <td>${f}<span class="pct">(${((f/fTot)*100).toFixed(1)}%)</span></td>
+                    <td>${t}<span class="pct" style="color:green">(${((t/gTot)*100).toFixed(1)}%)</span></td></tr>`;
             }).join('');
         }
 
-        function dlExcel() {
-            let wb = XLSX.utils.table_to_book(document.getElementById("statTable"));
-            XLSX.writeFile(wb, "Analysis.xlsx");
-        }
-
+        function dlExcel() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("statTable")), "Analysis.xlsx"); }
         function shareReport() {
-            let msg = `📊 የውጤት ትንተና ሪፖርት\n`;
-            document.querySelectorAll("#stBody tr").forEach(r => {
-                let c = r.querySelectorAll("td");
-                msg += `🔹 ${c[0].innerText}: ወ=${c[1].innerText}, ሴ=${c[2].innerText}, ድ=${c[3].innerText}\n`;
-            });
-            navigator.clipboard.writeText(msg); alert("ሪፖርቱ ኮፒ ተደርጓል!");
+            let msg = `📊 ሪፖርት:\n`;
+            document.querySelectorAll("#stBody tr").forEach(r => { let c = r.querySelectorAll("td"); msg += `🔹 ${c[0].innerText}: ${c[3].innerText.split('(')[0]} ተማሪ\n`; });
+            navigator.clipboard.writeText(msg); alert("ኮፒ ተደርጓል!");
         }
 
         function upGal(e) {
@@ -273,7 +273,7 @@
         }
 
         function drawGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}">`).join(''); }
-        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<p style="border-bottom:1px solid #ddd; padding:3px;"><b>${m.n}:</b> ${m.m}</p>`).reverse().join(''); }
+        function drawInbox() { document.getElementById('inbox').innerHTML = msgs.map(m => `<div style="border-bottom:1px solid #eee; margin-bottom:5px;"><b>${m.n}:</b> ${m.m}</div>`).reverse().join(''); }
         drawGal();
     </script>
 </body>
