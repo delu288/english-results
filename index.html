@@ -1,141 +1,47 @@
-<!DOCTYPE html>
-<html lang="am">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; direction: ltr; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2, h3 { color: #2c3e50; text-align: center; }
-        
-        /* ቲመር ቅንብር */
-        .timer-box { 
-            text-align: center; border: 2px solid #34495e; padding: 10px; 
-            border-radius: 12px; width: fit-content; margin: 10px auto; 
-            background: #fff; transform: scale(0.9); 
-        }
-        #timer-display { font-size: 2.5rem; margin: 5px 0; color: #d9534f; font-family: monospace; }
-        .btn { cursor: pointer; border: none; border-radius: 5px; padding: 8px 15px; font-weight: bold; transition: 0.3s; }
-        .btn-start { background: #28a745; color: white; }
-        .btn-stop { background: #ffc107; color: black; }
-        .btn-reset { background: #dc3545; color: white; }
-        .btn-opt { background: #17a2b8; color: white; padding: 5px 10px; font-size: 0.9rem; }
-
-        /* ሰንጠረዥ ቅንብር */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background-color: #34495e; color: white; }
-        input[type="text"], input[type="number"] { width: 90%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        
-        .footer-info { margin-top: 30px; border-top: 2px solid #eee; padding-top: 10px; }
-        .no-print { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
-        
-        @media print { .no-print, .timer-box { display: none; } }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
-
-    <div class="timer-box">
-        <div id="timer-display">01:00</div>
-        <div style="margin-bottom: 8px;">
-            <button class="btn btn-opt" onclick="setTimer(60)">1 ደቂቃ</button>
-            <button class="btn btn-opt" onclick="setTimer(120)">2 ደቂቃ</button>
-        </div>
-        <div>
-            <button class="btn btn-start" onclick="startTimer()">ጀምር</button>
-            <button class="btn btn-stop" onclick="stopTimer()">ቁም</button>
-            <button class="btn btn-reset" onclick="resetTimer()">ቀይር</button>
-        </div>
+<div class="timer-container" style="text-align: center; background: #f9f9f9; border: 2px solid #333; padding: 10px; border-radius: 8px; width: 220px; margin: 10px auto; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
+    <h3 style="margin: 0; font-size: 1rem; color: #555;">የጥያቄ ሰዓት</h3>
+    <div id="display" style="font-size: 2.2rem; font-weight: bold; color: #d9534f; margin: 5px 0; font-family: 'Courier New', Courier, monospace;">01:00</div>
+    
+    <div style="margin-bottom: 8px;">
+        <button onclick="setTimer(60)" style="font-size: 0.8rem; padding: 3px 8px; cursor: pointer;">1 ደቂቃ</button>
+        <button onclick="setTimer(120)" style="font-size: 0.8rem; padding: 3px 8px; cursor: pointer;">2 ደቂቃ</button>
     </div>
 
-    <hr>
-
-    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-        <label>ቀን፡ <input type="date"></label>
-        <label>ክፍል፡ 
-            <select>
-                <option>1ኛ</option><option>2ኛ</option><option>3ኛ</option><option>4ኛ</option>
-            </select>
-        </label>
-        <label>ሴሚስተር፡ 
-            <select>
-                <option>1ኛ</option><option>2ኛ</option>
-            </select>
-        </label>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ተ.ቁ</th>
-                <th>ተማሪ ስም</th>
-                <th>አማርኛ</th>
-                <th>እንግሊዝኛ</th>
-                <th>ሒሳብ</th>
-                <th>አ/ሳይንስ</th>
-                <th>ድምር</th>
-                <th>ደረጃ</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td><input type="text" placeholder="ስም"></td>
-                <td><input type="number" oninput="calculate(this)"></td>
-                <td><input type="number" oninput="calculate(this)"></td>
-                <td><input type="number" oninput="calculate(this)"></td>
-                <td><input type="number" oninput="calculate(this)"></td>
-                <td class="total">0</td>
-                <td><input type="text" style="width: 40px;"></td>
-            </tr>
-            </tbody>
-    </table>
-
-    <div class="no-print">
-        <button class="btn btn-start" onclick="window.print()">🖨️ አትም (Print)</button>
-        <button class="btn btn-opt" style="background: #6c757d;">💾 አስቀምጥ (Save)</button>
-    </div>
-
-    <div class="footer-info">
-        <p>ሰብሳቢ፡ <strong>መ/ር ደለለኝ አጥላው</strong></p>
-        <p>ፀሀፊ፡ <strong>መ/ርት መሰረት ፋንታ</strong></p>
+    <div class="timer-controls">
+        <button onclick="startTimer()" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">ጀምር</button>
+        <button onclick="stopTimer()" style="background: #ffc107; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">ቁም</button>
+        <button onclick="resetTimer()" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">ቀይር</button>
     </div>
 </div>
 
 <script>
-    // --- ቲመር ስክሪፕት ---
     let timerInterval;
-    let timeLeft = 60;
-    let isRunning = false;
-    const display = document.getElementById('timer-display');
+    let timeRemaining = 60; // Default 1 min
+    let running = false;
 
     function updateDisplay() {
-        let mins = Math.floor(timeLeft / 60);
-        let secs = timeLeft % 60;
-        display.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        display.style.color = (timeLeft <= 10) ? "#ff0000" : "#d9534f";
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById('display').textContent = 
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
 
-    function setTimer(seconds) {
+    function setTimer(secs) {
         stopTimer();
-        timeLeft = seconds;
+        timeRemaining = secs;
         updateDisplay();
     }
 
     function startTimer() {
-        if (isRunning) return;
-        isRunning = true;
+        if (running) return;
+        running = true;
         timerInterval = setInterval(() => {
-            if (timeLeft <= 0) {
+            if (timeRemaining <= 0) {
                 clearInterval(timerInterval);
-                isRunning = false;
-                alert("ጊዜው አልቋል!");
+                running = false;
+                alert("ጊዜው አብቅቷል!");
             } else {
-                timeLeft--;
+                timeRemaining--;
                 updateDisplay();
             }
         }, 1000);
@@ -143,26 +49,12 @@
 
     function stopTimer() {
         clearInterval(timerInterval);
-        isRunning = false;
+        running = false;
     }
 
     function resetTimer() {
         stopTimer();
-        timeLeft = 60;
+        timeRemaining = 60; // Reset to default
         updateDisplay();
     }
-
-    // --- የውጤት ስሌት ---
-    function calculate(el) {
-        let row = el.closest('tr');
-        let inputs = row.querySelectorAll('input[type="number"]');
-        let total = 0;
-        inputs.forEach(input => {
-            total += Number(input.value) || 0;
-        });
-        row.querySelector('.total').innerText = total;
-    }
 </script>
-
-</body>
-</html>
