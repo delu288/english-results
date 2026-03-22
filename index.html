@@ -1,238 +1,88 @@
-<!DOCTYPE html>
-<html lang="am">
-<head>
-    <meta charset="UTF-8">
-    <title>የውድድር ውጤት መያዣ - Delu</title>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        #login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; width: 320px; }
-        .in-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        .btn-in { width: 100%; padding: 12px; background: #1a2a6c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        #main-app { display: none; width: 95%; max-width: 1250px; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin: 20px; }
-        .top-info { display: flex; justify-content: space-between; background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; align-items: center; }
-        
-        /* Timer Style */
-        .timer-container { background: #1a2a6c; color: white; padding: 15px; border-radius: 15px; text-align: center; width: 200px; }
-        #timer-display { font-size: 35px; font-weight: bold; font-family: monospace; color: #ffeb3b; }
-        .timer-btn { padding: 8px 12px; margin-top: 5px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
-        .start-btn { background: #27ae60; color: white; }
-        .stop-btn { background: #e74c3c; color: white; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; border: 1px solid #ddd; }
-        th, td { border: 1px solid #eee; padding: 8px; text-align: center; }
-        th { background: #2c3e50; color: white; font-size: 13px; }
-
-        .btn-check { cursor: pointer; font-weight: bold; font-size: 20px; height: 40px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #eee; border-radius: 5px; user-select: none; }
-        .correct { background-color: #e8f5e9 !important; color: #27ae60; border-color: #27ae60; }
-        .wrong { background-color: #ffebee !important; color: #e74c3c; border-color: #e74c3c; }
-
-        .footer { display: flex; justify-content: space-between; margin-top: 25px; padding: 15px; background: #fafafa; border-radius: 15px; }
-        .btn-save { background: #27ae60; color: white; padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        
-        @media print { .no-print { display: none; } #main-app { box-shadow: none; border: none; width: 100%; } }
-    </style>
-</head>
-<body>
-
-<div id="login-box">
-    <h2 style="color:#1a2a6c">መግቢያ (Log In)</h2>
-    <input type="text" id="u" class="in-field" placeholder="Username">
-    <input type="password" id="p" class="in-field" placeholder="Password">
-    <p id="err" style="color:red; font-size:13px; display:none;">ያልተፈቀደ ሙከራ!</p>
-    <button class="btn-in" onclick="checkAuth()">ግባ</button>
-</div>
-
-<div id="main-app">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2 style="color:#1a2a6c; margin:0;">የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
-        
-        <!-- Timer UI -->
-        <div class="timer-container no-print">
-            <div style="font-size: 12px; margin-bottom: 5px;">የጥያቄ ሰዓት (Timer)</div>
-            <div id="timer-display">01:00</div>
-            <button class="timer-btn start-btn" onclick="startTimer()">ጀምር</button>
-            <button class="timer-btn stop-btn" onclick="stopTimer()">ቁም</button>
-            <button class="timer-btn" style="background:#666; color:white;" onclick="resetTimer()">ቀይር</button>
-        </div>
-
-        <div id="liveClock" style="font-weight:bold; color:#555;"></div>
-        <button class="no-print" onclick="location.reload()" style="cursor:pointer; background:#eee; border:1px solid #ccc; padding:5px 10px; border-radius:5px;">ውጣ</button>
+<!-- የሰዓት ቆጣሪ ክፍል (Timer Section) -->
+<div id="custom-timer-container" style="
+    text-align: center; 
+    border: 2px solid #2c3e50; 
+    padding: 15px; 
+    border-radius: 12px; 
+    width: fit-content; 
+    margin: 20px auto; 
+    background-color: #f8f9fa; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: scale(0.85); /* መጠኑን ትንሽ ለማድረግ */
+">
+    <!-- ሰዓቱ የሚታይበት -->
+    <h2 id="timer-display" style="font-size: 3rem; margin: 0 0 10px 0; font-family: monospace; color: #d9534f;">01:00</h2>
+    
+    <!-- ደቂቃ መምረጫ -->
+    <div style="margin-bottom: 15px;">
+        <button onclick="setTimer(60)" style="background: #17a2b8; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 5px;">1 ደቂቃ</button>
+        <button onclick="setTimer(120)" style="background: #17a2b8; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">2 ደቂቃ</button>
     </div>
 
-    <div class="top-info">
-        <div>ቀን፡ <span id="currentDate" style="font-weight:bold;"></span></div>
-        <div>ክፍል፡ 
-            <select id="gr" style="padding:5px;">
-                <option>1ኛ ሀ</option><option>1ኛ ለ</option>
-                <option>2ኛ ሀ</option><option>2ኛ ለ</option>
-                <option>3ኛ ሀ</option><option>4ኛ ሀ</option>
-                <option>5ኛ ሀ</option><option>6ኛ ሀ</option>
-            </select>
-        </div>
-        <div>ሴሚስተር፡ <select id="sm" style="padding:5px;"><option>1ኛ ሴሚስተር</option><option selected>2ኛ ሴሚስተር</option></select></div>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th rowspan="2">ተ.ቁ</th><th rowspan="2" style="width:180px">ተማሪ ስም</th>
-                <th colspan="2">አማርኛ</th><th colspan="2">እንግሊዝኛ</th><th colspan="2">ሒሳብ</th><th colspan="2">አ/ሳይንስ</th><th colspan="2">ግብረገብ</th>
-                <th rowspan="2">✓</th><th rowspan="2">X</th><th rowspan="2">ድምር</th><th rowspan="2">ደረጃ</th>
-            </tr>
-            <tr><th>1</th><th>2</th><th>1</th><th>2</th><th>1</th><th>2</th><th>1</th><th>2</th><th>1</th><th>2</th></tr>
-        </thead>
-        <tbody id="rows"></tbody>
-    </table>
-
-    <div style="text-align:center; margin-top:20px;" class="no-print">
-        <button class="btn-save" onclick="save()">💾 ውጤቱን መዝግብ (Save)</button>
-        <button onclick="window.print()" style="background:#34495e; color:white; padding:12px 25px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; margin-left:10px;">🖨️ አትም (Print)</button>
-    </div>
-
-    <div id="history" style="display:none; margin-top:30px; border-top:2px dashed #ccc; padding-top:20px;">
-        <h3>የተመዘገቡ ውጤቶች (History)</h3>
-        <table id="hTable" style="background:#fcfcfc;">
-            <thead><tr style="background:#eee;"><th>ክፍል</th><th>ስም</th><th>ውጤት</th><th>ደረጃ</th></tr></thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <div class="footer">
-        <div>
-            <h4 style="margin-top:0; color:#1a2a6c;">የውድድሩ ዳኞች</h4>
-            1ኛ፡ <select class="jdg" style="width:180px; padding:5px;"></select><br><br>
-            2ኛ፡ <select class="jdg" style="width:180px; padding:5px;"></select>
-        </div>
-        <div style="text-align:right;">
-            <p>ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b></p>
-            <p>ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b></p>
-            <p>ፊርማ፡ _________________</p>
-        </div>
+    <!-- ኦፕሬሽን ቁልፎች -->
+    <div>
+        <button id="startBtn" onclick="startTimer()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-right: 5px;">ጀምር</button>
+        <button onclick="stopTimer()" style="background: #ffc107; color: black; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-right: 5px;">ቁም</button>
+        <button onclick="resetTimer()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem;">ቀይር</button>
     </div>
 </div>
 
 <script>
-    const _u = "RGVsdQ=="; // Delu
-    const _p = "MTIyMQ=="; // 1221
-    const judges = ["መ/ር ዳዊት የማነ", "መ/ር ደለለኝ አጥላው", "መ/ርት መሰረት ፋንታ", "መ/ር ባየልኝ አይተንፍሱ", "መ/ር አሰጋኸኝ በሻህ", "መ/ር ተፈሪ ታደሰ", "መ/ር እሸቱ አለሙ", "መ/ር ተፈራ ፈቀደው", "መ/ርት መሰረት ግዛቸው", "ር/መ/ር አማረ አሰፋ"];
+    let timerInterval;
+    let timeLeft = 60; // ነባሪው 1 ደቂቃ
+    let isRunning = false;
 
-    // Timer Logic
-    let timeLeft = 60;
-    let timerId = null;
+    const display = document.getElementById('timer-display');
 
+    // ሰዓቱን በስክሪን ላይ የሚያሳይ
+    function updateDisplay() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        display.innerText = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // ሰዓቱ ዜሮ ሲቃረብ ቀለሙን መቀየር
+        if (timeLeft <= 10) {
+            display.style.color = "#ff0000";
+        } else {
+            display.style.color = "#d9534f";
+        }
+    }
+
+    // የደቂቃ አማራጭን ለመምረጥ
+    function setTimer(seconds) {
+        stopTimer();
+        timeLeft = seconds;
+        updateDisplay();
+    }
+
+    // ቆጠራ ለመጀመር
     function startTimer() {
-        if (timerId) return;
-        timerId = setInterval(() => {
+        if (isRunning) return;
+        isRunning = true;
+        
+        timerInterval = setInterval(() => {
             if (timeLeft <= 0) {
-                clearInterval(timerId);
-                timerId = null;
-                alert("ሰዓት አልቋል!");
-                beep();
+                clearInterval(timerInterval);
+                isRunning = false;
+                alert("ጊዜው አልቋል!");
             } else {
                 timeLeft--;
-                updateTimerDisplay();
+                updateDisplay();
             }
         }, 1000);
     }
 
+    // ለማቆም
     function stopTimer() {
-        clearInterval(timerId);
-        timerId = null;
+        clearInterval(timerInterval);
+        isRunning = false;
     }
 
+    // ወደ መጀመሪያው ለመመለስ
     function resetTimer() {
         stopTimer();
-        timeLeft = 60;
-        updateTimerDisplay();
-    }
-
-    function updateTimerDisplay() {
-        let mins = Math.floor(timeLeft / 60);
-        let secs = timeLeft % 60;
-        document.getElementById('timer-display').innerText = 
-            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }
-
-    function beep() {
-        let context = new (window.AudioContext || window.webkitAudioContext)();
-        let osc = context.createOscillator();
-        osc.connect(context.destination);
-        osc.start();
-        osc.stop(context.currentTime + 0.5);
-    }
-
-    // Auth & Init
-    function checkAuth() {
-        if(btoa(document.getElementById('u').value) === _u && btoa(document.getElementById('p').value) === _p) {
-            document.getElementById('login-box').style.display = "none";
-            document.getElementById('main-app').style.display = "block";
-            init();
-        } else { document.getElementById('err').style.display = "block"; }
-    }
-
-    function init() {
-        setInterval(() => { 
-            let d = new Date();
-            document.getElementById('liveClock').innerText = "ሰዓት፡ " + d.toLocaleTimeString();
-            document.getElementById('currentDate').innerText = d.toLocaleDateString('am-ET');
-        }, 1000);
-
-        document.querySelectorAll('.jdg').forEach(s => {
-            s.innerHTML = "<option>--- ምረጥ ---</option>";
-            judges.forEach(j => { let o = document.createElement('option'); o.text = j; s.add(o); });
-        });
-
-        let b = document.getElementById('rows');
-        b.innerHTML = "";
-        for(let i=1; i<=6; i++) {
-            b.innerHTML += `<tr id="tr${i}">
-                <td>${i}</td>
-                <td><input type="text" style="width:90%; padding:5px; border:1px solid #ddd; border-radius:5px;" oninput="rank()"></td>
-                ${Array(10).fill().map(() => `<td><div class="btn-check" onclick="mark(this, ${i})">-</div></td>`).join('')}
-                <td id="c${i}">0</td><td id="w${i}">0</td><td id="t${i}">0/10</td><td id="r${i}" style="font-weight:bold; color:blue;">-</td>
-            </tr>`;
-        }
-    }
-
-    function mark(el, id) {
-        if(el.innerText === "-") { el.innerText = "✓"; el.className = "btn-check correct"; }
-        else if(el.innerText === "✓") { el.innerText = "X"; el.className = "btn-check wrong"; }
-        else { el.innerText = "-"; el.className = "btn-check"; }
-        let row = document.getElementById('tr'+id);
-        document.getElementById('c'+id).innerText = row.querySelectorAll('.correct').length;
-        document.getElementById('w'+id).innerText = row.querySelectorAll('.wrong').length;
-        document.getElementById('t'+id).innerText = row.querySelectorAll('.correct').length + "/10";
-        rank();
-    }
-
-    function rank() {
-        let scores = [];
-        for(let i=1; i<=6; i++) {
-            let s = parseInt(document.getElementById('c'+i).innerText);
-            let n = document.getElementById('tr'+i).getElementsByTagName('input')[0].value;
-            if(n.trim() !== "" || s > 0) scores.push({id: i, score: s});
-        }
-        let sorted = scores.map(s => s.score).sort((a,b) => b-a);
-        scores.forEach(item => {
-            document.getElementById('r'+item.id).innerText = (sorted.indexOf(item.score) + 1) + "ኛ";
-        });
-    }
-
-    function save() {
-        let h = document.getElementById('hTable').getElementsByTagName('tbody')[0];
-        let g = document.getElementById('gr').value;
-        let found = false;
-        for(let i=1; i<=6; i++) {
-            let n = document.getElementById('tr'+i).getElementsByTagName('input')[0].value;
-            if(n.trim() !== "") {
-                h.innerHTML += `<tr><td>${g}</td><td>${n}</td><td>${document.getElementById('t'+i).innerText}</td><td>${document.getElementById('r'+i).innerText}</td></tr>`;
-                found = true;
-            }
-        }
-        if(found) { document.getElementById('history').style.display = "block"; alert("ውጤቱ ተመዝግቧል!"); }
+        timeLeft = 60; // ወደ 1 ደቂቃ ይመለሳል
+        updateDisplay();
     }
 </script>
-
-</body>
-</html>
