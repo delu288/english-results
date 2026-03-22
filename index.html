@@ -218,7 +218,9 @@
                 let wb = XLSX.read(new Uint8Array(ex.target.result), {type:'array'});
                 let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
                 sts = rows.map(i => ({
-                    n: i.Name || i.ስም, s: String(i.Sex||"").toUpperCase(), g: String(i.Grade||""),
+                    n: String(i.Name || i.ስም || "").trim(), 
+                    s: String(i.Sex || "").toUpperCase(), 
+                    g: String(i.Grade || ""),
                     t: (Number(i.Notebook||0)+Number(i.Quiz1||0)+Number(i.Quiz2||0)+Number(i.Mid||0)+Number(i.Final||0)),
                     nt: i.Note || ""
                 }));
@@ -249,11 +251,25 @@
             document.getElementById('stBody').innerHTML = h;
         }
 
+        // --- ማስተካከያ የተደረገበት ክፍል ---
         function search() {
-            let n = document.getElementById('uName').value.trim().toLowerCase();
-            let g = document.getElementById('uGrade').value;
-            let f = sts.find(s => s.n.toLowerCase() === n && s.g.toUpperCase().includes(g));
-            document.getElementById('resBoxLarge').innerHTML = f ? `<span style="color:white;">ተማሪ፡ ${f.n}</span><br>ውጤት፡ ${f.t}% <br> መምህሩ፡ ${f.nt || "በርታ!"}` : "ተማሪው አልተገኘም!";
+            let nameInput = document.getElementById('uName').value.trim().toLowerCase();
+            let gradeInput = document.getElementById('uGrade').value;
+            let resultBox = document.getElementById('resBoxLarge');
+
+            let student = sts.find(s => s.n.toLowerCase() === nameInput && s.g.toUpperCase().includes(gradeInput));
+            
+            if(student) {
+                // የተማሪ ስም በነጭ (White) እንዲሆን ተደርጓል
+                resultBox.innerHTML = `
+                    <div style="color: white; margin-bottom: 5px;">ተማሪ፡ ${student.n}</div>
+                    <div style="color: var(--gold);">ውጤት፡ ${student.t}%</div>
+                    <div style="color: var(--gold); font-size: 0.9rem;">መምህሩ፡ ${student.nt || "በርታ!"}</div>
+                `;
+            } else {
+                resultBox.style.color = "var(--gold)";
+                resultBox.innerHTML = "ውጤቱ ለጊዜው ማግኘት አልተቻለም";
+            }
         }
 
         function sendMsg() {
@@ -271,8 +287,8 @@
 
         function renderInbox() {
             let box = document.getElementById('msgInbox');
-            if(!box || msgs.length === 0) return;
-            box.innerHTML = msgs.map(m => `<div class="msg-item"><b>ስም:</b> ${m.n} (${m.g}) <br><b>ቀን:</b> ${m.dt} <br><b>መልእክት:</b> ${m.m}</div>`).reverse().join('');
+            if(!box) return;
+            box.innerHTML = msgs.length === 0 ? "መልእክት የለም..." : msgs.map(m => `<div class="msg-item"><b>ስም:</b> ${m.n} (${m.g}) <br><b>ቀን:</b> ${m.dt} <br><b>መልእክት:</b> ${m.m}</div>`).reverse().join('');
         }
 
         function setBg(e) {
@@ -297,7 +313,7 @@
             if(msgs.length === 0) { alert("መልእክት የለም!"); return; }
             let content = msgs.map(m => `<div style="border-bottom:1px solid #000; padding:10px;"><b>ተማሪ:</b> ${m.n} (${m.g}) <br><b>ቀን:</b> ${m.dt} <br><b>አስተያየት:</b> ${m.m}</div>`).reverse().join('');
             let win = window.open('', '', 'height=700,width=900');
-            win.document.write('<html><body><h2>የወላጆች አስተያየት ሪፖርት</h2>' + content + '</body></html>');
+            win.document.write('<html><head><title>Report</title></head><body><h2>የወላጆች አስተያየት ሪፖርት</h2>' + content + '</body></html>');
             win.document.close(); win.print();
         }
     </script>
