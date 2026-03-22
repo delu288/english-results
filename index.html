@@ -3,101 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጣይቱ ብጡል አካዳሚ - Admin Dashboard</title>
+    <title>ጣይቱ ብጡል አካዳሚ - Full Result System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary: #00BFFF; --gold: #FFD700; --dark: #003366; --glass: rgba(255, 255, 255, 0.15); --border-thick: 4px solid #00BFFF; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #222; color: white; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #222; color: white; transition: 0.5s; }
+        .main-header { text-align: center; padding: 20px; background: rgba(0, 51, 102, 0.6); border-bottom: var(--border-thick); backdrop-filter: blur(8px); }
+        .school-title { font-size: 2.2rem; color: var(--primary); margin: 0; text-shadow: 2px 2px 5px #000; }
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn { background: var(--gold); color: var(--dark); border: none; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-left: 5px; }
-        .container { max-width: 1300px; margin: 60px auto 20px; padding: 15px; }
+        .container { max-width: 1300px; margin: 20px auto; padding: 15px; }
         .card { background: var(--glass); backdrop-filter: blur(12px); border: var(--border-thick); border-radius: 30px; padding: 25px; margin-bottom: 25px; }
-        
-        /* Analysis Tables */
-        .table-wrapper { overflow-x: auto; background: rgba(0,0,0,0.4); border-radius: 20px; padding: 15px; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
-        th, td { border: 1px solid rgba(255,255,255,0.1); padding: 12px; }
+        .res-container { width: 100%; border: 2px dashed var(--gold); border-radius: 25px; padding: 30px; text-align: center; background: rgba(255,255,255,0.05); }
+        .comment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .sub-box { background: rgba(0,0,0,0.3); border: 1px solid var(--primary); border-radius: 20px; padding: 20px; min-height: 150px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; text-align: center; background: rgba(0,0,0,0.4); }
+        th, td { border: 1px solid rgba(255,255,255,0.2); padding: 10px; }
         th { background: var(--dark); color: var(--gold); }
-
-        /* Scorer Grid */
-        .scorer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 25px; }
-        .scorer-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 15px; }
-        .top-list { color: #00ff00; list-style: none; padding: 0; }
-        .low-list { color: #ff4d4d; list-style: none; padding: 0; }
-        .rank-label { font-weight: bold; color: var(--gold); margin-right: 5px; }
-
-        .section-title { color: var(--gold); border-left: 5px solid var(--primary); padding-left: 10px; margin-top: 30px; }
+        .btn-sm { height: 45px; padding: 0 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; color: white; }
+        .action-bar { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        input, select, textarea { border-radius: 12px; padding: 12px; background: #000; color: #fff; border: 1px solid var(--primary); width: 100%; box-sizing: border-box; }
+        .inbox-area { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 15px; margin-top: 15px; max-height: 200px; overflow-y: auto; border: 1px solid #444; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <div class="nav-header">
-        <button class="nav-btn" onclick="location.reload()">ተማሪ ገጽ</button>
+        <button class="nav-btn" onclick="showPage('userPage')">ተማሪ</button>
+        <button class="nav-btn" onclick="showPage('adminPage')">አድሚን</button>
+    </div>
+
+    <div class="main-header">
+        <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
+        <div style="color: var(--gold); font-weight: bold;">መ/ር ደለለኝ አጥላው // English</div>
+        <div id="ethTime" style="font-size: 0.9rem; margin-top: 5px;">---</div>
     </div>
 
     <div class="container">
-        <div id="adminDash" class="card">
-            <h2 style="text-align:center; color: var(--primary);">የእንግሊዝኛ ውጤት ትንተና ዳሽቦርድ</h2>
-            
-            <div style="text-align: center; margin-bottom: 30px; border: 2px dashed var(--primary); padding: 20px; border-radius: 20px;">
-                <label>አዲስ የኤክሴል ፋይል ለመጫን፡</label><br><br>
-                <input type="file" id="xlIn" accept=".xlsx, .xls">
-            </div>
-
-            <h3 class="section-title">1. አጠቃላይ የክፍል ሪፖርት</h3>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th rowspan="2">ክፍል</th>
-                            <th colspan="3">ጠቅላላ ተማሪ</th>
-                            <th colspan="3">ያለፉ (>=50)</th>
-                            <th colspan="3">የወደቁ (<50)</th>
-                        </tr>
-                        <tr>
-                            <th>ወ</th><th>ሴ</th><th>ድምር</th>
-                            <th>ወ</th><th>ሴ</th><th>ድምር</th>
-                            <th>ወ</th><th>ሴ</th><th>ድምር</th>
-                        </tr>
-                    </thead>
-                    <tbody id="analysisBody"></tbody>
-                </table>
-            </div>
-
-            <h3 class="section-title">2. ከፍተኛ እና ዝቅተኛ ውጤቶች (በየክፍሉ)</h3>
-            <div id="scorerContainer" class="scorer-grid">
+        <div id="userPage">
+            <div class="card">
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <input type="text" id="uName" placeholder="የተማሪ ሙሉ ስም...">
+                    <select id="uGrade" style="max-width: 150px;">
+                        <option value="">ክፍል...</option><option>1A</option><option>1B</option><option>2A</option><option>2B</option><option>3A</option><option>4A</option><option>5A</option><option>6A</option>
+                    </select>
+                    <button class="btn-sm" style="background:var(--dark);" onclick="search()">አሳይ</button>
                 </div>
+                <div class="res-container" id="resBoxLarge">ውጤት ለመፈለግ ስም እና ክፍል ያስገቡ</div>
+                <div class="comment-grid">
+                    <div class="sub-box">
+                        <small style="color:var(--primary); font-weight:bold;">የመምህሩ አስተያየት:</small>
+                        <div id="teacherNote" style="margin-top:20px; text-align:center;">--</div>
+                    </div>
+                    <div class="sub-box">
+                        <small style="color:var(--gold); font-weight:bold;">የወላጅ አስተያየት መጻፊያ:</small>
+                        <textarea id="pMsg" style="margin-top:10px; height:80px;" placeholder="አስተያየትዎን እዚህ ይጻፉ..."></textarea>
+                        <button class="btn-sm" style="background:#28a745; width:100%; margin-top:10px;" onclick="sendMsg()">ላክ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminPage" class="hidden">
+            <div id="loginBox" class="card" style="text-align:center;">
+                <h3>የአድሚን መግቢያ</h3>
+                <input type="password" id="pass" placeholder="Password" style="width:250px; text-align:center; margin-bottom:15px;"><br>
+                <button class="btn-sm" style="background:var(--dark);" onclick="login()">ግባ</button>
+            </div>
+
+            <div id="adminDash" class="hidden">
+                <div class="card">
+                    <h3 style="color:var(--gold);">የውጤት ትንተና ሪፖርት</h3>
+                    <div id="captureArea">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">ክፍል</th><th colspan="3">ጠቅላላ ተማሪ</th><th colspan="3">ያለፉ (>=50)</th><th colspan="3">የወደቁ (<50)</th>
+                                </tr>
+                                <tr><th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th></tr>
+                            </thead>
+                            <tbody id="analysisBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="action-bar">
+                        <button class="btn-sm" style="background:#007bff;" onclick="saveExcel()">💾 Save (Excel)</button>
+                        <button class="btn-sm" style="background:#25D366;" onclick="shareReport()">📤 Share (Image)</button>
+                        <button class="btn-sm" style="background:#6c757d;" onclick="window.print()">🖨️ Print (PDF)</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:var(--primary);">የወላጆች አስተያየት (In-box)</h3>
+                    <div class="inbox-area" id="msgInbox">መልእክት የለም...</div>
+                </div>
+
+                <div class="card">
+                    <h3>መረጃ መጫኛ (Excel)</h3>
+                    <input type="file" id="xlIn" accept=".xlsx, .xls">
+                    <div id="loadStatus" style="color:#00ff00; margin-top:10px; font-weight:bold;"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         let sts = JSON.parse(localStorage.getItem('db_s')) || [];
+        let msgs = JSON.parse(localStorage.getItem('db_m')) || [];
 
-        function init() {
-            if(sts.length > 0) {
-                renderAnalysis();
-                renderScorers();
-            }
+        function updateEthTime() {
+            const now = new Date();
+            const months = ["መስከረም", "ጥቅምት", "ህዳር", "ታህሳስ", "ጥር", "የካቲት", "መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ", "ሐምሌ", "ነሐሴ", "ጳጉሜ"];
+            document.getElementById('ethTime').innerText = `${months[now.getMonth()]} ${now.getDate()} ቀን 2018 ዓ.ም | ${now.toLocaleTimeString()}`;
         }
-        init();
+        setInterval(updateEthTime, 1000); updateEthTime();
 
-        document.getElementById('xlIn').addEventListener('change', function(e) {
-            let reader = new FileReader();
-            reader.onload = (event) => {
-                let workbook = XLSX.read(new Uint8Array(event.target.result), {type: 'array'});
-                let rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                sts = rows.map(r => ({
-                    n: (r.Name || "").trim(),
-                    s: (r.Sex || "M").trim().toUpperCase(),
-                    g: (r.Grade || "").trim().toUpperCase(),
-                    t: (Number(r.Notebook||0)+Number(r.Quiz1||0)+Number(r.Quiz2||0)+Number(r.Mid||0)+Number(r.Final||0))
-                })).filter(s => s.n !== "");
-                localStorage.setItem('db_s', JSON.stringify(sts));
-                location.reload();
-            };
-            reader.readAsArrayBuffer(e.target.files[0]);
-        });
+        function showPage(p) {
+            document.getElementById('userPage').classList.toggle('hidden', p!=='userPage');
+            document.getElementById('adminPage').classList.toggle('hidden', p!=='adminPage');
+            if(p === 'adminPage') { renderAnalysis(); renderInbox(); }
+        }
 
+        function login() {
+            if(document.getElementById('pass').value === "Eshet21d") {
+                document.getElementById('loginBox').classList.add('hidden');
+                document.getElementById('adminDash').classList.remove('hidden');
+                renderAnalysis(); renderInbox();
+            } else { alert("የተሳሳተ የይለፍ ቃል!"); }
+        }
+
+        // Analysis Rendering
         function renderAnalysis() {
             const grades = [...new Set(sts.map(s => s.g))].sort();
             let html = "";
@@ -107,40 +143,71 @@
                 let tF = d.filter(s => s.s==='F'||s.s==='ሴ').length;
                 let pM = d.filter(s => (s.s==='M'||s.s==='ወ') && s.t>=50).length;
                 let pF = d.filter(s => (s.s==='F'||s.s==='ሴ') && s.t>=50).length;
-                html += `<tr><td><b>${g}</b></td><td>${tM}</td><td>${tF}</td><td>${tM+tF}</td><td style="color:#00ff00">${pM}</td><td style="color:#00ff00">${pF}</td><td style="color:#00ff00">${pM+pF}</td><td style="color:#ff4d4d">${tM-pM}</td><td style="color:#ff4d4d">${tF-pF}</td><td style="color:#ff4d4d">${(tM+tF)-(pM+pF)}</td></tr>`;
+                html += `<tr><td><b>${g}</b></td><td>${tM}</td><td>${tF}</td><td>${tM+tF}</td><td>${pM}</td><td>${pF}</td><td>${pM+pF}</td><td>${tM-pM}</td><td>${tF-pF}</td><td>${(tM+tF)-(pM+pF)}</td></tr>`;
             });
-            document.getElementById('analysisBody').innerHTML = html;
+            document.getElementById('analysisBody').innerHTML = html || "<tr><td colspan='10'>መረጃ የለም</td></tr>";
         }
 
-        function renderScorers() {
-            const grades = [...new Set(sts.map(s => s.g))].sort();
-            let html = "";
-            grades.forEach(g => {
-                let d = sts.filter(s => s.g === g).sort((a,b) => b.t - a.t);
-                let tops = d.slice(0, 3);
-                let lows = d.slice(-3).reverse();
-
-                html += `
-                <div class="scorer-card">
-                    <h4 style="color:var(--primary); border-bottom:1px solid #444; margin-bottom:10px;">ክፍል ${g}</h4>
-                    
-                    <div style="margin-bottom:15px;">
-                        <small style="color:var(--gold)">🏆 ከፍተኛ ውጤት ያመጡ፡</small>
-                        <ul class="top-list">
-                            ${tops.map((s, i) => `<li><span class="rank-label">${i+1}ኛ.</span> ${s.n} (${s.t}%)</li>`).join('')}
-                        </ul>
-                    </div>
-
-                    <div>
-                        <small style="color:#ff4d4d">⚠️ ዝቅተኛ ውጤት ያመጡ፡</small>
-                        <ul class="low-list">
-                            ${lows.map((s, i) => `<li><span class="rank-label">${d.length - i}ኛ.</span> ${s.n} (${s.t}%)</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('scorerContainer').innerHTML = html;
+        // Excel, Share, Print Functions
+        function saveExcel() {
+            let wb = XLSX.utils.book_new();
+            let ws = XLSX.utils.table_to_sheet(document.querySelector("table"));
+            XLSX.utils.book_append_sheet(wb, ws, "Report");
+            XLSX.writeFile(wb, "English_Analysis_Report.xlsx");
         }
+
+        async function shareReport() {
+            const canvas = await html2canvas(document.getElementById('captureArea'), { backgroundColor: '#222' });
+            canvas.toBlob(blob => {
+                const file = new File([blob], 'Analysis.png', { type: 'image/png' });
+                if(navigator.share) navigator.share({ files: [file], title: 'የውጤት ትንተና' });
+                else alert("Browser not supported for direct share. Image saved.");
+            });
+        }
+
+        // Messaging Logic
+        function sendMsg() {
+            let n = document.getElementById('uName').value.trim();
+            let m = document.getElementById('pMsg').value.trim();
+            if(!n || !m) return alert("ስም እና አስተያየት ያስገቡ");
+            msgs.push({ n, m, dt: new Date().toLocaleString() });
+            localStorage.setItem('db_m', JSON.stringify(msgs));
+            document.getElementById('pMsg').value = ""; alert("ተልኳል!");
+        }
+
+        function renderInbox() {
+            let box = document.getElementById('msgInbox');
+            box.innerHTML = msgs.length === 0 ? "መልእክት የለም..." : msgs.map(m => `<div style="border-bottom:1px solid #444; padding:10px;"><small style="color:var(--gold);">${m.dt}</small><br><b>${m.n}:</b> ${m.m}</div>`).reverse().join('');
+        }
+
+        // Search Logic
+        function search() {
+            let name = document.getElementById('uName').value.trim().toLowerCase();
+            let grade = document.getElementById('uGrade').value.toUpperCase();
+            let gradeData = sts.filter(s => s.g === grade).sort((a,b) => b.t - a.t);
+            gradeData.forEach((s, i) => { s.rank = i + 1; });
+            let f = gradeData.find(s => s.n.toLowerCase() === name);
+            if(f) {
+                document.getElementById('resBoxLarge').innerHTML = `<div style="font-size:1.8rem;">${f.n}</div><div style="font-size:2.2rem; color:var(--gold);">ውጤት፦ ${f.t}% | ደረጃ፦ ${f.rank}ኛ</div>`;
+                document.getElementById('teacherNote').innerText = f.nt;
+            } else { document.getElementById('resBoxLarge').innerHTML = "ውጤቱ አልተገኘም!"; }
+        }
+
+        // Excel Loader
+        document.getElementById('xlIn').addEventListener('change', function(e) {
+            let reader = new FileReader();
+            reader.onload = (event) => {
+                let workbook = XLSX.read(new Uint8Array(event.target.result), {type: 'array'});
+                let rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                sts = rows.map(r => ({
+                    n: (r.Name || "").trim(), s: (r.Sex || "M").toString().trim().toUpperCase(), g: (r.Grade || "").toString().trim().toUpperCase(),
+                    t: (Number(r.Notebook||0)+Number(r.Quiz1||0)+Number(r.Quiz2||0)+Number(r.Mid||0)+Number(r.Final||0)), nt: (r.Note || "በርታ!")
+                })).filter(s => s.n !== "");
+                localStorage.setItem('db_s', JSON.stringify(sts));
+                document.getElementById('loadStatus').innerText = "ተሳክቷል!"; renderAnalysis();
+            };
+            reader.readAsArrayBuffer(e.target.files[0]);
+        });
     </script>
 </body>
 </html>
