@@ -17,13 +17,13 @@
             background-attachment: fixed; background-position: center;
         }
 
-        /* 3D Header */
         .main-header {
             text-align: center; padding: 25px; background: rgba(0, 51, 102, 0.85);
             color: white; border-bottom: 5px solid var(--gold);
             text-shadow: 2px 2px 4px #000;
         }
         .school-title { font-size: 2.5rem; color: var(--primary); margin: 0; }
+        .sub-header { font-size: 1.2rem; color: var(--gold); margin-top: 5px; }
 
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
@@ -31,41 +31,42 @@
             padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: bold;
         }
 
-        .container { max-width: 1150px; margin: 20px auto; padding: 10px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 10px; }
 
-        /* Mirror Card Effect */
         .card {
             background: var(--glass); backdrop-filter: blur(10px);
             border: 3px solid var(--dark); border-radius: 35px;
             padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        /* Horizontal 4-Maezen Inputs */
         .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .flex-row > div, .flex-row input, .flex-row select { flex: 1; min-width: 150px; height: 40px; border-radius: 12px; border: 2px solid var(--primary); padding: 0 10px; box-sizing: border-box; }
+        
         .btn-sm { height: 40px; padding: 0 20px; border-radius: 12px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
+        .btn-report { padding: 10px 20px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; margin-right: 10px; }
 
-        /* Analysis Table - Exactly like your Image */
+        /* Analysis Table - Your Format */
         .table-wrapper { overflow-x: auto; margin-top: 15px; }
         table { width: 100%; border-collapse: collapse; background: white; border: 2px solid black; }
-        th, td { border: 1px solid black; padding: 5px; text-align: center; font-size: 11px; }
+        th, td { border: 1px solid black; padding: 4px; text-align: center; font-size: 11px; }
         th { background: #eee; font-weight: bold; }
+        
         .res-box { background: #fffde7; border: 2px dashed var(--gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; height: 40px; min-width: 120px; }
 
         .hidden { display: none; }
-        @media print { .no-print { display: none; } }
+        @media print { .no-print { display: none; } .card { border: none; box-shadow: none; } }
     </style>
 </head>
 <body>
 
-    <div class="nav-header">
+    <div class="nav-header no-print">
         <button class="nav-btn" onclick="showPage('userPage')">ተማሪ</button>
         <button class="nav-btn" onclick="showPage('adminPage')">አድሚን</button>
     </div>
 
     <div class="main-header">
         <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
-        <p>ኢንግሊዝኛ - መ/ር ደለለኝ አጥላው</p>
+        <div class="sub-header">መ/ር ደለለኝ አጥላው // Englizgna</div>
     </div>
 
     <div class="container">
@@ -90,23 +91,22 @@
 
         <div id="adminPage" class="hidden">
             <div id="loginBox" class="card" style="text-align: center;">
-                <input type="password" id="pass" placeholder="Password" style="width: 200px;">
+                <input type="password" id="pass" placeholder="Password" style="width: 200px; height: 35px; border-radius: 10px; border: 1px solid #ccc;">
                 <button class="btn-sm" onclick="login()">ግባ</button>
             </div>
 
             <div id="adminDash" class="hidden">
                 <div class="card no-print">
-                    <h4>መረጃ መጫኛ (4-Maezen)</h4>
+                    <h4>መረጃ መጫኛ</h4>
                     <div class="flex-row">
-                        <div><small>ጀርባ:</small><input type="file" onchange="setBg(event)"></div>
-                        <div><small>Excel:</small><input type="file" id="xlIn"></div>
-                        <div><small>ጋለሪ:</small><input type="file" multiple onchange="upGal(event)"></div>
-                        <button class="btn-sm" style="background: #007bff;" onclick="window.print()">Print Report</button>
+                        <div><small>ጀርባ ምስል:</small><input type="file" onchange="setBg(event)"></div>
+                        <div><small>Excel ፋይል:</small><input type="file" id="xlIn"></div>
+                        <div><small>ጋለሪ ፎቶ:</small><input type="file" multiple onchange="upGal(event)"></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 style="text-align: center;">የውጤት ትንተና</h3>
+                    <h3 style="text-align: center;">ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና</h3>
                     <div class="table-wrapper">
                         <table id="statTable">
                             <thead>
@@ -133,8 +133,16 @@
                             <tbody id="stBody"></tbody>
                         </table>
                     </div>
-                    <div style="margin-top: 15px;">
-                        <p><b>መ/ር ደለለኝ አጥላው</b><br>ፊርማ፡ ________________<br>ቀን፡ ________________</p>
+                    
+                    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p><b>መ/ር ደለለኝ አጥላው</b><br>ፊርማ፡ ________________<br>ቀን፡ ________________</p>
+                        </div>
+                        <div class="no-print">
+                            <button class="btn-report" style="background: #28a745;" onclick="saveReport()">Save Report</button>
+                            <button class="btn-report" style="background: #007bff;" onclick="window.print()">Print Report</button>
+                            <button class="btn-report" style="background: #17a2b8;" onclick="shareReport()">Share Report</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,12 +206,24 @@
             document.getElementById('stBody').innerHTML = h;
         }
 
+        function saveReport() {
+            let table = document.getElementById("statTable");
+            let wb = XLSX.utils.table_to_book(table);
+            XLSX.writeFile(wb, "Analysis_Report.xlsx");
+        }
+
+        function shareReport() {
+            let txt = "📊 ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና\n";
+            document.querySelectorAll("#stBody tr").forEach(r => { txt += r.innerText + "\n"; });
+            navigator.clipboard.writeText(txt); alert("ሪፖርቱ ኮፒ ተደርጓል!");
+        }
+
         function search() {
             let n = document.getElementById('uName').value.trim().toLowerCase();
             let g = document.getElementById('uGrade').value;
             let f = sts.find(s => s.n.toLowerCase() === n && s.g.includes(g));
             let b = document.getElementById('resBox');
-            if(f) { b.style.visibility = "visible"; b.innerText = f.t + "% - " + f.nt; }
+            if(f) { b.style.visibility = "visible"; b.innerText = f.t + "% - " + (f.nt || "በርታ!"); }
             else { alert("አልተገኘም!"); }
         }
 
