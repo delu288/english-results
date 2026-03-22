@@ -4,58 +4,51 @@
     <meta charset="UTF-8">
     <title>የውድድር ውጤት መያዣ - Delu</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 15px; }
-        #login-box { width: 340px; margin: 100px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
-        .in-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; }
-        .btn-login { width: 100%; padding: 12px; background: #1a2a6c; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        #login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; width: 320px; }
+        .in-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        .btn-in { width: 100%; padding: 12px; background: #1a2a6c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
-        #main-app { display: none; max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
-        .header-box { display: flex; justify-content: space-between; align-items: center; background: #e9ecef; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        #main-app { display: none; width: 95%; max-width: 1200px; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin: 20px; }
+        .top-info { display: flex; justify-content: space-between; background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; align-items: center; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
-        th, td { border: 1px solid #dee2e6; padding: 8px; text-align: center; }
-        th { background: #343a40; color: white; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: center; }
+        th { background: #2c3e50; color: white; font-size: 13px; }
 
-        .btn-check { cursor: pointer; font-weight: bold; font-size: 20px; height: 45px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #ddd; border-radius: 5px; }
-        .correct { background-color: #d4edda !important; color: #155724; border-color: #c3e6cb; }
-        .wrong { background-color: #f8d7da !important; color: #721c24; border-color: #f5c6cb; }
+        .btn-check { cursor: pointer; font-weight: bold; font-size: 22px; height: 45px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #eee; border-radius: 8px; }
+        .correct { background-color: #e8f5e9 !important; color: #27ae60; border-color: #27ae60; }
+        .wrong { background-color: #ffebee !important; color: #e74c3c; border-color: #e74c3c; }
 
-        .footer { display: flex; justify-content: space-between; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 1px solid #ddd; }
-        .save-btn { background: #28a745; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-        @media print { .no-print { display: none; } #main-app { box-shadow: none; width: 100%; } }
+        .footer { display: flex; justify-content: space-between; margin-top: 30px; padding: 20px; background: #fafafa; border-radius: 15px; }
+        .btn-save { background: #27ae60; color: white; padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        
+        @media print { .no-print { display: none; } #main-app { box-shadow: none; border: none; width: 100%; } }
     </style>
 </head>
 <body>
 
-<!-- LOGIN SECTION -->
+<!-- Log In -->
 <div id="login-box">
-    <h2 style="color:#1a2a6c">የውድድር መግቢያ</h2>
-    <input type="text" id="uIn" class="in-field" placeholder="Username">
-    <input type="password" id="pIn" class="in-field" placeholder="Password">
-    <p id="errMsg" style="color:red; display:none;">ያልተፈቀደ ሙከራ!</p>
-    <button class="btn-login" onclick="auth()">ግባ</button>
+    <h2 style="color:#1a2a6c">መግቢያ (Log In)</h2>
+    <input type="text" id="u" class="in-field" placeholder="Username (Delu)">
+    <input type="password" id="p" class="in-field" placeholder="Password (1221)">
+    <p id="err" style="color:red; font-size:13px; display:none;">ስም ወይም ፓስወርድ ተሳስቷል!</p>
+    <button class="btn-in" onclick="check()">ግባ</button>
 </div>
 
-<!-- MAIN APPLICATION -->
+<!-- Main App -->
 <div id="main-app">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="color:#1a2a6c; margin:0;">የጥያቄና መልስ ውጤት መያዣ</h2>
-        <div id="clock" style="font-weight:bold; font-size:1.1em;"></div>
-        <button class="no-print" onclick="location.reload()" style="background:#dc3545; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">ውጣ</button>
+        <div id="liveClock" style="font-weight:bold; color:#555;"></div>
+        <button class="no-print" onclick="location.reload()" style="cursor:pointer; background:#eee; border:1px solid #ccc; padding:5px 10px; border-radius:5px;">ውጣ</button>
     </div>
 
-    <div class="header-box">
-        <div>ቀን፡ <span id="date" style="font-weight:bold;"></span></div>
-        <div>ክፍል፡ 
-            <select id="gradeSel" style="padding:5px;">
-                <option>1ኛ ሀ</option><option>1ኛ ለ</option>
-                <option>2ኛ ሀ</option><option>2ኛ ለ</option>
-                <option>3ኛ ሀ</option><option>4ኛ ሀ</option>
-                <option>5ኛ ሀ</option><option>6ኛ ሀ</option>
-            </select>
-        </div>
-        <div>ሴሚስተር፡ <select id="semSel" style="padding:5px;"><option>1ኛ</option><option selected>2ኛ</option></select></div>
+    <div class="top-info">
+        <div>ቀን፡ <span id="currentDate" style="font-weight:bold;"></span></div>
+        <div>ክፍል፡ <select id="gr" style="padding:5px;"><option>1ኛሀ</option><option>1ኛለ</option><option>2ኛሀ</option><option>3ኛሀ</option></select></div>
+        <div>ሴሚስተር፡ <select id="sm" style="padding:5px;"><option>1ኛ ሴሚስተር</option><option selected>2ኛ ሴሚስተር</option></select></div>
     </div>
 
     <table>
@@ -67,29 +60,27 @@
             </tr>
             <tr><th>1</th><th>2</th><th>1</th><th>2</th><th>1</th><th>2</th><th>1</th><th>2</th><th>1</th><th>2</th></tr>
         </thead>
-        <tbody id="quizRows"></tbody>
+        <tbody id="rows"></tbody>
     </table>
 
     <div style="text-align:center; margin-top:20px;" class="no-print">
-        <button class="save-btn" onclick="saveData()">💾 ውጤቱን መዝግብ</button>
-        <button onclick="window.print()" style="background:#6c757d; color:white; padding:12px 30px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin-left:10px;">🖨️ ውጤቱን አትም</button>
+        <button class="btn-save" onclick="save()">💾 ውጤቱን መዝግብ (Save)</button>
+        <button onclick="window.print()" style="background:#34495e; color:white; padding:12px 25px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; margin-left:10px;">🖨️ አትም (Print)</button>
     </div>
 
-    <div id="historySection" style="display:none; margin-top:40px; border-top:2px solid #1a2a6c; padding-top:20px;">
-        <h3 style="color:#1a2a6c">የተመዘገቡ ውጤቶች (History)</h3>
-        <table id="historyTable" style="background:#fff;">
-            <thead><tr style="background:#eee; color:#333;"><th>ክፍል</th><th>ስም</th><th>ውጤት</th><th>ደረጃ</th></tr></thead>
-            <tbody></tbody>
-        </table>
+    <div id="history" style="display:none; margin-top:30px; border-top:2px dashed #ccc; padding-top:20px;">
+        <h3>የተመዘገቡ ውጤቶች</h3>
+        <table id="hTable" style="background:#fcfcfc;"><thead><tr><th>ክፍል</th><th>ስም</th><th>ውጤት</th><th>ደረጃ</th></tr></thead><tbody></tbody></table>
     </div>
 
     <div class="footer">
         <div>
-            <h4 style="margin:0 0 10px 0; color:#1a2a6c;">የውድድሩ ዳኞች</h4>
-            1ኛ፡ <select class="jDrop" style="width:180px; padding:3px;"></select><br><br>
-            2ኛ፡ <select class="jDrop" style="width:180px; padding:3px;"></select>
+            <h4 style="margin-top:0; color:#1a2a6c;">የውድድሩ ዳኞች</h4>
+            1ኛ፡ <select class="jdg input-field" style="width:180px;"></select><br>
+            2ኛ፡ <select class="jdg input-field" style="width:180px;"></select>
         </div>
         <div style="text-align:right;">
+            <h4 style="margin-top:0; color:#1a2a6c;">አወዳዳሪ ኮሚቴዎች</h4>
             <p>ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b></p>
             <p>ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b></p>
             <p>ፊርማ፡ _________________</p>
@@ -98,97 +89,86 @@
 </div>
 
 <script>
-    // Hidden Credentials (Base64)
-    const _u = "RGVsdQ=="; // Delu
-    const _p = "MTIyMQ=="; // 1221
+    const judges = ["መ/ር ዳዊት የማነ", "መ/ር ደለለኝ አጥላው", "መ/ርት መሰረት ፋንታ", "መ/ር ባየልኝ አይተንፍሱ", "መ/ር አሰጋኸኝ በሻህ", "መ/ር ተፈሪ ታደሰ", "መ/ር እሸቱ አለሙ", "መ/ር ተፈራ ፈቀደው", "መ/ርት መሰረት ግዛቸው", "ር/መ/ር አማረ አሰፋ"];
 
-    function auth() {
-        const u = document.getElementById('uIn').value;
-        const p = document.getElementById('pIn').value;
-        if(btoa(u) === _u && btoa(p) === _p) {
+    function check() {
+        if(document.getElementById('u').value === "Delu" && document.getElementById('p').value === "1221") {
             document.getElementById('login-box').style.display = "none";
             document.getElementById('main-app').style.display = "block";
-            initApp();
-        } else {
-            document.getElementById('errMsg').style.display = "block";
-        }
+            init();
+        } else { document.getElementById('err').style.display = "block"; }
     }
 
-    function initApp() {
-        // Date and Time
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = "ሰዓት፡ " + now.toLocaleTimeString();
-            document.getElementById('date').innerText = now.toLocaleDateString('am-ET');
+    function init() {
+        // Clock & Date
+        setInterval(() => { 
+            let d = new Date();
+            document.getElementById('liveClock').innerText = "ሰዓት፡ " + d.toLocaleTimeString();
+            document.getElementById('currentDate').innerText = d.toLocaleDateString('am-ET');
         }, 1000);
 
-        // Judges List
-        const judges = ["መ/ር ዳዊት የማነ", "መ/ር ደለለኝ አጥላው", "መ/ርት መሰረት ፋንታ", "መ/ር ባየልኝ አይተንፍሱ", "መ/ር አሰጋኸኝ በሻህ", "መ/ር ተፈሪ ታደሰ", "መ/ር እሸቱ አለሙ", "መ/ር ተፈራ ፈቀደው", "መ/ርት መሰረት ግዛቸው", "ር/መ/ር አማረ አሰፋ"];
-        document.querySelectorAll('.jDrop').forEach(select => {
-            select.innerHTML = "<option>--- ምረጥ ---</option>";
-            judges.forEach(j => { let opt = document.createElement('option'); opt.text = j; select.add(opt); });
+        // Fill Judges
+        document.querySelectorAll('.jdg').forEach(s => {
+            s.innerHTML = "<option>--- ምረጥ ---</option>";
+            judges.forEach(j => { let o = document.createElement('option'); o.text = j; s.add(o); });
         });
 
-        // Generate 6 Rows
-        const tbody = document.getElementById('quizRows');
-        tbody.innerHTML = "";
+        // Fill Rows
+        let b = document.getElementById('rows');
+        b.innerHTML = "";
         for(let i=1; i<=6; i++) {
-            tbody.innerHTML += `<tr id="row${i}">
+            b.innerHTML += `<tr id="tr${i}">
                 <td>${i}</td>
-                <td><input type="text" style="width:90%; padding:5px; border:1px solid #ccc;" oninput="updateRank()"></td>
-                ${Array(10).fill().map(() => `<td><div class="btn-check" onclick="handleMark(this, ${i})">-</div></td>`).join('')}
-                <td id="c${i}">0</td><td id="w${i}">0</td><td id="t${i}">0/10</td><td id="rk${i}" style="font-weight:bold; color:#1a2a6c;">-</td>
+                <td><input type="text" style="width:90%; padding:5px;" oninput="rank()"></td>
+                ${Array(10).fill().map(() => `<td><div class="btn-check" onclick="mark(this, ${i})">-</div></td>`).join('')}
+                <td id="c${i}">0</td><td id="w${i}">0</td><td id="t${i}">0/10</td><td id="r${i}" style="font-weight:bold; color:blue;">-</td>
             </tr>`;
         }
     }
 
-    function handleMark(el, rowId) {
+    function mark(el, id) {
         if(el.innerText === "-") { el.innerText = "✓"; el.className = "btn-check correct"; }
         else if(el.innerText === "✓") { el.innerText = "X"; el.className = "btn-check wrong"; }
         else { el.innerText = "-"; el.className = "btn-check"; }
         
-        const row = document.getElementById('row'+rowId);
-        const corrects = row.querySelectorAll('.correct').length;
-        document.getElementById('c'+rowId).innerText = corrects;
-        document.getElementById('w'+rowId).innerText = row.querySelectorAll('.wrong').length;
-        document.getElementById('t'+rowId).innerText = corrects + "/10";
-        updateRank();
+        let row = document.getElementById('tr'+id);
+        let c = row.querySelectorAll('.correct').length;
+        let w = row.querySelectorAll('.wrong').length;
+        document.getElementById('c'+id).innerText = c;
+        document.getElementById('w'+id).innerText = w;
+        document.getElementById('t'+id).innerText = c + "/10";
+        rank();
     }
 
-    function updateRank() {
-        let players = [];
+    function rank() {
+        let scores = [];
         for(let i=1; i<=6; i++) {
-            let score = parseInt(document.getElementById('c'+i).innerText);
-            let name = document.getElementById('row'+i).getElementsByTagName('input')[0].value;
-            if(name.trim() !== "" || score > 0) players.push({id: i, score: score});
+            let s = parseInt(document.getElementById('c'+i).innerText);
+            let n = document.getElementById('tr'+i).getElementsByTagName('input')[0].value;
+            if(n !== "" || s > 0) scores.push({id: i, score: s});
         }
-        
-        // Tie-friendly ranking logic
-        let sortedScores = players.map(p => p.score).sort((a, b) => b - a);
-        players.forEach(p => {
-            let rank = sortedScores.indexOf(p.score) + 1;
-            document.getElementById('rk'+p.id).innerText = rank + "ኛ";
+        // ተመሣሣይ ውጤት ደረጃ አሰጣጥ
+        let sorted = [...scores].sort((a,b) => b.score - a.score);
+        scores.forEach(item => {
+            let r = sorted.findIndex(x => x.score === item.score) + 1;
+            document.getElementById('r'+item.id).innerText = r + "ኛ";
         });
     }
 
-    function saveData() {
-        const hBody = document.getElementById('historyTable').querySelector('tbody');
-        const currentGrade = document.getElementById('gradeSel').value;
-        let added = false;
-
+    function save() {
+        let h = document.getElementById('hTable').getElementsByTagName('tbody')[0];
+        let g = document.getElementById('gr').value;
+        let found = false;
         for(let i=1; i<=6; i++) {
-            let name = document.getElementById('row'+i).getElementsByTagName('input')[0].value;
-            let score = document.getElementById('t'+i).innerText;
-            let rank = document.getElementById('rk'+i).innerText;
-            if(name.trim() !== "") {
-                hBody.innerHTML += `<tr><td>${currentGrade}</td><td>${name}</td><td>${score}</td><td>${rank}</td></tr>`;
-                added = true;
+            let n = document.getElementById('tr'+i).getElementsByTagName('input')[0].value;
+            let t = document.getElementById('t'+i).innerText;
+            let r = document.getElementById('r'+i).innerText;
+            if(n !== "") {
+                h.innerHTML += `<tr><td>${g}</td><td>${n}</td><td>${t}</td><td>${r}</td></tr>`;
+                found = true;
             }
         }
-        if(added) {
-            document.getElementById('historySection').style.display = "block";
-            alert("የ " + currentGrade + " ውጤት በተሳካ ሁኔታ ተመዝግቧል!");
-        }
+        if(found) { document.getElementById('history').style.display = "block"; alert("ተመዝግቧል!"); }
     }
 </script>
 
