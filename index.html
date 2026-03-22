@@ -3,94 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የውድድር ሰዓት መቁጠሪያ</title>
+    <title>የውድድር መቆጣጠሪያ ገጽ</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
         }
-        .timer-display {
-            font-size: 6rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            background: white;
-            padding: 30px 60px;
+        .timer-section {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
+        #timer {
+            font-size: 5rem;
             font-family: monospace;
+            margin-bottom: 20px;
+            display: block;
+            color: #2ecc71;
         }
-        .controls {
-            display: flex;
-            gap: 20px;
-        }
-        button {
-            padding: 15px 45px;
-            font-size: 1.3rem;
+        .controls button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
+            margin: 5px;
             transition: 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .start-btn {
-            background-color: #27ae60;
-            color: white;
-        }
-        .start-btn:hover { background-color: #219150; transform: translateY(-2px); }
-        
-        .stop-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
-        .stop-btn:hover { background-color: #c0392b; transform: translateY(-2px); }
+        .start-btn { background-color: #27ae60; color: white; }
+        .stop-btn { background-color: #e74c3c; color: white; }
+        .reset-btn { background-color: #f39c12; color: white; }
 
-        h2 { color: #34495e; margin-bottom: 10px; }
+        .results-section {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 { color: #34495e; text-align: center; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th { background-color: #3498db; color: white; }
+        tr:hover { background-color: #f9f9f9; }
     </style>
 </head>
 <body>
 
-    <h2>የውድድር ሰዓት</h2>
-    <div class="timer-display" id="timer">00:00</div>
+    <!-- የሰዓት ክፍል -->
+    <div class="timer-section">
+        <h2>የውድድር ሰዓት</h2>
+        <span id="timer">00:00</span>
+        <div class="controls">
+            <button class="start-btn" onclick="startTimer()">ጀምር</button>
+            <button class="stop-btn" onclick="stopTimer()">አቁም</button>
+            <button class="reset-btn" onclick="resetTimer()">እንደገና</button>
+        </div>
+    </div>
 
-    <div class="controls">
-        <button class="start-btn" onclick="startCounter()">ጀምር</button>
-        <button class="stop-btn" onclick="stopCounter()">አቁም</button>
+    <!-- የውጤት ሰንጠረዥ ክፍል -->
+    <div class="results-section">
+        <h2>የተወዳዳሪዎች ውጤት</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ተ.ቁ</th>
+                    <th>የተወዳዳሪ ስም</th>
+                    <th>ውጤት</th>
+                    <th>ደረጃ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>ተማሪ 1</td>
+                    <td>---</td>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>ተማሪ 2</td>
+                    <td>---</td>
+                    <td>---</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <script>
         let counter;
-        let totalSeconds = 0;
+        let seconds = 0;
         let isRunning = false;
 
-        function startCounter() {
-            if (isRunning) return; // ቀድሞ እየቆጠረ ከሆነ በድጋሚ እንዳይጀምር
-
+        function startTimer() {
+            if (isRunning) return;
             isRunning = true;
             counter = setInterval(() => {
-                totalSeconds++;
-                
-                const minutes = Math.floor(totalSeconds / 60);
-                const seconds = totalSeconds % 60;
-
-                // ሰዓቱን በ 00:00 ፎርማት ለማሳየት
-                const displayMins = minutes < 10 ? '0' + minutes : minutes;
-                const displaySecs = seconds < 10 ? '0' + seconds : seconds;
-
-                document.getElementById('timer').textContent = `${displayMins}:${displaySecs}`;
+                seconds++;
+                let mins = Math.floor(seconds / 60);
+                let secs = seconds % 60;
+                document.getElementById('timer').textContent = 
+                    (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
             }, 1000);
         }
 
-        function stopCounter() {
+        function stopTimer() {
             clearInterval(counter);
             isRunning = false;
+        }
+
+        function resetTimer() {
+            stopTimer();
+            seconds = 0;
+            document.getElementById('timer').textContent = "00:00";
         }
     </script>
 
