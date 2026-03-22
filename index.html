@@ -3,75 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ጣይቱ ብጡል አካዳሚ - English Result</title>
+    <title>ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
             --primary: #00BFFF; --gold: #FFD700; --dark: #003366;
-            /* Watermark/Glass Effect */
-            --glass: rgba(255, 255, 255, 0.2); 
+            --glass: rgba(255, 255, 255, 0.15); 
         }
 
         body {
             font-family: 'Segoe UI', sans-serif; margin: 0;
-            background-color: #333; /* ምስል ካልተመረጠ የሚታይ */
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
+            background-color: #222; background-size: cover;
+            background-attachment: fixed; background-position: center;
+            color: white;
         }
 
+        /* Watermark Header */
         .main-header {
-            text-align: center; padding: 25px; 
-            background: rgba(0, 51, 102, 0.6); /* Header watermark */
-            color: white; border-bottom: 5px solid var(--gold);
-            backdrop-filter: blur(5px);
+            text-align: center; padding: 20px; 
+            background: rgba(0, 51, 102, 0.5);
+            border-bottom: 4px solid var(--gold);
+            backdrop-filter: blur(8px);
         }
-        .school-title { font-size: 2.5rem; color: var(--primary); margin: 0; text-shadow: 2px 2px 8px #000; }
-        .sub-header { font-size: 1.2rem; color: var(--gold); margin-top: 5px; font-weight: bold; }
+        .school-title { font-size: 2.2rem; color: var(--primary); margin: 0; text-shadow: 2px 2px 5px #000; }
 
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
-            background: var(--gold); color: var(--dark); border: 2px solid var(--dark);
+            background: var(--gold); color: var(--dark); border: none;
             padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: bold;
         }
 
-        .container { max-width: 1200px; margin: 20px auto; padding: 10px; }
+        .container { max-width: 1300px; margin: 20px auto; padding: 10px; }
 
-        /* Watermark Card Style */
+        /* Glassmorphism Card */
         .card {
-            background: var(--glass); 
-            backdrop-filter: blur(10px); /* ጀርባውን ትንሽ ያደበዝዛል */
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3); /* ቀጭን ነጭ መስመር */
-            border-radius: 35px;
-            padding: 20px; margin-bottom: 20px; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            color: white; /* ጽሑፉ በጨለማ ምስል ላይ እንዲታይ */
+            background: var(--glass); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px; padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
-        
-        h3, h4 { color: var(--gold); text-shadow: 1px 1px 2px #000; }
 
         .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .flex-row input, .flex-row select { 
-            flex: 1; min-width: 150px; height: 40px; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.2); 
-            color: white; padding: 0 10px; 
+            flex: 1; min-width: 140px; height: 38px; border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.3); color: white; padding: 0 10px;
         }
-        ::placeholder { color: #ddd; }
 
-        .btn-sm { height: 40px; padding: 0 20px; border-radius: 12px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
-        .btn-report { padding: 10px 20px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; margin-right: 10px; }
+        .btn-sm { height: 38px; padding: 0 20px; border-radius: 10px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
+        .btn-report { padding: 8px 15px; border-radius: 8px; border: none; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        /* Analysis Table - Watermark Style */
-        .table-wrapper { overflow-x: auto; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; background: rgba(255, 255, 255, 0.1); border: 1px solid white; }
-        th, td { border: 1px solid rgba(255,255,255,0.3); padding: 4px; text-align: center; font-size: 11px; color: white; }
-        th { background: rgba(0, 0, 0, 0.4); font-weight: bold; }
+        /* ANALYSIS TABLE - EXACT IMAGE FORMAT */
+        .table-wrapper { overflow-x: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; background: rgba(0, 0, 0, 0.2); }
+        th, td { border: 1px solid rgba(255,255,255,0.4); padding: 5px; text-align: center; font-size: 11px; color: white; }
+        th { background: rgba(0, 51, 102, 0.7); }
+        .title-row { background: rgba(255, 255, 255, 0.1); font-size: 14px; font-weight: bold; }
         
-        .res-box { background: rgba(255, 253, 231, 0.2); border: 2px dashed var(--gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; height: 40px; min-width: 120px; }
+        .res-box { background: rgba(255, 255, 255, 0.1); border: 2px dashed var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; height: 38px; min-width: 150px; font-weight: bold; }
 
         .hidden { display: none; }
-        @media print { .no-print { display: none; } .card { background: white !important; color: black !important; border: 1px solid #000; } }
+        @media print { .no-print { display: none; } body { background: white; color: black; } table, th, td { border: 1px solid black; color: black; } }
     </style>
 </head>
 <body>
@@ -83,7 +75,7 @@
 
     <div class="main-header">
         <h1 class="school-title">ጣይቱ ብጡል አካዳሚ</h1>
-        <div class="sub-header">መ/ር ደለለኝ አጥላው // Englizgna</div>
+        <div style="color: var(--gold); font-weight: bold;">መ/ር ደለለኝ አጥላው // Englizgna</div>
     </div>
 
     <div class="container">
@@ -91,24 +83,25 @@
             <div class="card">
                 <h4>ውጤት መፈለጊያ</h4>
                 <div class="flex-row">
-                    <input type="text" id="uName" placeholder="ሙሉ ስም...">
+                    <input type="text" id="uName" placeholder="የተማሪ ስም...">
                     <select id="uGrade">
                         <option value="">ክፍል...</option>
-                        <option>1A</option><option>1B</option><option>2A</option><option>2B</option><option>3A</option><option>4A</option><option>5A</option><option>6A</option>
+                        <option>1A</option><option>1B</option><option>2A</option><option>2B</option>
+                        <option>3A</option><option>4A</option><option>5A</option><option>6A</option>
                     </select>
                     <button class="btn-sm" onclick="search()">አሳይ</button>
                     <div id="resBox" class="res-box" style="visibility: hidden;">--</div>
                 </div>
             </div>
             <div class="card">
-                <h4>ጋለሪ</h4>
-                <div id="userGal" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;"></div>
+                <h4>ፎቶ ጋለሪ</h4>
+                <div id="userGal" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;"></div>
             </div>
         </div>
 
         <div id="adminPage" class="hidden">
             <div id="loginBox" class="card" style="text-align: center;">
-                <input type="password" id="pass" placeholder="Password" style="width: 200px;">
+                <input type="password" id="pass" placeholder="Password" style="width: 180px; height: 35px; border-radius: 8px; border: 1px solid #666; background: #000; color: #fff; text-align: center;">
                 <button class="btn-sm" onclick="login()">ግባ</button>
             </div>
 
@@ -123,10 +116,10 @@
                 </div>
 
                 <div class="card">
-                    <h3 style="text-align: center;">ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና</h3>
                     <div class="table-wrapper">
                         <table id="statTable">
                             <thead>
+                                <tr class="title-row"><td colspan="28">ጣይቱ ብጡል አካዳሚ // ትምህርት፡ English</td></tr>
                                 <tr>
                                     <th rowspan="2">ክፍል</th>
                                     <th colspan="3">ጠቅላላ ተማሪ</th>
@@ -147,18 +140,19 @@
                                     <th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th>
                                 </tr>
                             </thead>
-                            <tbody id="stBody"></tbody>
+                            <tbody id="stBody">
+                                </tbody>
                         </table>
                     </div>
                     
                     <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
-                        <div>
+                        <div style="font-size: 13px;">
                             <p><b>መ/ር ደለለኝ አጥላው</b><br>ፊርማ፡ ________________<br>ቀን፡ ________________</p>
                         </div>
                         <div class="no-print">
-                            <button class="btn-report" style="background: #28a745;" onclick="saveReport()">Save Report</button>
-                            <button class="btn-report" style="background: #007bff;" onclick="window.print()">Print Report</button>
-                            <button class="btn-report" style="background: #17a2b8;" onclick="shareReport()">Share Report</button>
+                            <button class="btn-report" style="background: #28a745;" onclick="saveReport()">Save Excel</button>
+                            <button class="btn-report" style="background: #007bff;" onclick="window.print()">Print</button>
+                            <button class="btn-report" style="background: #17a2b8;" onclick="shareReport()">Share</button>
                         </div>
                     </div>
                 </div>
@@ -179,6 +173,7 @@
         function showPage(p) {
             document.getElementById('userPage').classList.toggle('hidden', p!=='userPage');
             document.getElementById('adminPage').classList.toggle('hidden', p!=='adminPage');
+            if(p==='userPage') renderGal();
         }
 
         function login() {
@@ -190,62 +185,51 @@
         }
 
         document.getElementById('xlIn').addEventListener('change', function(e) {
-            let r = new FileReader();
-            r.onload = (ex) => {
-                let d = new Uint8Array(ex.target.result);
-                let wb = XLSX.read(d, {type:'array'});
+            let reader = new FileReader();
+            reader.onload = (ex) => {
+                let data = new Uint8Array(ex.target.result);
+                let wb = XLSX.read(data, {type:'array'});
                 let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                sts = rows.map(i => ({
-                    n: i.Name || i.ስም, s: String(i.Sex || i.ጾታ || "").toUpperCase(), g: String(i.Grade || i.ክፍል),
-                    t: (Number(i.Notebook||0)+Number(i.Quiz1||0)+Number(i.Quiz2||0)+Number(i.Mid||0)+Number(i.Final||0)),
-                    nt: i.Note || ""
+                sts = rows.map(r => ({
+                    n: r.Name || r.ስም, s: String(r.Sex || r.ጾታ || "").toUpperCase(), g: String(r.Grade || r.ክፍል),
+                    t: (Number(r.Notebook||0)+Number(r.Quiz1||0)+Number(r.Quiz2||0)+Number(r.Mid||0)+Number(r.Final||0)),
+                    nt: r.Note || ""
                 }));
                 localStorage.setItem('db_s', JSON.stringify(sts));
-                alert("ተሳክቷል!"); runAnalysis();
+                alert("መረጃው ገብቷል!"); runAnalysis();
             };
-            r.readAsArrayBuffer(e.target.files[0]);
+            reader.readAsArrayBuffer(e.target.files[0]);
         });
 
         function runAnalysis() {
-            const gs = ["1A", "1B", "2A", "2B", "3A", "4A", "5A", "6A"];
-            const rs = [{n:0,x:49.9}, {n:50,x:74.9}, {n:75,x:84.9}, {n:85,x:100}];
-            let h = "";
-            gs.forEach(g => {
-                let d = sts.filter(s => s.g.includes(g));
-                let mW = d.filter(s => s.s.startsWith('M')||s.s.startsWith('ወ')).length;
-                let mS = d.filter(s => s.s.startsWith('F')||s.s.startsWith('ሴ')).length;
+            const grades = ["1A", "1B", "2A", "2B", "3A", "4A", "5A", "6A"];
+            const ranges = [{n:0,x:49.9}, {n:50,x:74.9}, {n:75,x:84.9}, {n:85,x:100}];
+            let html = "";
+            grades.forEach(g => {
+                let filtered = sts.filter(s => s.g.toUpperCase().includes(g));
+                let mW = filtered.filter(s => s.s.startsWith('M')||s.s.startsWith('ወ')).length;
+                let mS = filtered.filter(s => s.s.startsWith('F')||s.s.startsWith('ሴ')).length;
                 let mD = mW + mS;
-                h += `<tr><td><b>${g}</b></td><td>${mW}</td><td>${mS}</td><td>${mD}</td>`;
-                rs.forEach(r => {
-                    let w = d.filter(s => (s.s.startsWith('M')||s.s.startsWith('ወ')) && s.t>=r.n && s.t<=r.x).length;
-                    let s = d.filter(s => (s.s.startsWith('F')||s.s.startsWith('ሴ')) && s.t>=r.n && s.t<=r.x).length;
-                    let t = w+s;
-                    h += `<td>${w}</td><td>${s}</td><td>${t}</td>`;
-                    h += `<td>${mW?((w/mW)*100).toFixed(0):0}%</td><td>${mS?((s/mS)*100).toFixed(0):0}%</td><td>${mD?((t/mD)*100).toFixed(0):0}%</td>`;
+                
+                html += `<tr><td><b>${g}</b></td><td>${mW}</td><td>${mS}</td><td>${mD}</td>`;
+                ranges.forEach(r => {
+                    let w = filtered.filter(s => (s.s.startsWith('M')||s.s.startsWith('ወ')) && s.t>=r.n && s.t<=r.x).length;
+                    let s = filtered.filter(s => (s.s.startsWith('F')||s.s.startsWith('ሴ')) && s.t>=r.n && s.t<=r.x).length;
+                    let t = w + s;
+                    html += `<td>${w}</td><td>${s}</td><td>${t}</td>`;
+                    html += `<td>${mW?((w/mW)*100).toFixed(0):0}%</td><td>${mS?((s/mS)*100).toFixed(0):0}%</td><td>${mD?((t/mD)*100).toFixed(0):0}%</td>`;
                 });
-                h += `</tr>`;
+                html += `</tr>`;
             });
-            document.getElementById('stBody').innerHTML = h;
-        }
-
-        function saveReport() {
-            let table = document.getElementById("statTable");
-            let wb = XLSX.utils.table_to_book(table);
-            XLSX.writeFile(wb, "Analysis_Report.xlsx");
-        }
-
-        function shareReport() {
-            let txt = "📊 ጣይቱ ብጡል አካዳሚ - የውጤት ትንተና\n";
-            document.querySelectorAll("#stBody tr").forEach(r => { txt += r.innerText + "\n"; });
-            navigator.clipboard.writeText(txt); alert("ሪፖርቱ ኮፒ ተደርጓል!");
+            document.getElementById('stBody').innerHTML = html;
         }
 
         function search() {
             let n = document.getElementById('uName').value.trim().toLowerCase();
             let g = document.getElementById('uGrade').value;
-            let f = sts.find(s => s.n.toLowerCase() === n && s.g.includes(g));
+            let f = sts.find(s => s.n.toLowerCase() === n && s.g.toUpperCase().includes(g));
             let b = document.getElementById('resBox');
-            if(f) { b.style.visibility = "visible"; b.innerHTML = `<span style="color:white">${f.t}% - ${f.nt}</span>`; }
+            if(f) { b.style.visibility = "visible"; b.innerHTML = `<span>${f.t}% - ${f.nt || "በርታ!"}</span>`; }
             else { alert("አልተገኘም!"); }
         }
 
@@ -263,7 +247,14 @@
             }
         }
 
-        function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:15px; border:1px solid rgba(255,255,255,0.5);">`).join(''); }
+        function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:10px; border:1px solid rgba(255,255,255,0.3);">`).join(''); }
+        
+        function saveReport() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("statTable")), "Analysis.xlsx"); }
+        function shareReport() {
+            let txt = "📊 ትንተና - English\n";
+            document.querySelectorAll("#stBody tr").forEach(r => { txt += r.innerText + "\n"; });
+            navigator.clipboard.writeText(txt); alert("ሪፖርቱ ተገልብጧል!");
+        }
         renderGal();
     </script>
 </body>
