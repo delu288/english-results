@@ -16,7 +16,7 @@
             font-family: 'Segoe UI', sans-serif; margin: 0;
             background-color: #222; background-size: cover;
             background-attachment: fixed; background-position: center;
-            color: white;
+            color: white; transition: 0.5s;
         }
 
         .main-header {
@@ -30,7 +30,7 @@
         .nav-header { position: fixed; top: 10px; right: 10px; z-index: 1000; }
         .nav-btn {
             background: var(--gold); color: var(--dark); border: none;
-            padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-left: 5px;
         }
 
         .container { max-width: 1300px; margin: 20px auto; padding: 10px; }
@@ -42,28 +42,39 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
-        /* Top Result Box */
-        .result-container {
+        /* Result Display (Full Width) */
+        .res-container {
             width: 100%; border: 2px dashed var(--gold); border-radius: 25px; 
-            padding: 30px; text-align: center; background: rgba(255,255,255,0.05);
-            margin-bottom: 25px; box-sizing: border-box;
+            padding: 25px; text-align: center; background: rgba(255,255,255,0.05);
+            margin-bottom: 20px; box-sizing: border-box;
         }
 
-        /* Bottom Grid Side-by-Side */
-        .comment-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 768px) { .comment-section { grid-template-columns: 1fr; } }
+        /* Side-by-Side Comments */
+        .comment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .comment-grid { grid-template-columns: 1fr; } }
 
-        .box-style {
+        .sub-box {
             background: rgba(0,0,0,0.3); border: 1px solid var(--primary);
-            border-radius: 20px; padding: 20px; min-height: 150px;
+            border-radius: 20px; padding: 15px; min-height: 150px;
             display: flex; flex-direction: column; justify-content: center;
         }
 
         .btn-sm { height: 40px; padding: 0 25px; border-radius: 12px; background: var(--dark); color: white; border: none; cursor: pointer; font-weight: bold; }
-        .btn-send { background: #28a745; color: white; border: none; padding: 10px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+        .btn-send { background: #28a745; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+
+        /* Admin Styles */
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .admin-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); text-align: center; }
+        .upload-box { background: rgba(0,0,0,0.5); border: 1px dashed var(--primary); border-radius: 10px; padding: 10px; margin-top: 8px; cursor: pointer; position: relative; overflow: hidden; }
+        .upload-box input { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+
+        table { width: 100%; border-collapse: collapse; background: rgba(0, 0, 0, 0.3); margin-top: 15px; font-size: 12px; }
+        th, td { border: 1px solid rgba(255,255,255,0.2); padding: 8px; text-align: center; }
+        th { background: rgba(0, 51, 102, 0.8); color: var(--gold); }
 
         .hidden { display: none; }
-        textarea { width: 100%; height: 70px; margin-top: 10px; border-radius: 10px; padding: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444; resize: none; font-family: inherit; }
+        .no-print { display: block; }
+        @media print { .no-print { display: none; } body { background: white; color: black; } }
     </style>
 </head>
 <body>
@@ -80,9 +91,9 @@
 
     <div class="container">
         <div id="userPage">
-            <div class="card">
-                <h4 style="margin-top:0;">የውጤት መጠየቂያ</h4>
-                <div style="display:flex; gap:10px; margin-bottom:25px;">
+            <div class="card no-print">
+                <h4 style="margin:0 0 15px 0;">የውጤት መጠየቂያ</h4>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
                     <input type="text" id="uName" placeholder="የተማሪ ሙሉ ስም..." style="flex:2; height:45px; border-radius:12px; padding:0 15px; border:1px solid var(--primary); background:#000; color:#fff;">
                     <select id="uGrade" style="flex:1; border-radius:12px; background:#000; color:#fff; padding: 0 10px;">
                         <option value="">ክፍል...</option>
@@ -91,19 +102,18 @@
                     <button class="btn-sm" onclick="search()">አሳይ</button>
                 </div>
 
-                <div class="result-container">
+                <div class="res-container">
                     <div id="resBoxLarge" style="color:var(--gold); font-weight:bold; font-size:1.5rem;">ውጤቱ ለጊዜው ማግኘት አልተቻለም</div>
                 </div>
 
-                <div class="comment-section">
-                    <div class="box-style">
+                <div class="comment-grid">
+                    <div class="sub-box">
                         <small style="color:var(--primary); font-weight:bold;">የመምህሩ አስተያየት:</small>
                         <div id="teacherNote" style="color:white; margin-top:15px; font-style:italic; font-size:1.1rem; text-align:center;">--</div>
                     </div>
-
-                    <div class="box-style">
+                    <div class="sub-box">
                         <small style="font-weight: bold; color: var(--gold);">የወላጅ አስተያየት መጻፊያ:</small>
-                        <textarea id="pMsg" placeholder="አስተያየትዎን እዚህ ይጻፉ..."></textarea>
+                        <textarea id="pMsg" placeholder="አስተያየትዎን እዚህ ይጻፉ..." style="width:100%; height:70px; margin-top:10px; border-radius:10px; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid #444; resize:none; font-family:inherit;"></textarea>
                         <button class="btn-send" onclick="sendMsg()">አስተያየት ላክ</button>
                     </div>
                 </div>
@@ -116,15 +126,63 @@
         </div>
 
         <div id="adminPage" class="hidden">
-            <div id="loginBox" class="card" style="text-align:center;">
-                <input type="password" id="pass" placeholder="Password" style="width:180px; height:40px; text-align:center; border-radius:10px; border:1px solid #444; background:#000; color:#fff;">
+            <div id="loginBox" class="card no-print" style="text-align:center;">
+                <h3>Admin Login</h3>
+                <input type="password" id="pass" placeholder="Password" style="width:200px; height:40px; text-align:center; border-radius:10px; border:1px solid #444; background:#000; color:#fff;">
                 <button class="btn-sm" onclick="login()">ግባ</button>
             </div>
+
             <div id="adminDash" class="hidden">
-                 <div class="card">
-                    <p style="text-align:center;">የአድሚን መቆጣጠሪያ (ፋይል መጫኛ እና ሪፖርት ማሳያ)</p>
-                    <input type="file" id="xlIn" accept=".xlsx, .xls">
-                 </div>
+                <div class="card no-print">
+                    <div class="admin-grid">
+                        <div class="admin-item">
+                            <label>የጀርባ ምስል</label>
+                            <div class="upload-box">
+                                <span id="bgLabel">ምስል ምረጥ</span>
+                                <input type="file" onchange="setBg(event)">
+                            </div>
+                        </div>
+                        <div class="admin-item">
+                            <label>Excel የውጤት ፋይል</label>
+                            <div class="upload-box">
+                                <span id="xlLabel" style="color:#ff4d4d;">መረጃ አልተጫነም</span>
+                                <input type="file" id="xlIn" accept=".xlsx, .xls">
+                            </div>
+                        </div>
+                        <div class="admin-item">
+                            <label>ጋለሪ ፎቶ</label>
+                            <div class="upload-box">
+                                <span>ፎቶዎችን ምረጥ</span>
+                                <input type="file" multiple onchange="upGal(event)">
+                            </div>
+                        </div>
+                        <div class="admin-item">
+                            <label>የወላጆች Inbox</label>
+                            <div id="msgInbox" style="height:120px; overflow-y:auto; background:rgba(0,0,0,0.5); padding:10px; border-radius:10px; text-align:left; font-size:12px; margin-top:10px;">መልእክት የለም...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="text-align:center; color:var(--gold);">የውጤት ትንተና - English</h3>
+                    <div style="overflow-x:auto;">
+                        <table id="statTable">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">ክፍል</th><th colspan="3">ጠቅላላ ተማሪ</th><th colspan="3">ከ50% በታች</th><th colspan="3">50%-74%</th><th colspan="3">75%-84%</th><th colspan="3">85%-100%</th>
+                                </tr>
+                                <tr>
+                                    <th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th><th>ወ</th><th>ሴ</th><th>ድ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="no-print" style="margin-top:20px; text-align:right;">
+                        <button class="btn-sm" style="background:#28a745;" onclick="saveReport()">Save Excel</button>
+                        <button class="btn-sm" style="background:#007bff;" onclick="window.print()">Print Analysis</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -134,27 +192,55 @@
         let msgs = JSON.parse(localStorage.getItem('db_m')) || [];
         let gals = JSON.parse(localStorage.getItem('db_g')) || [];
 
+        function updateUI() {
+            let bg = localStorage.getItem('db_b');
+            if(bg) document.body.style.backgroundImage = `url(${bg})`;
+            if(sts.length > 0) {
+                document.getElementById('xlLabel').innerText = "ዳታ ተጭኗል (" + sts.length + ")";
+                document.getElementById('xlLabel').style.color = "#00ff00";
+            }
+        }
+        updateUI();
+
         function showPage(p) {
             document.getElementById('userPage').classList.toggle('hidden', p!=='userPage');
             document.getElementById('adminPage').classList.toggle('hidden', p!=='adminPage');
+            if(p==='userPage') renderGal();
+            if(p==='adminPage') renderInbox();
         }
 
         function login() {
             if(document.getElementById('pass').value === "Eshet21d") {
                 document.getElementById('loginBox').classList.add('hidden');
                 document.getElementById('adminDash').classList.remove('hidden');
+                runAnalysis();
             } else { alert("የተሳሳተ የይለፍ ቃል!"); }
         }
 
-        // Search Function
+        document.getElementById('xlIn').addEventListener('change', function(e) {
+            let r = new FileReader();
+            r.onload = (ex) => {
+                let wb = XLSX.read(new Uint8Array(ex.target.result), {type:'array'});
+                let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+                sts = rows.map(i => ({
+                    n: String(i.Name || i.ስም || "").trim(), 
+                    s: String(i.Sex || "").toUpperCase(),
+                    g: String(i.Grade || ""),
+                    t: (Number(i.Notebook||0)+Number(i.Quiz1||0)+Number(i.Quiz2||0)+Number(i.Mid||0)+Number(i.Final||0)),
+                    nt: i.Note || "በርታ/ቺ!"
+                }));
+                localStorage.setItem('db_s', JSON.stringify(sts));
+                updateUI(); runAnalysis(); alert("ዳታው ተጭኗል!");
+            };
+            r.readAsArrayBuffer(e.target.files[0]);
+        });
+
         function search() {
             let n = document.getElementById('uName').value.trim().toLowerCase();
             let g = document.getElementById('uGrade').value;
             let res = document.getElementById('resBoxLarge');
             let note = document.getElementById('teacherNote');
-
             let f = sts.find(s => s.n.toLowerCase() === n && s.g.toUpperCase().includes(g));
-            
             if(f) {
                 res.innerHTML = `<span style="color:white;">ተማሪ፡ ${f.n}</span><br>ውጤት፡ ${f.t}%`;
                 note.innerHTML = f.nt;
@@ -164,35 +250,54 @@
             }
         }
 
-        // Send Comment
         function sendMsg() {
             let n = document.getElementById('uName').value.trim();
             let g = document.getElementById('uGrade').value;
             let m = document.getElementById('pMsg').value.trim();
-            if(!n || !g || !m) { alert("እባክዎ መጀመሪያ ስምዎን ያስገቡ እና አስተያየት ይጻፉ!"); return; }
-            msgs.push({ n, g, dt: new Date().toLocaleString('am-ET'), m });
+            if(!n || !g || !m) { alert("እባክዎ መረጃዎችን በትክክል ያስገቡ!"); return; }
+            msgs.push({ n, g, m });
             localStorage.setItem('db_m', JSON.stringify(msgs));
             document.getElementById('pMsg').value = ""; 
             alert("አስተያየትዎ ተልኳል!");
         }
 
-        // Excel Loader
-        document.getElementById('xlIn').addEventListener('change', function(e) {
+        function renderInbox() {
+            let box = document.getElementById('msgInbox');
+            if(!box) return;
+            box.innerHTML = msgs.length === 0 ? "መልእክት የለም..." : msgs.map(m => `<div style="border-bottom:1px solid #555; padding:5px 0;"><b>${m.n}:</b> ${m.m}</div>`).reverse().join('');
+        }
+
+        function runAnalysis() {
+            const gs = ["1A", "1B", "2A", "2B", "3A", "4A", "5A", "6A"];
+            let h = "";
+            gs.forEach(g => {
+                let d = sts.filter(s => s.g.toUpperCase().includes(g));
+                let mW = d.filter(s => s.s.startsWith('M')||s.s.startsWith('ወ')).length;
+                let mS = d.filter(s => s.s.startsWith('F')||s.s.startsWith('ሴ')).length;
+                h += `<tr><td><b>${g}</b></td><td>${mW}</td><td>${mS}</td><td>${mW+mS}</td>`;
+                [ [0,49.9], [50,74.9], [75,84.9], [85,100] ].forEach(r => {
+                    let c = d.filter(s => s.t>=r[0] && s.t<=r[1]);
+                    h += `<td>${c.filter(s=>s.s.startsWith('M')||s.s.startsWith('ወ')).length}</td><td>${c.filter(s=>s.s.startsWith('F')||s.s.startsWith('ሴ')).length}</td><td>${c.length}</td>`;
+                });
+                h += `</tr>`;
+            });
+            document.getElementById('stBody').innerHTML = h;
+        }
+
+        function setBg(e) {
             let r = new FileReader();
-            r.onload = (ex) => {
-                let wb = XLSX.read(new Uint8Array(ex.target.result), {type:'array'});
-                let rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                sts = rows.map(i => ({
-                    n: String(i.Name || i.ስም || "").trim(), 
-                    g: String(i.Grade || ""),
-                    t: (Number(i.Notebook||0)+Number(i.Quiz1||0)+Number(i.Quiz2||0)+Number(i.Mid||0)+Number(i.Final||0)),
-                    nt: i.Note || "በርታ/ቺ!"
-                }));
-                localStorage.setItem('db_s', JSON.stringify(sts));
-                alert("ዳታው ተጭኗል!");
-            };
-            r.readAsArrayBuffer(e.target.files[0]);
-        });
+            r.onload = (ev) => { localStorage.setItem('db_b', ev.target.result); updateUI(); };
+            r.readAsDataURL(e.target.files[0]);
+        }
+        function upGal(e) {
+            for(let f of e.target.files) {
+                let r = new FileReader();
+                r.onload = (ev) => { gals.push(ev.target.result); localStorage.setItem('db_g', JSON.stringify(gals)); renderGal(); };
+                r.readAsDataURL(f);
+            }
+        }
+        function renderGal() { document.getElementById('userGal').innerHTML = gals.map(s => `<img src="${s}" style="width:100%; border-radius:10px;">`).join(''); }
+        function saveReport() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("statTable")), "Report.xlsx"); }
     </script>
 </body>
 </html>
