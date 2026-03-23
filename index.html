@@ -3,219 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taitu Bitul Academy - Quiz Result Manager</title>
+    <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 10px; font-size: 13px; }
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a73e8; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 320px; }
-        .login-box input { width: 85%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; text-align: center; font-size: 16px; }
-        #main-content { display: none; }
-        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-bottom: 10px; }
-        .school-name { text-align: center; font-weight: bold; color: #555; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
         
-        .timer-container { text-align: center; margin-bottom: 20px; background: #fff; border: 2px solid #1a73e8; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
-        #timer-display { font-size: 2.2rem; font-weight: bold; color: #d93025; border: none; background: transparent; text-align: center; width: 110px; outline: none; }
+        /* Timer Section - Removed default text */
+        .timer-section { text-align: center; background: #eef; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d9534f; margin-bottom: 10px; min-height: 50px; }
         
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .input-box { border: 1px solid #bdc1c6; padding: 8px; border-radius: 6px; display: flex; align-items: center; }
-        select, input[type="date"] { border: none; width: 100%; outline: none; background: transparent; font-family: inherit; }
+        .btn { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
+        .btn-start { background: #5cb85c; color: white; }
+        .btn-stop { background: #d9534f; color: white; }
+        .btn-reset { background: #f0ad4e; color: white; }
+        .btn-action { background: #007bff; color: white; min-width: 120px; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #dadce0; padding: 6px; text-align: center; }
-        th { background-color: #1a73e8; color: white; font-size: 12px; }
-        .touch-cell { cursor: pointer; font-size: 16px; font-weight: bold; width: 35px; user-select: none; }
-        .status-right { background: #e6f4ea; color: #1e8e3e; }
-        .status-wrong { background: #fce8e6; color: #d93025; }
+        /* Info Grid with Date Box */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .date-box { border: 2px solid #333; padding: 10px; border-radius: 5px; background: #fff; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        select, input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
 
-        .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; font-size: 13px; }
-        .sig-box { width: 45%; line-height: 2.5; }
-        .judge-select { width: 70%; padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #007bff; color: white; }
+        input[type="number"], input[type="text"] { width: 90%; border: none; background: transparent; text-align: center; }
 
-        .final-actions { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; }
-        .action-btn { padding: 10px 20px; border-radius: 6px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; font-size: 14px; }
-        .dev-info { text-align: center; margin-top: 20px; font-size: 11px; color: #777; }
+        .footer-sigs { margin-top: 40px; display: flex; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #eee; padding-top: 20px; }
+        .sig-box { width: 45%; margin-bottom: 15px; line-height: 2; }
 
-        @media print { .final-actions, .timer-container, .add-row-btn, #login-overlay, .reset-btn { display: none !important; } }
+        .final-actions { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333; }
+        
+        @media print {
+            .timer-section, .final-actions, .add-btn-container { display: none; }
+            body { background: white; }
+            .container { box-shadow: none; width: 100%; border: none; }
+        }
     </style>
 </head>
 <body>
 
-<div id="login-overlay">
-    <div class="login-box">
-        <h3 style="color:#1a73e8">Taitu Bitul Academy</h3>
-        <p>የውጤት መያዣ መተግበሪያ</p>
-        <input type="password" id="pass-field" placeholder="የይለፍ ቃል (Password)">
+<div class="container">
+    <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
+
+    <div class="timer-section">
+        <label>የጥያቄ ሰዓት</label>
+        <div id="timer-display"></div> <button class="btn btn-reset" onclick="setTimer(1)">1 ደቂቃ</button>
+        <button class="btn btn-reset" onclick="setTimer(2)">2 ደቂቃ</button>
         <br>
-        <button class="action-btn" style="background:#1a73e8" onclick="unlock()">ግባ</button>
+        <button class="btn btn-start" onclick="startTimer()">ጀምር</button>
+        <button class="btn btn-stop" onclick="stopTimer()">ቁም</button>
+        <button class="btn btn-reset" onclick="resetTimer()">ቀይር</button>
     </div>
-</div>
 
-<div id="main-content">
-    <div class="container">
-        <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
-        <div class="school-name">© 2026 Taitu Bitul Academy</div>
-
-        <div class="timer-container">
-            <input type="text" id="timer-display" value="01:00">
-            <br>
-            <button onclick="startTimer()" style="color:green; cursor:pointer; background:none; border:none; font-weight:bold">ጀምር</button> | 
-            <button onclick="stopTimer()" style="color:red; cursor:pointer; background:none; border:none; font-weight:bold">ቁም</button> |
-            <button onclick="resetTimer()" style="color:blue; cursor:pointer; background:none; border:none; font-weight:bold">ቀይር</button>
+    <div class="info-grid">
+        <div class="date-box">
+            <label>ቀን፡</label>
+            <input type="date" id="compDate">
         </div>
-
-        <div class="info-grid">
-            <div class="input-box">📅 ቀን፡ <input type="date" id="comp-date" oninput="save()"></div>
-            <div class="input-box">🏫 ክፍል፡ 
-                <select id="comp-class" onchange="save()">
-                    <option>ምረጥ...</option><option>1ኛ ሀ</option><option>1ኛ ለ</option>
-                    <option>2ኛ ሀ</option><option>2ኛ ለ</option><option>3ኛ ሀ</option>
-                    <option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
-                </select>
-            </div>
-            <div class="input-box">📝 ሴሚ፡ 
-                <select id="comp-sem" onchange="save()">
-                    <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
-                </select>
-            </div>
+        <div>
+            <label>ክፍል፡</label>
+            <select>
+                <option>1ኛ ሀ</option> <option>1ኛ ለ</option>
+                <option>2ኛ ሀ</option> <option>2ኛ ለ</option>
+                <option>3ኛ ሀ</option> <option>4ኛ ሀ</option>
+            </select>
         </div>
-
-        <table id="resTable">
-            <thead>
-                <tr>
-                    <th rowspan="2">ቁጥር</th>
-                    <th rowspan="2" style="width:180px">የተወዳዳሪ ስም</th>
-                    <th colspan="2">አማርኛ</th><th colspan="2">እንግሊዝኛ</th><th colspan="2">ሒሳብ</th><th colspan="2">አ/ሳይንስ</th><th colspan="2">ግብረገብ</th>
-                    <th rowspan="2">ድምር</th><th rowspan="2">ደረጃ</th>
-                </tr>
-                <tr style="background:#f8f9fa; font-size:10px; color:#333">
-                    <th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-
-        <button class="action-btn add-row-btn" style="background:#555; margin-top:10px" onclick="addRow()">+ ተማሪ ጨምር</button>
-
-        <div class="footer-sigs">
-            <div class="sig-box">
-                👤 1ኛ ዳኛ፡ <select class="judge-select" id="j1" onchange="save()">
-                    <option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
-                </select><br>
-                👤 2ኛ ዳኛ፡ <select class="judge-select" id="j2" onchange="save()">
-                    <option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
-                </select>
-            </div>
-            <div class="sig-box">
-                ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
-                ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
-            </div>
+        <div>
+            <label>ሴሚስተር፡</label>
+            <select>
+                <option>1ኛ ሴሚስተር</option>
+                <option>2ኛ ሴሚስተር</option>
+            </select>
         </div>
+    </div>
 
-        <div class="final-actions">
-            <button class="action-btn reset-btn" style="background:#d93025;" onclick="clearAll()">🗑️ RESET</button>
-            <button class="action-btn" style="background:#1e8e3e;" onclick="sendTelegram()">💾 SAVE & SEND (TELEGRAM)</button>
-            <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ PRINT (አትም)</button>
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>ተ.ቁ</th>
+                <th>ተማሪ ስም</th>
+                <th>አማርኛ</th>
+                <th>እንግሊዝኛ</th>
+                <th>ሒሳብ</th>
+                <th>አ/ሳይንስ</th>
+                <th>ድምር</th>
+                <th>ደረጃ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><input type="text" class="student-name" placeholder="ስም"></td>
+                <td><input type="number" class="score" oninput="calculate()"></td>
+                <td><input type="number" class="score" oninput="calculate()"></td>
+                <td><input type="number" class="score" oninput="calculate()"></td>
+                <td><input type="number" class="score" oninput="calculate()"></td>
+                <td class="total">0</td>
+                <td class="rank">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="add-btn-container" style="text-align: left; margin-top: 10px;">
+        <button class="btn btn-start" onclick="addRow()">+ ተማሪ ጨምር</button>
+    </div>
+
+    <div class="footer-sigs">
+        <div class="sig-box">
+            1ኛ ዳኛ፡ _________________<br>
+            2ኛ ዳኛ፡ _________________
         </div>
+        <div class="sig-box">
+            ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
+            ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
+        </div>
+    </div>
 
-        <div class="dev-info">Developed by: <b>መ/ር ደለለኝ አጥላው</b> | © 2026 Taitu Bitul Academy</div>
+    <div class="final-actions">
+        <button class="btn btn-action" style="background:#28a745;">💾 ውጤቱን መዝግብ (Save)</button>
+        <button class="btn btn-action" style="background:#17a2b8;" onclick="window.print()">🖨️ አትም (Print)</button>
+        <button class="btn btn-action" style="background:#6f42c1;" onclick="shareResults()">🔗 አጋራ (Share)</button>
     </div>
 </div>
 
 <script>
-    const PASS = "Eshet21d";
-    function unlock() {
-        if(document.getElementById('pass-field').value === PASS) {
-            document.getElementById('login-overlay').style.display='none';
-            document.getElementById('main-content').style.display='block';
-            load();
-        } else { alert("የተሳሳተ የይለፍ ቃል!"); }
+    let timerInterval;
+    let timeLeft = 0;
+
+    function updateDisplay() {
+        if (timeLeft <= 0 && !timerInterval) {
+            document.getElementById('timer-display').innerText = "";
+            return;
+        }
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        document.getElementById('timer-display').innerText = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    let timer;
+    function setTimer(m) { 
+        timeLeft = m * 60; 
+        updateDisplay(); 
+    }
+
     function startTimer() {
-        stopTimer();
-        let p = document.getElementById('timer-display').value.split(':');
-        let sec = (parseInt(p[0])*60) + (parseInt(p[1])||0);
-        timer = setInterval(() => {
-            if(sec<=0) { clearInterval(timer); alert("ጊዜው አልቋል!"); return; }
-            sec--;
-            document.getElementById('timer-display').value = Math.floor(sec/60).toString().padStart(2,'0')+":"+(sec%60).toString().padStart(2,'0');
+        if (timeLeft <= 0) return;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (timeLeft > 0) { timeLeft--; updateDisplay(); }
+            else { clearInterval(timerInterval); timerInterval = null; alert("ጊዜው አልቋል!"); }
         }, 1000);
     }
-    function stopTimer() { clearInterval(timer); }
-    function resetTimer() { stopTimer(); document.getElementById('timer-display').value = "01:00"; }
+
+    function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
+    function resetTimer() { stopTimer(); timeLeft = 0; updateDisplay(); }
 
     function addRow() {
-        const tb = document.querySelector("#resTable tbody");
-        const r = tb.insertRow();
-        let h = `<td>${tb.rows.length}</td><td><input type="text" oninput="save()" style="width:95%; border:none; outline:none;"></td>`;
-        for(let i=0; i<10; i++) h += `<td class="touch-cell" onclick="hit(this)"></td>`;
-        h += `<td class="total" style="font-weight:bold">0/10</td><td class="rank">-</td>`;
-        r.innerHTML = h;
-        save();
+        let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
+        let rowCount = table.rows.length;
+        let row = table.insertRow(rowCount);
+        row.innerHTML = `<td>${rowCount + 1}</td>
+            <td><input type="text" class="student-name"></td>
+            <td><input type="number" class="score" oninput="calculate()"></td>
+            <td><input type="number" class="score" oninput="calculate()"></td>
+            <td><input type="number" class="score" oninput="calculate()"></td>
+            <td><input type="number" class="score" oninput="calculate()"></td>
+            <td class="total">0</td>
+            <td class="rank">-</td>`;
     }
 
-    function hit(c) {
-        if(c.innerText==="") { c.innerText="✓"; c.className="touch-cell status-right"; }
-        else if(c.innerText==="✓") { c.innerText="X"; c.className="touch-cell status-wrong"; }
-        else { c.innerText=""; c.className="touch-cell"; }
-        calc(); save();
-    }
-
-    function calc() {
-        const rows = Array.from(document.querySelector("#resTable tbody").rows);
-        let data = rows.map((r, i) => {
-            let marks = Array.from(r.querySelectorAll('.touch-cell')).filter(c => c.innerText==="✓").length;
-            r.querySelector('.total').innerText = marks + "/10";
-            return { i, marks };
+    function calculate() {
+        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
+        let data = [];
+        for (let i = 0; i < rows.length; i++) {
+            let inputs = rows[i].getElementsByClassName('score');
+            let sum = 0;
+            for (let input of inputs) { sum += Number(input.value) || 0; }
+            rows[i].getElementsByClassName('total')[0].innerText = sum;
+            data.push({ index: i, total: sum });
+        }
+        data.sort((a, b) => b.total - a.total);
+        data.forEach((item, idx) => {
+            if (item.total > 0) rows[item.index].getElementsByClassName('rank')[0].innerText = idx + 1;
         });
-        let sorted = [...data].sort((a,b) => b.marks - a.marks);
-        data.forEach(d => {
-            rows[d.i].querySelector('.rank').innerText = (sorted.findIndex(s => s.marks === d.marks) + 1) + "ኛ";
-        });
     }
 
-    function save() {
-        const rows = Array.from(document.querySelector("#resTable tbody").rows);
-        const store = {
-            m: { d: document.getElementById('comp-date').value, c: document.getElementById('comp-class').value, s: document.getElementById('comp-sem').value, j1: document.getElementById('j1').value, j2: document.getElementById('j2').value },
-            st: rows.map(r => ({ n: r.querySelectorAll('input')[0].value, mk: Array.from(r.querySelectorAll('.touch-cell')).map(c => c.innerText) }))
-        };
-        localStorage.setItem('taitu_final_v3', JSON.stringify(store));
+    function shareResults() {
+        let text = "የውድድር ውጤት:\n";
+        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
+        for (let row of rows) {
+            let name = row.querySelector('.student-name').value || "-";
+            let total = row.querySelector('.total').innerText;
+            text += `${name}: ${total}\n`;
+        }
+        navigator.clipboard.writeText(text).then(() => alert("ተገልብጧል!"));
     }
-
-    function load() {
-        const d = JSON.parse(localStorage.getItem('taitu_final_v3'));
-        if(!d) { addRow(); return; }
-        document.getElementById('comp-date').value = d.m.d;
-        document.getElementById('comp-class').value = d.m.c;
-        document.getElementById('comp-sem').value = d.m.s;
-        document.getElementById('j1').value = d.m.j1;
-        document.getElementById('j2').value = d.m.j2;
-        const tb = document.querySelector("#resTable tbody");
-        tb.innerHTML = "";
-        d.st.forEach((s, idx) => {
-            const r = tb.insertRow();
-            let h = `<td>${idx+1}</td><td><input type="text" value="${s.n}" oninput="save()" style="width:95%; border:none;"></td>`;
-            s.mk.forEach(m => { h += `<td class="touch-cell ${m==='✓'?'status-right':m==='X'?'status-wrong':''}" onclick="hit(this)">${m}</td>`; });
-            h += `<td class="total" style="font-weight:bold">0/10</td><td class="rank">-</td>`;
-            r.innerHTML = h;
-        });
-        calc();
-    }
-
-    function sendTelegram() {
-        save();
-        let txt = `🏆 *Taitu Bitul Academy Quiz Result*\n📅 ቀን፡ ${document.getElementById('comp-date').value}\n🏫 ክፍል፡ ${document.getElementById('comp-class').value}\n------------------------\n`;
-        Array.from(document.querySelector("#resTable tbody").rows).forEach(r => {
-            txt += `${r.cells[1].querySelector('input').value}: ${r.cells[12].innerText} (${r.cells[13].innerText})\n`;
-        });
-        txt += `\n------------------------\nDeveloped by: መ/ር ደለለኝ`;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(txt)}`, '_blank');
-    }
-
-    function clearAll() { if(confirm("ሁሉንም ዳታ ማጥፋት ይፈልጋሉ?")) { localStorage.removeItem('taitu_final_v3'); window.location.reload(); } }
 </script>
+
 </body>
 </html>
