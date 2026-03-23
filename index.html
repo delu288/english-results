@@ -3,217 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
+    <title>ውጤት መያዣ - Taitu Bitul Academy</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 10px; font-size: 12px; }
-        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        
-        .timer-section { text-align: center; background: #eef; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
-        #timer-display { font-size: 2rem; font-weight: bold; color: #d9534f; }
-        
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .date-box { border: 1px solid #333; padding: 5px; border-radius: 4px; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
-        th, td { border: 1px dotted #888; padding: 4px; text-align: center; overflow: hidden; }
-        th { background-color: #007bff; color: white; font-size: 11px; }
-        .sub-head { background-color: #e9ecef; color: #333; font-size: 10px; }
-
-        input[type="text"], input[type="number"] { width: 95%; border: none; background: transparent; text-align: center; font-size: 11px; }
-        select { border: none; background: #f9f9f9; cursor: pointer; font-weight: bold; width: 100%; }
-        
-        .correct { color: green; font-weight: bold; }
-        .wrong { color: red; font-weight: bold; }
-
-        .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; }
-        .sig-box { width: 45%; line-height: 2; }
-        .final-actions { text-align: center; margin-top: 30px; border-top: 2px solid #333; padding-top: 15px; }
-        .btn { padding: 8px 15px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
-
-        @media print {
-            .timer-section, .final-actions, .add-btn-container { display: none; }
-            body { padding: 0; background: white; }
-            .container { box-shadow: none; width: 100%; max-width: 100%; }
-            th { background-color: #ddd !important; color: black; }
+        :root {
+            --primary: #002366;
+            --accent: #ffd700;
+            --bg: #f0f2f5;
         }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: var(--bg); margin: 0; padding: 10px; font-size: 11px;
+        }
+        .container { 
+            max-width: 900px; margin: auto; background: white; 
+            padding: 25px; border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 10px solid var(--primary);
+        }
+        h2 { text-align: center; color: var(--primary); font-size: 20px; border-bottom: 2px solid var(--accent); display: inline-block; position: relative; left: 50%; transform: translateX(-50%); padding-bottom: 5px; }
+
+        /* Timer */
+        .timer-wrapper { text-align: center; margin-bottom: 15px; }
+        .timer-box { 
+            background: var(--primary); padding: 8px 20px; border-radius: 50px; 
+            display: inline-block; color: white;
+        }
+        #timer-display { font-size: 1.8rem; font-weight: bold; color: var(--accent); font-family: monospace; }
+        .t-btn { padding: 4px 10px; border-radius: 15px; border: none; cursor: pointer; font-size: 9px; font-weight: bold; margin: 2px; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .field-box { border: 1.5px solid #dcdde1; padding: 6px; border-radius: 8px; background: #fff; }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: var(--primary); color: white; padding: 10px 2px; font-size: 10px; border: 1px solid #fff; }
+        td { border: 1px solid #dcdde1; padding: 4px; text-align: center; background: #fff; }
+        
+        .box-stack { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .pair { display: flex; align-items: center; gap: 3px; }
+
+        .eta-in { width: 22px; height: 18px; border: 1px solid #7f8c8d; text-align: center; border-radius: 3px; outline: none; }
+        .check { 
+            cursor: pointer; width: 26px; height: 24px; border: 1px solid #bdc3c7; 
+            border-radius: 5px; background: #f8f9fa; display: flex; align-items: center; 
+            justify-content: center; font-weight: bold; font-size: 14px;
+        }
+        .right { background: #27ae60 !important; color: white; border-color: #2ecc71 !important; }
+        .wrong { background: #c0392b !important; color: white; border-color: #e74c3c !important; }
+
+        .sigs { margin-top: 20px; display: flex; justify-content: space-between; padding: 12px; background: #f9f9f9; border-radius: 10px; border-left: 4px solid var(--accent); }
+        .sig-col { font-size: 11px; line-height: 2.2; }
+
+        .actions { text-align: center; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        .btn-main { 
+            padding: 10px 25px; border-radius: 8px; border: none; color: white; 
+            font-weight: bold; margin: 5px; cursor: pointer; font-size: 11px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-main:active { transform: scale(0.98); }
+
+        .dev-footer { 
+            margin-top: 30px; text-align: center; font-size: 12px; color: #7f8c8d; 
+            border-top: 1px solid #eee; padding-top: 15px; font-weight: bold;
+        }
+        .dev-footer a { color: var(--primary); text-decoration: none; border-bottom: 2px solid var(--accent); }
+
+        @media print { .actions, .timer-wrapper, .dev-footer, .add-row-btn { display: none; } .container { border: none; box-shadow: none; } }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="captureArea">
     <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
 
-    <div class="timer-section">
-        <div id="timer-display"></div>
-        <button class="btn" style="background:#f0ad4e" onclick="setTimer(1)">1 ደቂቃ</button>
-        <button class="btn" style="background:#f0ad4e" onclick="setTimer(2)">2 ደቂቃ</button>
-        <button class="btn" style="background:#5cb85c; color:white" onclick="startTimer()">ጀምር</button>
-        <button class="btn" style="background:#d9534f; color:white" onclick="stopTimer()">ቁም</button>
+    <div class="timer-wrapper">
+        <div class="timer-box">
+            <div id="timer-display">00:00</div>
+            <button class="t-btn" style="background:#27ae60;" onclick="startT()">ጀምር</button>
+            <button class="t-btn" style="background:#c0392b;" onclick="stopT()">ቁም</button>
+            <button class="t-btn" style="background:var(--accent); color:black;" onclick="resetT()">ቀይር</button>
+        </div>
     </div>
 
     <div class="info-grid">
-        <div class="date-box">ቀን፡ <input type="date"></div>
-        <div class="date-box">ክፍል፡ <input type="text" placeholder="ክፍል..."></div>
-        <div class="date-box">ሴሚስተር፡ <input type="text" placeholder="ሴሚስተር..."></div>
+        <div class="field-box">📅 ቀን፡ <input type="date" id="qDate" style="border:none; width:80%; outline:none; font-weight:bold;"></div>
+        <div class="field-box">🏫 ክፍል፡ 
+            <select id="qClass" style="border:none; width:80%; font-weight:bold; outline:none;">
+                <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option><option>2ኛ ለ</option>
+                <option>3ኛ ሀ</option><option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
+            </select>
+        </div>
+        <div class="field-box">📝 ሴሚ፡ 
+            <select id="qSem" style="border:none; width:80%; font-weight:bold; outline:none;">
+                <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
+            </select>
+        </div>
     </div>
 
-    <table id="resultsTable">
+    <table id="scoreTable">
         <thead>
             <tr>
-                <th rowspan="2" style="width: 30px;">ቁጥር</th>
-                <th rowspan="2" style="width: 120px;">የተወዳዳሪዎች ስም</th>
-                <th colspan="3">አማርኛ</th>
-                <th colspan="3">እንግሊዝኛ</th>
-                <th colspan="3">ሒሳብ</th>
-                <th colspan="3">አ/ሳይንስ</th>
-                <th colspan="3">ግብረገብ</th>
-                <th rowspan="2">የተመለሰ</th>
-                <th rowspan="2">ያልተመለሰ</th>
-                <th rowspan="2">ድምር</th>
-                <th rowspan="2">ደረጃ</th>
-            </tr>
-            <tr class="sub-head">
-                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                <th style="width:25px">ቁ</th>
+                <th style="width:140px">የተወዳዳሪ ስም</th>
+                <th>አማርኛ</th><th>እንግሊዝኛ</th><th>ሒሳብ</th><th>አ/ሳይንስ</th><th>ግብረገብ</th>
+                <th style="width:55px">ድምር</th><th style="width:45px">ደረጃ</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
-                <td><input type="text" class="student-name"></td>
-                <td><input type="text"></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><input type="text"></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><input type="text"></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><input type="text"></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><input type="text"></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-                
-                <td class="total-correct">0</td>
-                <td class="total-wrong">0</td>
-                <td class="grand-total">0</td>
-                <td class="rank">-</td>
+                <td style="font-weight:bold; color:#7f8c8d;">1</td>
+                <td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>
+                <script>
+                    for(let i=0; i<5; i++){
+                        document.write(`<td><div class="box-stack">
+                            <div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div>
+                            <div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div>
+                        </div></td>`);
+                    }
+                </script>
+                <td class="res-total" style="font-weight:bold; color:var(--primary); font-size:13px;">0/10</td>
+                <td class="res-rank" style="font-weight:bold;">-</td>
             </tr>
         </tbody>
     </table>
 
-    <div class="add-btn-container" style="margin-top: 10px;">
-        <button class="btn" style="background:#007bff; color:white;" onclick="addRow()">+ ተማሪ ጨምር</button>
-    </div>
+    <button class="btn-main add-row-btn" style="background:var(--primary); padding:5px 12px; font-size:10px; margin-top:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
 
-    <div class="footer-sigs">
-        <div class="sig-box">
-            1ኛ ዳኛ፡ _________________<br>
-            2ኛ ዳኛ፡ _________________
+    <div class="sigs">
+        <div class="sig-col">
+            👤 1ኛ ዳኛ፡ <select class="field-box" id="j1" style="padding:2px; font-size:10px; width:120px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select><br>
+            👤 2ኛ ዳኛ፡ <select class="field-box" id="j2" style="padding:2px; font-size:10px; width:120px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select>
         </div>
-        <div class="sig-box">
+        <div class="sig-col" style="text-align: right;">
             ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
             ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
         </div>
     </div>
 
-    <div class="final-actions">
-        <button class="btn" style="background:#28a745; color:white;">💾 Save</button>
-        <button class="btn" style="background:#17a2b8; color:white;" onclick="window.print()">🖨️ Print</button>
-        <button class="btn" style="background:#6f42c1; color:white;" onclick="shareResults()">🔗 Share</button>
+    <div class="actions">
+        <button class="btn-main" style="background:#27ae60;" onclick="sendTelegram()">💾 SAVE & SEND (Telegram)</button>
+        <button class="btn-main" style="background:var(--primary);" onclick="window.print()">🖨️ PRINT / SCREENSHOT</button>
+    </div>
+
+    <div class="dev-footer">
+        Developed by: <a href="https://rose-kit-24.tiiny.site" target="_blank">መ/ር ደለለኝ አጥላው</a> | © 2026 Taitu Bitul Academy
     </div>
 </div>
 
 <script>
-    let timerInterval;
-    let timeLeft = 0;
+    let timer; let sec = 0;
+    function startT() { clearInterval(timer); timer = setInterval(() => { sec++; let m = Math.floor(sec/60); let s = sec%60; document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }, 1000); }
+    function stopT() { clearInterval(timer); }
+    function resetT() { stopT(); sec = 0; document.getElementById('timer-display').innerText = "00:00"; }
 
-    function updateDisplay() {
-        if (timeLeft <= 0 && !timerInterval) { document.getElementById('timer-display').innerText = ""; return; }
-        let mins = Math.floor(timeLeft / 60);
-        let secs = timeLeft % 60;
-        document.getElementById('timer-display').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    function hit(el) {
+        if (el.innerHTML === "") { el.innerHTML = "✓"; el.className = "check right"; }
+        else if (el.innerHTML === "✓") { el.innerHTML = "X"; el.className = "check wrong"; }
+        else { el.innerHTML = ""; el.className = "check"; }
+        recalc();
     }
-
-    function setTimer(m) { timeLeft = m * 60; updateDisplay(); }
-    function startTimer() {
-        if (timeLeft <= 0) return;
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            if (timeLeft > 0) { timeLeft--; updateDisplay(); }
-            else { clearInterval(timerInterval); timerInterval = null; alert("ጊዜው አልቋል!"); }
-        }, 1000);
-    }
-    function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
 
     function addRow() {
-        let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-        let rowCount = table.rows.length;
-        let row = table.insertRow(rowCount);
-        row.innerHTML = `<td>${rowCount + 1}</td>
-            <td><input type="text" class="student-name"></td>
-            <td><input type="text"></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><input type="text"></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><input type="text"></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><input type="text"></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><input type="text"></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
-            <td class="total-correct">0</td><td class="total-wrong">0</td><td class="grand-total">0</td><td class="rank">-</td>`;
+        let tb = document.getElementById("scoreTable").tBodies[0];
+        let r = tb.insertRow();
+        let html = `<td>${tb.rows.length}</td><td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>`;
+        for(let i=0; i<5; i++){
+            html += `<td><div class="box-stack"><div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div><div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div></div></td>`;
+        }
+        html += `<td class="res-total" style="font-weight:bold; color:var(--primary); font-size:13px;">0/10</td><td class="res-rank" style="font-weight:bold;">-</td>`;
+        r.innerHTML = html;
     }
 
-    function calculate() {
-        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
-        let rankData = [];
-
-        for (let i = 0; i < rows.length; i++) {
-            let selects = rows[i].getElementsByClassName('q-score');
-            let correct = 0;
-            let wrong = 0;
-
-            for (let s of selects) {
-                if (s.value === "1") { correct++; s.className = "q-score correct"; }
-                else if (s.value === "x") { wrong++; s.className = "q-score wrong"; }
-                else { s.className = "q-score"; }
-            }
-
-            rows[i].getElementsByClassName('total-correct')[0].innerText = correct;
-            rows[i].getElementsByClassName('total-wrong')[0].innerText = wrong;
-            rows[i].getElementsByClassName('grand-total')[0].innerText = correct; // ድምሩ የተመለሰ ብዛት ነው
-            rankData.push({ index: i, score: correct });
-        }
-
-        // ደረጃ ማውጣት
-        rankData.sort((a, b) => b.score - a.score);
-        rankData.forEach((item, idx) => {
-            if (item.score >= 0) rows[item.index].getElementsByClassName('rank')[0].innerText = idx + 1;
+    function recalc() {
+        let rows = Array.from(document.getElementById("scoreTable").tBodies[0].rows);
+        rows.forEach(r => {
+            let score = r.getElementsByClassName('right').length;
+            r.querySelector('.res-total').innerText = score + "/10";
         });
+        let sorted = rows.map(r => ({ r, s: parseInt(r.querySelector('.res-total').innerText) })).sort((a,b) => b.s - a.s);
+        sorted.forEach((item, i) => { item.r.querySelector('.res-rank').innerText = (i+1) + "ኛ"; });
     }
 
-    function shareResults() {
-        let text = "የውድድር ውጤት ዝርዝር:\n";
-        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
-        for (let row of rows) {
-            let name = row.querySelector('.student-name').value || "---";
-            let correct = row.querySelector('.total-correct').innerText;
-            text += `${name}: የተመለሰ=${correct}\n`;
+    function sendTelegram() {
+        let date = document.getElementById('qDate').value || "ያልተጠቀሰ ቀን";
+        let cls = document.getElementById('qClass').value;
+        let j1 = document.getElementById('j1').value;
+        let j2 = document.getElementById('j2').value;
+        
+        let report = `🏆 የጥያቄና መልስ ውድድር ሪፖርት\n--------------------------\n📅 ቀን፡ ${date}\n🏫 ክፍል፡ ${cls}\n--------------------------\n📊 የውጤት ዝርዝር፡\n`;
+        
+        let rows = document.getElementById("scoreTable").tBodies[0].rows;
+        for (let r of rows) {
+            let name = r.querySelector('.st-name').value;
+            let score = r.querySelector('.res-total').innerText;
+            let rank = r.querySelector('.res-rank').innerText;
+            if(name) report += `✅ ${rank}. ${name} -> ${score}\n`;
         }
-        navigator.clipboard.writeText(text).then(() => alert("ውጤቱ ተገልብጧል!"));
+        
+        report += `--------------------------\n👤 ዳኞች፡ ${j1}, ${j2}\n👤 ሰብሳቢ፡ መ/ር ደለለኝ አጥላው\n--------------------------\nDeveloped by: መ/ር ደለለኝ አጥላው`;
+        
+        window.open(`https://t.me/del21A?text=${encodeURIComponent(report)}`, '_blank');
+        alert("ሙሉ መረጃው በሪፖርት መልክ ተዘጋጅቷል! ወደ ቴሌግራም ይላካል። ለፎቶው ገጹን Screenshot ያንሱት።");
     }
 </script>
 
