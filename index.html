@@ -5,37 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 10px; font-size: 12px; }
-        .container { max-width: 1300px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-bottom: 15px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 10px; font-size: 12px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
         
-        .timer-container { text-align: center; margin-bottom: 15px; background: #fff; border: 2px solid #1a73e8; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
-        #timer-display { font-size: 2rem; font-weight: bold; color: #d93025; cursor: pointer; border: none; background: transparent; text-align: center; width: 100px; outline: none; }
-        .timer-btn { padding: 5px 15px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 3px; }
+        .timer-section { text-align: center; background: #eef; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
+        #timer-display { font-size: 2rem; font-weight: bold; color: #d9534f; }
         
         .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .input-box { border: 1px solid #bdc1c6; padding: 5px; border-radius: 6px; background: #fff; display: flex; align-items: center; }
+        .date-box { border: 1px solid #333; padding: 5px; border-radius: 4px; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
-        th, td { border: 1px solid #dadce0; padding: 5px; text-align: center; }
-        th { background-color: #1a73e8; color: white; font-size: 11px; }
-        .sub-head { background-color: #f8f9fa; font-size: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+        th, td { border: 1px dotted #888; padding: 4px; text-align: center; overflow: hidden; }
+        th { background-color: #007bff; color: white; font-size: 11px; }
+        .sub-head { background-color: #e9ecef; color: #333; font-size: 10px; }
 
-        .touch-cell { cursor: pointer; font-size: 16px; font-weight: bold; width: 35px; user-select: none; }
-        .status-right { background: #e6f4ea; color: #1e8e3e; }
-        .status-wrong { background: #fce8e6; color: #d93025; }
-        .eta-input { width: 25px; border: 0.5px solid #ccc; text-align: center; font-size: 10px; }
+        input[type="text"], input[type="number"] { width: 95%; border: none; background: transparent; text-align: center; font-size: 11px; }
+        select { border: none; background: #f9f9f9; cursor: pointer; font-weight: bold; width: 100%; }
+        
+        .correct { color: green; font-weight: bold; }
+        .wrong { color: red; font-weight: bold; }
 
-        .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 15px; }
-        .sig-box { width: 48%; line-height: 2.5; font-size: 13px; }
-        .judge-select { width: 60%; padding: 3px; border: 1px solid #ccc; font-weight: bold; }
-
-        .final-actions { text-align: center; margin-top: 20px; }
-        .action-btn { padding: 8px 20px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 3px; }
+        .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; }
+        .sig-box { width: 45%; line-height: 2; }
+        .final-actions { text-align: center; margin-top: 30px; border-top: 2px solid #333; padding-top: 15px; }
+        .btn { padding: 8px 15px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
 
         @media print {
-            .final-actions, .timer-container, .add-row-btn { display: none; }
-            .container { box-shadow: none; border: none; padding: 0; width: 100%; }
+            .timer-section, .final-actions, .add-btn-container { display: none; }
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; width: 100%; max-width: 100%; }
+            th { background-color: #ddd !important; color: black; }
         }
     </style>
 </head>
@@ -44,83 +44,79 @@
 <div class="container">
     <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
 
-    <div class="timer-container">
-        <input type="text" id="timer-display" value="01:00">
-        <br>
-        <button class="timer-btn" style="background:#1e8e3e; color:white" onclick="startTimer()">ጀምር</button>
-        <button class="timer-btn" style="background:#d93025; color:white" onclick="stopTimer()">ቁም</button>
+    <div class="timer-section">
+        <div id="timer-display"></div>
+        <button class="btn" style="background:#f0ad4e" onclick="setTimer(1)">1 ደቂቃ</button>
+        <button class="btn" style="background:#f0ad4e" onclick="setTimer(2)">2 ደቂቃ</button>
+        <button class="btn" style="background:#5cb85c; color:white" onclick="startTimer()">ጀምር</button>
+        <button class="btn" style="background:#d9534f; color:white" onclick="stopTimer()">ቁም</button>
     </div>
 
     <div class="info-grid">
-        <div class="input-box">ቀን፡ <input type="date" style="border:none; width:80%"></div>
-        <div class="input-box">ክፍል፡ <input type="text" style="border:none; width:80%"></div>
-        <div class="input-box">ሴሚስተር፡ 
-            <select style="border:none; width:70%; font-weight:bold;">
-                <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
-            </select>
-        </div>
+        <div class="date-box">ቀን፡ <input type="date"></div>
+        <div class="date-box">ክፍል፡ <input type="text" placeholder="ክፍል..."></div>
+        <div class="date-box">ሴሚስተር፡ <input type="text" placeholder="ሴሚስተር..."></div>
     </div>
 
     <table id="resultsTable">
         <thead>
             <tr>
-                <th rowspan="2" style="width:25px">ቁጥር</th>
-                <th rowspan="2" style="width:140px">የተወዳዳሪዎች ስም</th>
-                <th colspan="4">አማርኛ</th>
-                <th colspan="4">እንግሊዝኛ</th>
-                <th colspan="4">ሒሳብ</th>
-                <th colspan="4">አ/ሳይንስ</th>
-                <th colspan="4">ግብረገብ</th>
-                <th rowspan="2" style="width:60px">ድምር (10)</th>
-                <th rowspan="2" style="width:50px">ደረጃ</th>
+                <th rowspan="2" style="width: 30px;">ቁጥር</th>
+                <th rowspan="2" style="width: 120px;">የተወዳዳሪዎች ስም</th>
+                <th colspan="3">አማርኛ</th>
+                <th colspan="3">እንግሊዝኛ</th>
+                <th colspan="3">ሒሳብ</th>
+                <th colspan="3">አ/ሳይንስ</th>
+                <th colspan="3">ግብረገብ</th>
+                <th rowspan="2">የተመለሰ</th>
+                <th rowspan="2">ያልተመለሰ</th>
+                <th rowspan="2">ድምር</th>
+                <th rowspan="2">ደረጃ</th>
             </tr>
             <tr class="sub-head">
-                <th>እጣ1</th><th>1ኛ</th><th>እጣ2</th><th>2ኛ</th>
-                <th>እጣ1</th><th>1ኛ</th><th>እጣ2</th><th>2ኛ</th>
-                <th>እጣ1</th><th>1ኛ</th><th>እጣ2</th><th>2ኛ</th>
-                <th>እጣ1</th><th>1ኛ</th><th>እጣ2</th><th>2ኛ</th>
-                <th>እጣ1</th><th>1ኛ</th><th>እጣ2</th><th>2ኛ</th>
+                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>1</td>
-                <td><input type="text" style="width:95%; border:none;"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
-                <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
+                <td><input type="text" class="student-name"></td>
+                <td><input type="text"></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><input type="text"></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><input type="text"></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><input type="text"></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><input type="text"></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+                <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
                 
-                <td class="grand-total" style="font-weight:bold">0/10</td>
+                <td class="total-correct">0</td>
+                <td class="total-wrong">0</td>
+                <td class="grand-total">0</td>
                 <td class="rank">-</td>
             </tr>
         </tbody>
     </table>
 
-    <button class="add-row-btn action-btn" style="background:#1a73e8;" onclick="addRow()">+ ተማሪ ጨምር</button>
+    <div class="add-btn-container" style="margin-top: 10px;">
+        <button class="btn" style="background:#007bff; color:white;" onclick="addRow()">+ ተማሪ ጨምር</button>
+    </div>
 
     <div class="footer-sigs">
         <div class="sig-box">
-            1ኛ ዳኛ፡ <select class="judge-select">
-                <option value="">ምረጥ...</option>
-                <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option>
-                <option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
-                <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option>
-                <option>ር/መ/ር አማረ አሰፋ</option>
-            </select><br>
-            2ኛ ዳኛ፡ <select class="judge-select">
-                <option value="">ምረጥ...</option>
-                <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option>
-                <option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
-                <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option>
-                <option>ር/መ/ር አማረ አሰፋ</option>
-            </select>
+            1ኛ ዳኛ፡ _________________<br>
+            2ኛ ዳኛ፡ _________________
         </div>
         <div class="sig-box">
             ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
@@ -129,62 +125,95 @@
     </div>
 
     <div class="final-actions">
-        <button class="action-btn" style="background:#1e8e3e;">💾 Save</button>
-        <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
+        <button class="btn" style="background:#28a745; color:white;">💾 Save</button>
+        <button class="btn" style="background:#17a2b8; color:white;" onclick="window.print()">🖨️ Print</button>
+        <button class="btn" style="background:#6f42c1; color:white;" onclick="shareResults()">🔗 Share</button>
     </div>
 </div>
 
 <script>
     let timerInterval;
+    let timeLeft = 0;
+
+    function updateDisplay() {
+        if (timeLeft <= 0 && !timerInterval) { document.getElementById('timer-display').innerText = ""; return; }
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        document.getElementById('timer-display').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function setTimer(m) { timeLeft = m * 60; updateDisplay(); }
     function startTimer() {
+        if (timeLeft <= 0) return;
         clearInterval(timerInterval);
-        let timeParts = document.getElementById('timer-display').value.split(':');
-        let totalSeconds = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
         timerInterval = setInterval(() => {
-            if (totalSeconds <= 0) { clearInterval(timerInterval); alert("ጊዜው አልቋል!"); return; }
-            totalSeconds--;
-            let m = Math.floor(totalSeconds / 60);
-            let s = totalSeconds % 60;
-            document.getElementById('timer-display').value = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            if (timeLeft > 0) { timeLeft--; updateDisplay(); }
+            else { clearInterval(timerInterval); timerInterval = null; alert("ጊዜው አልቋል!"); }
         }, 1000);
     }
-    function stopTimer() { clearInterval(timerInterval); }
-
-    function toggleTouch(cell) {
-        if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
-        else if (cell.innerHTML === "✓") { cell.innerHTML = "X"; cell.className = "touch-cell status-wrong"; }
-        else { cell.innerHTML = ""; cell.className = "touch-cell"; }
-        calculateResults();
-    }
+    function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
 
     function addRow() {
         let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
         let rowCount = table.rows.length;
         let row = table.insertRow(rowCount);
-        let html = `<td>${rowCount + 1}</td><td><input type="text" style="width:95%; border:none;"></td>`;
-        for(let i=0; i<10; i++) {
-            if(i%2==0) html += `<td><input type="text" class="eta-input"></td>`;
-            html += `<td class="touch-cell" onclick="toggleTouch(this)"></td>`;
-        }
-        html += `<td class="grand-total" style="font-weight:bold">0/10</td><td class="rank">-</td>`;
-        row.innerHTML = html;
+        row.innerHTML = `<td>${rowCount + 1}</td>
+            <td><input type="text" class="student-name"></td>
+            <td><input type="text"></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><input type="text"></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><input type="text"></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><input type="text"></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><input type="text"></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td><select class="q-score" onchange="calculate()"><option value="0">-</option><option value="1">✓</option><option value="x">X</option></select></td>
+            <td class="total-correct">0</td><td class="total-wrong">0</td><td class="grand-total">0</td><td class="rank">-</td>`;
     }
 
-    function calculateResults() {
+    function calculate() {
         let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
-        let scores = [];
+        let rankData = [];
+
         for (let i = 0; i < rows.length; i++) {
-            let touchCells = rows[i].getElementsByClassName('touch-cell');
+            let selects = rows[i].getElementsByClassName('q-score');
             let correct = 0;
-            for (let cell of touchCells) { if (cell.innerHTML === "✓") correct++; }
-            rows[i].getElementsByClassName('grand-total')[0].innerText = correct + "/10";
-            scores.push({ index: i, score: correct });
+            let wrong = 0;
+
+            for (let s of selects) {
+                if (s.value === "1") { correct++; s.className = "q-score correct"; }
+                else if (s.value === "x") { wrong++; s.className = "q-score wrong"; }
+                else { s.className = "q-score"; }
+            }
+
+            rows[i].getElementsByClassName('total-correct')[0].innerText = correct;
+            rows[i].getElementsByClassName('total-wrong')[0].innerText = wrong;
+            rows[i].getElementsByClassName('grand-total')[0].innerText = correct; // ድምሩ የተመለሰ ብዛት ነው
+            rankData.push({ index: i, score: correct });
         }
-        scores.sort((a, b) => b.score - a.score);
-        scores.forEach((item, idx) => {
-            let rank = (idx + 1) + "ኛ";
-            rows[item.index].getElementsByClassName('rank')[0].innerText = rank;
+
+        // ደረጃ ማውጣት
+        rankData.sort((a, b) => b.score - a.score);
+        rankData.forEach((item, idx) => {
+            if (item.score >= 0) rows[item.index].getElementsByClassName('rank')[0].innerText = idx + 1;
         });
+    }
+
+    function shareResults() {
+        let text = "የውድድር ውጤት ዝርዝር:\n";
+        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
+        for (let row of rows) {
+            let name = row.querySelector('.student-name').value || "---";
+            let correct = row.querySelector('.total-correct').innerText;
+            text += `${name}: የተመለሰ=${correct}\n`;
+        }
+        navigator.clipboard.writeText(text).then(() => alert("ውጤቱ ተገልብጧል!"));
     }
 </script>
 
