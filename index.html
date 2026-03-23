@@ -3,42 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የውጤት መያዣ - Taitu Bitul Academy</title>
+    <title>የጥያቄና መልስ ውጤት መያዣ</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 10px; font-size: 11px; }
-        .container { max-width: 950px; margin: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-top: 0; font-size: 18px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 10px; font-size: 11px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #1a73e8; margin-bottom: 15px; font-size: 18px; }
         
-        .timer-container { text-align: center; margin-bottom: 10px; padding: 8px; border-radius: 40px; border: 2px solid #1a73e8; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); background: #fff; }
-        #timer-display { font-size: 1.8rem; font-weight: bold; color: #d93025; min-width: 90px; display: inline-block; }
-        .timer-btn { padding: 5px 12px; border-radius: 15px; border: none; cursor: pointer; font-weight: bold; margin: 0 3px; font-size: 10px; color: white; }
+        /* Stopwatch */
+        .timer-container { text-align: center; margin-bottom: 10px; background: #fff; border: 2px solid #1a73e8; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
+        #timer-display { font-size: 2rem; font-weight: bold; color: #d93025; min-width: 100px; display: inline-block; }
+        .timer-btn { padding: 6px 15px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 3px; color: white; font-size: 10px; }
         
         .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .input-box { border: 1px solid #ccc; padding: 5px; border-radius: 4px; display: flex; align-items: center; }
+        .input-box { border: 1px solid #ccc; padding: 6px; border-radius: 5px; background: #fff; display: flex; align-items: center; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        th, td { border: 1px solid #bbb; padding: 2px; text-align: center; }
-        th { background-color: #1a73e8; color: white; font-size: 11px; padding: 8px 2px; }
+        th, td { border: 1px solid #aaa; padding: 2px; text-align: center; }
+        th { background-color: #1a73e8; color: white; font-size: 10px; }
         
-        .vertical-row { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 0; }
-        .item-row { display: flex; align-items: center; gap: 4px; }
+        /* ጽሑፍ የሌለው አቀባዊ ሳጥን */
+        .v-box { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; }
+        .pair { display: flex; align-items: center; gap: 4px; }
 
-        .eta-input { width: 22px; border: 1px solid #ccc; text-align: center; font-size: 10px; padding: 2px; border-radius: 2px; }
-        .touch-cell { cursor: pointer; font-size: 14px; font-weight: bold; width: 28px; height: 26px; border: 1px solid #ddd; border-radius: 3px; background: #fff; user-select: none; display: flex; align-items: center; justify-content: center; }
+        .eta-num { width: 22px; height: 18px; border: 1px solid #999; text-align: center; font-size: 10px; border-radius: 2px; }
+        .btn-check { cursor: pointer; font-size: 14px; font-weight: bold; width: 28px; height: 24px; border: 1px solid #ddd; border-radius: 3px; background: #f9f9f9; user-select: none; display: flex; align-items: center; justify-content: center; }
         
-        .status-right { background: #e6f4ea !important; color: #1e8e3e; border-color: #1e8e3e; }
-        .status-wrong { background: #fce8e6 !important; color: #d93025; border-color: #d93025; }
+        .right { background: #e6f4ea !important; color: #1e8e3e; border-color: #1e8e3e; }
+        .wrong { background: #fce8e6 !important; color: #d93025; border-color: #d93025; }
 
-        .footer-sigs { margin-top: 20px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px; }
-        .sig-box { width: 48%; line-height: 2.2; }
-        .judge-select { width: 60%; padding: 2px; font-size: 11px; font-weight: bold; }
+        .footer-sigs { margin-top: 25px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px; }
+        .sig-box { width: 48%; line-height: 2.5; font-size: 12px; }
+        .judge-sel { width: 60%; padding: 3px; border: 1px solid #ccc; font-weight: bold; }
 
-        .final-actions { text-align: center; margin-top: 20px; padding-top: 10px; border-top: 2px solid #eee; }
-        .action-btn { padding: 8px 18px; border-radius: 4px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; font-size: 12px; }
+        .actions { text-align: center; margin-top: 20px; border-top: 2px solid #eee; padding-top: 15px; }
+        .btn { padding: 8px 20px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 4px; font-size: 12px; }
 
         @media print {
-            .final-actions, .timer-container, .add-row-btn { display: none; }
-            .container { box-shadow: none; border: none; padding: 0; width: 100%; }
+            .actions, .timer-container, .add-row { display: none; }
+            .container { box-shadow: none; border: none; padding: 0; }
         }
     </style>
 </head>
@@ -50,70 +52,65 @@
     <div class="timer-container">
         <div id="timer-display">00:00</div>
         <br>
-        <button class="timer-btn" style="background:#1e8e3e;" onclick="startTimer()">ጀምር</button>
-        <button class="timer-btn" style="background:#d93025;" onclick="stopTimer()">ቁም</button>
-        <button class="timer-btn" style="background:#f0ad4e;" onclick="resetTimer()">ቀይር</button>
+        <button class="timer-btn" style="background:#1e8e3e;" onclick="startT()">ጀምር</button>
+        <button class="timer-btn" style="background:#d93025;" onclick="stopT()">ቁም</button>
+        <button class="timer-btn" style="background:#f0ad4e;" onclick="resetT()">ቀይር</button>
     </div>
 
     <div class="info-grid">
-        <div class="input-box">ቀን፡ <input type="date" id="docDate" style="border:none; width:100%; font-size:11px;"></div>
+        <div class="input-box">ቀን፡ <input type="date" id="dDate" style="border:none; width:85%"></div>
         <div class="input-box">ክፍል፡ 
-            <select id="docClass" style="border:none; width:100%; font-weight:bold;">
+            <select id="dClass" style="border:none; width:85%; font-weight:bold;">
                 <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option><option>2ኛ ለ</option>
                 <option>3ኛ ሀ</option><option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
             </select>
         </div>
         <div class="input-box">ሴሚስተር፡ 
-            <select id="docSem" style="border:none; width:100%; font-weight:bold;">
+            <select style="border:none; width:85%; font-weight:bold;">
                 <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
             </select>
         </div>
     </div>
 
-    <table id="resultsTable">
+    <table id="mainTable">
         <thead>
             <tr>
                 <th style="width:25px">ቁ</th>
-                <th style="width:150px">የተወዳዳሪዎች ስም</th>
-                <th>አማርኛ</th>
-                <th>እንግሊዝኛ</th>
-                <th>ሒሳብ</th>
-                <th>አ/ሳይንስ</th>
-                <th>ግብረገብ</th>
-                <th style="width:55px">ድምር</th>
-                <th style="width:50px">ደረጃ</th>
+                <th style="width:140px">የተወዳዳሪ ስም</th>
+                <th>አማርኛ</th><th>እንግሊዝኛ</th><th>ሒሳብ</th><th>አ/ሳይንስ</th><th>ግብረገብ</th>
+                <th style="width:55px">ድምር</th><th style="width:50px">ደረጃ</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>1</td>
-                <td><input type="text" class="st-name" style="width:95%; border:none; outline:none;" placeholder="ስም..."></td>
+                <td><input type="text" class="s-name" style="width:95%; border:none; outline:none;" placeholder="ስም ያስገቡ"></td>
                 <script>
-                    for(let i=0; i<5; i++) {
-                        document.write(`<td><div class="vertical-row">
-                            <div class="item-row"><input type="text" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
-                            <div class="item-row"><input type="text" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                    for(let i=0; i<5; i++){
+                        document.write(`<td><div class="v-box">
+                            <div class="pair"><input type="text" class="eta-num"><div class="btn-check" onclick="mark(this)"></div></div>
+                            <div class="pair"><input type="text" class="eta-num"><div class="btn-check" onclick="mark(this)"></div></div>
                         </div></td>`);
                     }
                 </script>
-                <td class="grand-total" style="font-weight:bold;">0/10</td>
+                <td class="total" style="font-weight:bold; color:#1a73e8;">0/10</td>
                 <td class="rank">-</td>
             </tr>
         </tbody>
     </table>
 
-    <button class="action-btn" style="background:#1a73e8; padding: 4px 10px; font-size:10px; margin-top:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
+    <button class="btn add-row" style="background:#1a73e8; padding:5px 10px; font-size:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
 
     <div class="footer-sigs">
         <div class="sig-box">
-            1ኛ ዳኛ፡ <select class="judge-select" id="judge1">
+            1ኛ ዳኛ፡ <select class="judge-sel">
                 <option value="">ምረጥ...</option>
                 <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option>
                 <option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
                 <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option>
                 <option>ር/መ/ር አማረ አሰፋ</option>
             </select><br>
-            2ኛ ዳኛ፡ <select class="judge-select" id="judge2">
+            2ኛ ዳኛ፡ <select class="judge-sel">
                 <option value="">ምረጥ...</option>
                 <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option>
                 <option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
@@ -127,93 +124,68 @@
         </div>
     </div>
 
-    <div class="final-actions">
-        <button class="action-btn" style="background:#28a745;" onclick="saveData()">💾 Save</button>
-        <button class="action-btn" style="background:#6f42c1;" onclick="shareData()">🔗 Share</button>
-        <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
+    <div class="actions">
+        <button class="btn" style="background:#28a745;" onclick="saveD()">💾 Save</button>
+        <button class="btn" style="background:#6f42c1;" onclick="shareD()">🔗 Share</button>
+        <button class="btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
     </div>
 </div>
 
 <script>
-    let timerInterval;
-    let seconds = 0;
+    let timer; let sec = 0;
+    function startT() { clearInterval(timer); timer = setInterval(() => { sec++; let m = Math.floor(sec/60); let s = sec%60; document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }, 1000); }
+    function stopT() { clearInterval(timer); }
+    function resetT() { stopT(); sec = 0; document.getElementById('timer-display').innerText = "00:00"; }
 
-    function startTimer() {
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            seconds++;
-            let m = Math.floor(seconds / 60);
-            let s = seconds % 60;
-            document.getElementById('timer-display').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }, 1000);
-    }
-    function stopTimer() { clearInterval(timerInterval); }
-    function resetTimer() { stopTimer(); seconds = 0; document.getElementById('timer-display').innerText = "00:00"; }
-
-    function toggleTouch(cell) {
-        if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
-        else if (cell.innerHTML === "✓") { cell.innerHTML = "X"; cell.className = "touch-cell status-wrong"; }
-        else { cell.innerHTML = ""; cell.className = "touch-cell"; }
-        calculateResults();
+    function mark(el) {
+        if (el.innerHTML === "") { el.innerHTML = "✓"; el.className = "btn-check right"; }
+        else if (el.innerHTML === "✓") { el.innerHTML = "X"; el.className = "btn-check wrong"; }
+        else { el.innerHTML = ""; el.className = "btn-check"; }
+        calc();
     }
 
     function addRow() {
-        let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-        let rowCount = table.rows.length;
-        let row = table.insertRow(rowCount);
-        let html = `<td>${rowCount + 1}</td><td><input type="text" class="st-name" style="width:95%; border:none; outline:none;" placeholder="ስም..."></td>`;
-        for(let i=0; i<5; i++) {
-            html += `<td><div class="vertical-row">
-                <div class="item-row"><input type="text" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
-                <div class="item-row"><input type="text" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
-            </div></td>`;
+        let body = document.getElementById("mainTable").tBodies[0];
+        let nr = body.insertRow();
+        let html = `<td>${body.rows.length}</td><td><input type="text" class="s-name" style="width:95%; border:none; outline:none;" placeholder="ስም ያስገቡ"></td>`;
+        for(let i=0; i<5; i++){
+            html += `<td><div class="v-box"><div class="pair"><input type="text" class="eta-num"><div class="btn-check" onclick="mark(this)"></div></div><div class="pair"><input type="text" class="eta-num"><div class="btn-check" onclick="mark(this)"></div></div></div></td>`;
         }
-        html += `<td class="grand-total" style="font-weight:bold;">0/10</td><td class="rank">-</td>`;
-        row.innerHTML = html;
+        html += `<td class="total" style="font-weight:bold; color:#1a73e8;">0/10</td><td class="rank">-</td>`;
+        nr.innerHTML = html;
     }
 
-    function calculateResults() {
-        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
-        let scores = [];
-        for (let i = 0; i < rows.length; i++) {
-            let cells = rows[i].getElementsByClassName('touch-cell');
-            let correct = 0;
-            for (let c of cells) { if (c.innerHTML === "✓") correct++; }
-            rows[i].getElementsByClassName('grand-total')[0].innerText = correct + "/10";
-            scores.push({ index: i, score: correct });
-        }
-        scores.sort((a, b) => b.score - a.score);
-        scores.forEach((item, idx) => { rows[item.index].getElementsByClassName('rank')[0].innerText = (idx + 1) + "ኛ"; });
-    }
-
-    function saveData() {
-        let date = document.getElementById('docDate').value || "NoDate";
-        let kifl = document.getElementById('docClass').value;
-        let key = `Result_${date}_${kifl}`;
+    function calc() {
+        let rows = document.getElementById("mainTable").tBodies[0].rows;
         let data = [];
-        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
         for (let r of rows) {
-            let name = r.querySelector('.st-name').value;
-            let score = r.querySelector('.grand-total').innerText;
-            if(name) data.push({ name, score });
+            let checks = r.getElementsByClassName('right');
+            let count = checks.length;
+            r.querySelector('.total').innerText = count + "/10";
+            data.push({ row: r, score: count });
         }
-        localStorage.setItem(key, JSON.stringify(data));
-        alert(`የክፍል ${kifl} መረጃ ተቀምጧል!`);
+        data.sort((a,b) => b.score - a.score);
+        data.forEach((item, idx) => { item.row.querySelector('.rank').innerText = (idx+1) + "ኛ"; });
     }
 
-    function shareData() {
-        let kifl = document.getElementById('docClass').value;
-        let text = `🏆 የጥያቄና መልስ ውድድር ውጤት (${kifl})\n--------------------------\n`;
-        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
+    function saveD() {
+        let date = document.getElementById('dDate').value || "NoDate";
+        let cls = document.getElementById('dClass').value;
+        localStorage.setItem(`Quiz_${date}_${cls}`, document.body.innerHTML);
+        alert("መረጃው በብሮውዘሩ ውስጥ ተቀምጧል!");
+    }
+
+    function shareD() {
+        let cls = document.getElementById('dClass').value;
+        let txt = `🏆 የጥያቄና መልስ ውጤት (${cls})\n`;
+        let rows = document.getElementById("mainTable").tBodies[0].rows;
         for (let r of rows) {
-            let name = r.querySelector('.st-name').value;
-            let score = r.querySelector('.grand-total').innerText;
+            let name = r.querySelector('.s-name').value;
+            let score = r.querySelector('.total').innerText;
             let rank = r.querySelector('.rank').innerText;
-            if(name) text += `${rank}. ${name} -> ${score}\n`;
+            if(name) txt += `${rank}. ${name}: ${score}\n`;
         }
-        navigator.clipboard.writeText(text).then(() => {
-            alert("ውጤቱ ተገልብጧል! መላክ ይችላሉ።");
-        });
+        navigator.clipboard.writeText(txt).then(() => alert("ውጤቱ ተገልብጧል (Copied)!"));
     }
 </script>
 
