@@ -20,13 +20,27 @@
         th, td { border: 1px solid #dadce0; padding: 4px; text-align: center; }
         th { background-color: #1a73e8; color: white; font-size: 11px; }
         
-        /* Vertical alignment for ETA inputs */
-        .eta-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .eta-input { width: 25px; border: 1px solid #ccc; text-align: center; font-size: 10px; padding: 1px; }
+        /* ------------------------------------------- */
+        /* አቀባዊ (Vertical) አቀማመጥ ለየእጣ ቁጥሮቹ */
+        .vertical-row { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 5px; 
+            padding: 5px 0;
+        }
+        .item-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        /* ------------------------------------------- */
+
+        .eta-input { width: 30px; border: 1px solid #ccc; text-align: center; font-size: 11px; padding: 2px; border-radius: 3px; }
+        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 45px; height: 35px; border: 1px solid #eee; border-radius: 4px; background: #fff; user-select: none; display: flex; align-items: center; justify-content: center; }
         
-        .touch-cell { cursor: pointer; font-size: 16px; font-weight: bold; width: 40px; height: 35px; user-select: none; }
-        .status-right { background: #e6f4ea; color: #1e8e3e; }
-        .status-wrong { background: #fce8e6; color: #d93025; }
+        .status-right { background: #e6f4ea; color: #1e8e3e; border-color: #1e8e3e; }
+        .status-wrong { background: #fce8e6; color: #d93025; border-color: #d93025; }
 
         .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 15px; }
         .sig-box { width: 48%; line-height: 2.8; font-size: 13px; }
@@ -73,27 +87,52 @@
         <thead>
             <tr>
                 <th style="width:30px">ቁጥር</th>
-                <th style="width:150px">የተወዳዳሪዎች ስም</th>
+                <th style="width:160px">የተወዳዳሪዎች ስም</th>
                 <th>አማርኛ (እጣ 1&2)</th>
                 <th>እንግሊዝኛ (እጣ 1&2)</th>
                 <th>ሒሳብ (እጣ 1&2)</th>
                 <th>አ/ሳይንስ (እጣ 1&2)</th>
                 <th>ግብረገብ (እጣ 1&2)</th>
-                <th style="width:70px">ድምር (10)</th>
-                <th style="width:60px">ደረጃ</th>
+                <th style="width:75px">ድምር (10)</th>
+                <th style="width:65px">ደረጃ</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>1</td>
-                <td><input type="text" style="width:95%; border:none; outline:none;"></td>
-                <td><div class="eta-col"><input type="text" placeholder="1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div><input type="text" placeholder="2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div></td>
-                <td><div class="eta-col"><input type="text" placeholder="1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div><input type="text" placeholder="2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div></td>
-                <td><div class="eta-col"><input type="text" placeholder="1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div><input type="text" placeholder="2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div></td>
-                <td><div class="eta-col"><input type="text" placeholder="1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div><input type="text" placeholder="2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div></td>
-                <td><div class="eta-col"><input type="text" placeholder="1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div><input type="text" placeholder="2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div></td>
-                <td class="grand-total" style="font-weight:bold; font-size:14px;">0/10</td>
-                <td class="rank" style="font-weight:bold; font-size:14px;">-</td>
+                <td><input type="text" style="width:95%; border:none; outline:none;" placeholder="ስም ያስገቡ"></td>
+                <td>
+                    <div class="vertical-row">
+                        <div class="item-row"><input type="text" placeholder="እጣ 1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                        <div class="item-row"><input type="text" placeholder="እጣ 2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="vertical-row">
+                        <div class="item-row"><input type="text" placeholder="እጣ 1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                        <div class="item-row"><input type="text" placeholder="እጣ 2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="vertical-row">
+                        <div class="item-row"><input type="text" placeholder="እጣ 1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                        <div class="item-row"><input type="text" placeholder="እጣ 2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="vertical-row">
+                        <div class="item-row"><input type="text" placeholder="እጣ 1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                        <div class="item-row"><input type="text" placeholder="እጣ 2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="vertical-row">
+                        <div class="item-row"><input type="text" placeholder="እጣ 1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                        <div class="item-row"><input type="text" placeholder="እጣ 2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                    </div>
+                </td>
+                <td class="grand-total" style="font-weight:bold; font-size:15px; color:#1a73e8;">0/10</td>
+                <td class="rank" style="font-weight:bold; font-size:15px;">-</td>
             </tr>
         </tbody>
     </table>
@@ -124,8 +163,7 @@
     </div>
 
     <div class="final-actions">
-        <button class="action-btn" style="background:#28a745;">💾 Save</button>
-        <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
+        <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print (አትም)</button>
     </div>
 </div>
 
@@ -156,11 +194,16 @@
         let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
         let rowCount = table.rows.length;
         let row = table.insertRow(rowCount);
-        let cellHTML = `<td>${rowCount + 1}</td><td><input type="text" style="width:95%; border:none; outline:none;"></td>`;
+        let cellHTML = `<td>${rowCount + 1}</td><td><input type="text" style="width:95%; border:none; outline:none;" placeholder="ስም ያስገቡ"></td>`;
         for(let i=0; i<5; i++) {
-            cellHTML += `<td><div class="eta-col"><input type="text" placeholder="1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div><input type="text" placeholder="2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div></td>`;
+            cellHTML += `<td>
+                            <div class="vertical-row">
+                                <div class="item-row"><input type="text" placeholder="እጣ 1" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                                <div class="item-row"><input type="text" placeholder="እጣ 2" class="eta-input"><div class="touch-cell" onclick="toggleTouch(this)"></div></div>
+                            </div>
+                         </td>`;
         }
-        cellHTML += `<td class="grand-total" style="font-weight:bold; font-size:14px;">0/10</td><td class="rank" style="font-weight:bold; font-size:14px;">-</td>`;
+        cellHTML += `<td class="grand-total" style="font-weight:bold; font-size:15px; color:#1a73e8;">0/10</td><td class="rank" style="font-weight:bold; font-size:15px;">-</td>`;
         row.innerHTML = cellHTML;
     }
 
