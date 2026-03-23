@@ -3,44 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የጥያቄና መልስ ውጤት መያዣ</title>
+    <title>የውጤት መያዣ - Taitu Bitul Academy</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 10px; font-size: 11px; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-bottom: 15px; font-size: 18px; }
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --danger-color: #ea4335;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); padding: 15px; font-size: 11px; color: #333; }
+        .container { max-width: 950px; margin: auto; background: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; }
+        h2 { text-align: center; color: var(--primary-color); margin-top: 0; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Stopwatch */
-        .timer-container { text-align: center; margin-bottom: 10px; background: #fff; border: 2px solid #1a73e8; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
-        #timer-display { font-size: 2rem; font-weight: bold; color: #d93025; min-width: 100px; display: inline-block; }
-        .timer-btn { padding: 6px 15px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 3px; color: white; font-size: 10px; }
+        /* Stopwatch Stylized */
+        .timer-container { text-align: center; margin-bottom: 20px; padding: 10px 20px; border: 2px solid var(--primary-color); border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); background: #fff; box-shadow: 0 4px 10px rgba(26, 115, 232, 0.2); }
+        #timer-display { font-size: 2rem; font-weight: bold; color: var(--danger-color); min-width: 100px; display: inline-block; font-family: monospace; }
+        .timer-btn { padding: 6px 16px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 3px; font-size: 10px; color: white; transition: 0.3s; }
+        .timer-btn:hover { opacity: 0.8; transform: translateY(-1px); }
         
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .input-box { border: 1px solid #ccc; padding: 6px; border-radius: 5px; background: #fff; display: flex; align-items: center; }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .input-box { border: 1px solid #e0e0e0; padding: 8px; border-radius: 8px; display: flex; align-items: center; background: #fff; transition: 0.3s; }
+        .input-box:focus-within { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        th, td { border: 1px solid #aaa; padding: 2px; text-align: center; }
-        th { background-color: #1a73e8; color: white; font-size: 10px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 5px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+        th { background-color: var(--primary-color); color: white; font-size: 11px; padding: 12px 4px; font-weight: 600; text-transform: uppercase; }
+        td { border-bottom: 1px solid #eee; border-right: 1px solid #eee; padding: 5px; text-align: center; background: #fff; }
         
-        /* ጽሑፍ የሌለው አቀባዊ ሳጥን */
-        .v-box { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; }
-        .pair { display: flex; align-items: center; gap: 4px; }
+        .v-box { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 5px 0; }
+        .pair { display: flex; align-items: center; gap: 5px; }
 
-        .eta-num { width: 22px; height: 18px; border: 1px solid #999; text-align: center; font-size: 10px; border-radius: 2px; }
-        .btn-check { cursor: pointer; font-size: 14px; font-weight: bold; width: 28px; height: 24px; border: 1px solid #ddd; border-radius: 3px; background: #f9f9f9; user-select: none; display: flex; align-items: center; justify-content: center; }
+        .eta-num { width: 24px; height: 20px; border: 1.5px solid #dcdfe3; text-align: center; font-size: 10px; border-radius: 4px; outline: none; transition: 0.3s; }
+        .eta-num:focus { border-color: var(--primary-color); }
+        .btn-check { cursor: pointer; font-size: 14px; font-weight: bold; width: 30px; height: 26px; border: 1.5px solid #dcdfe3; border-radius: 6px; background: #fdfdfd; user-select: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-check:hover { background: #f0f0f0; }
         
-        .right { background: #e6f4ea !important; color: #1e8e3e; border-color: #1e8e3e; }
-        .wrong { background: #fce8e6 !important; color: #d93025; border-color: #d93025; }
+        .right { background: #e6f4ea !important; color: #1e8e3e; border-color: #1e8e3e !important; box-shadow: inset 0 0 5px rgba(30,142,62,0.1); }
+        .wrong { background: #fce8e6 !important; color: #d93025; border-color: #d93025 !important; box-shadow: inset 0 0 5px rgba(217,48,37,0.1); }
 
-        .footer-sigs { margin-top: 25px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 10px; }
+        .footer-sigs { margin-top: 25px; display: flex; justify-content: space-between; padding: 15px; background: #f9f9f9; border-radius: 10px; }
         .sig-box { width: 48%; line-height: 2.5; font-size: 12px; }
-        .judge-sel { width: 60%; padding: 3px; border: 1px solid #ccc; font-weight: bold; }
+        .judge-sel { width: 65%; padding: 4px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold; }
 
-        .actions { text-align: center; margin-top: 20px; border-top: 2px solid #eee; padding-top: 15px; }
-        .btn { padding: 8px 20px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 4px; font-size: 12px; }
+        .actions { text-align: center; margin-top: 25px; padding-top: 15px; }
+        .btn { padding: 10px 25px; border-radius: 8px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; font-size: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+
+        /* Developer Footer Style */
+        .dev-footer { margin-top: 40px; text-align: center; padding: 15px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
+        .dev-footer a { color: var(--primary-color); text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .dev-footer a:hover { text-decoration: underline; color: #0d47a1; }
 
         @media print {
-            .actions, .timer-container, .add-row { display: none; }
-            .container { box-shadow: none; border: none; padding: 0; }
+            .actions, .timer-container, .add-row-btn, .dev-footer { display: none; }
+            .container { box-shadow: none; border: none; padding: 0; width: 100%; }
         }
     </style>
 </head>
@@ -52,21 +68,21 @@
     <div class="timer-container">
         <div id="timer-display">00:00</div>
         <br>
-        <button class="timer-btn" style="background:#1e8e3e;" onclick="startT()">ጀምር</button>
-        <button class="timer-btn" style="background:#d93025;" onclick="stopT()">ቁም</button>
-        <button class="timer-btn" style="background:#f0ad4e;" onclick="resetT()">ቀይር</button>
+        <button class="timer-btn" style="background:var(--secondary-color);" onclick="startT()">ጀምር</button>
+        <button class="timer-btn" style="background:var(--danger-color);" onclick="stopT()">ቁም</button>
+        <button class="timer-btn" style="background:#f39c12;" onclick="resetT()">ቀይር</button>
     </div>
 
     <div class="info-grid">
-        <div class="input-box">ቀን፡ <input type="date" id="dDate" style="border:none; width:85%"></div>
-        <div class="input-box">ክፍል፡ 
-            <select id="dClass" style="border:none; width:85%; font-weight:bold;">
+        <div class="input-box">📅 ቀን፡ <input type="date" id="dDate" style="border:none; width:80%; outline:none; margin-left:5px;"></div>
+        <div class="input-box">🏫 ክፍል፡ 
+            <select id="dClass" style="border:none; width:80%; font-weight:bold; outline:none; margin-left:5px;">
                 <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option><option>2ኛ ለ</option>
                 <option>3ኛ ሀ</option><option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
             </select>
         </div>
-        <div class="input-box">ሴሚስተር፡ 
-            <select style="border:none; width:85%; font-weight:bold;">
+        <div class="input-box">📝 ሴሚ፡ 
+            <select id="dSem" style="border:none; width:80%; font-weight:bold; outline:none; margin-left:5px;">
                 <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
             </select>
         </div>
@@ -75,16 +91,16 @@
     <table id="mainTable">
         <thead>
             <tr>
-                <th style="width:25px">ቁ</th>
-                <th style="width:140px">የተወዳዳሪ ስም</th>
+                <th style="width:30px">ቁ</th>
+                <th style="width:150px">የተወዳዳሪ ስም</th>
                 <th>አማርኛ</th><th>እንግሊዝኛ</th><th>ሒሳብ</th><th>አ/ሳይንስ</th><th>ግብረገብ</th>
-                <th style="width:55px">ድምር</th><th style="width:50px">ደረጃ</th>
+                <th style="width:60px">ድምር</th><th style="width:55px">ደረጃ</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
-                <td><input type="text" class="s-name" style="width:95%; border:none; outline:none;" placeholder="ስም ያስገቡ"></td>
+                <td style="font-weight:bold; color:#666;">1</td>
+                <td><input type="text" class="s-name" style="width:95%; border:none; outline:none; font-weight:500;" placeholder="ስም ያስገቡ..."></td>
                 <script>
                     for(let i=0; i<5; i++){
                         document.write(`<td><div class="v-box">
@@ -93,24 +109,24 @@
                         </div></td>`);
                     }
                 </script>
-                <td class="total" style="font-weight:bold; color:#1a73e8;">0/10</td>
-                <td class="rank">-</td>
+                <td class="total" style="font-weight:bold; color:var(--primary-color); font-size:14px;">0/10</td>
+                <td class="rank" style="font-weight:bold; color:#333;">-</td>
             </tr>
         </tbody>
     </table>
 
-    <button class="btn add-row" style="background:#1a73e8; padding:5px 10px; font-size:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
+    <button class="btn add-row-btn" style="background:var(--primary-color); padding:6px 12px; font-size:11px; margin-top:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
 
     <div class="footer-sigs">
         <div class="sig-box">
-            1ኛ ዳኛ፡ <select class="judge-sel">
+            👤 1ኛ ዳኛ፡ <select class="judge-sel" id="j1">
                 <option value="">ምረጥ...</option>
                 <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option>
                 <option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
                 <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option>
                 <option>ር/መ/ር አማረ አሰፋ</option>
             </select><br>
-            2ኛ ዳኛ፡ <select class="judge-sel">
+            👤 2ኛ ዳኛ፡ <select class="judge-sel" id="j2">
                 <option value="">ምረጥ...</option>
                 <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option>
                 <option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
@@ -118,16 +134,20 @@
                 <option>ር/መ/ር አማረ አሰፋ</option>
             </select>
         </div>
-        <div class="sig-box">
+        <div class="sig-box" style="text-align: right;">
             ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
             ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
         </div>
     </div>
 
     <div class="actions">
-        <button class="btn" style="background:#28a745;" onclick="saveD()">💾 Save</button>
-        <button class="btn" style="background:#6f42c1;" onclick="shareD()">🔗 Share</button>
-        <button class="btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
+        <button class="btn" style="background:var(--secondary-color);" onclick="saveD()">💾 Save (መዝግብ)</button>
+        <button class="btn" style="background:#6f42c1;" onclick="shareD()">🔗 Share (አጋራ)</button>
+        <button class="btn" style="background:var(--primary-color);" onclick="window.print()">🖨️ Print (አትም)</button>
+    </div>
+
+    <div class="dev-footer">
+        Developed by: <a href="https://rose-kit-24.tiiny.site" target="_blank">መ/ር ደለለኝ አጥላው</a> | © 2026 Taitu Bitul Academy
     </div>
 </div>
 
@@ -147,11 +167,11 @@
     function addRow() {
         let body = document.getElementById("mainTable").tBodies[0];
         let nr = body.insertRow();
-        let html = `<td>${body.rows.length}</td><td><input type="text" class="s-name" style="width:95%; border:none; outline:none;" placeholder="ስም ያስገቡ"></td>`;
+        let html = `<td style="font-weight:bold; color:#666;">${body.rows.length}</td><td><input type="text" class="s-name" style="width:95%; border:none; outline:none; font-weight:500;" placeholder="ስም..."></td>`;
         for(let i=0; i<5; i++){
             html += `<td><div class="v-box"><div class="pair"><input type="text" class="eta-num"><div class="btn-check" onclick="mark(this)"></div></div><div class="pair"><input type="text" class="eta-num"><div class="btn-check" onclick="mark(this)"></div></div></div></td>`;
         }
-        html += `<td class="total" style="font-weight:bold; color:#1a73e8;">0/10</td><td class="rank">-</td>`;
+        html += `<td class="total" style="font-weight:bold; color:var(--primary-color); font-size:14px;">0/10</td><td class="rank" style="font-weight:bold;">-</td>`;
         nr.innerHTML = html;
     }
 
@@ -160,9 +180,8 @@
         let data = [];
         for (let r of rows) {
             let checks = r.getElementsByClassName('right');
-            let count = checks.length;
-            r.querySelector('.total').innerText = count + "/10";
-            data.push({ row: r, score: count });
+            r.querySelector('.total').innerText = checks.length + "/10";
+            data.push({ row: r, score: checks.length });
         }
         data.sort((a,b) => b.score - a.score);
         data.forEach((item, idx) => { item.row.querySelector('.rank').innerText = (idx+1) + "ኛ"; });
@@ -171,13 +190,14 @@
     function saveD() {
         let date = document.getElementById('dDate').value || "NoDate";
         let cls = document.getElementById('dClass').value;
-        localStorage.setItem(`Quiz_${date}_${cls}`, document.body.innerHTML);
-        alert("መረጃው በብሮውዘሩ ውስጥ ተቀምጧል!");
+        let key = `QuizResult_${date}_${cls}`;
+        localStorage.setItem(key, document.getElementById("mainTable").innerHTML);
+        alert(`የ ${cls} ክፍል መረጃ በ ${date} ቀን በሚገባ ተመዝግቧል!`);
     }
 
     function shareD() {
         let cls = document.getElementById('dClass').value;
-        let txt = `🏆 የጥያቄና መልስ ውጤት (${cls})\n`;
+        let txt = `🏆 የጥያቄና መልስ ውድድር ውጤት (${cls})\n--------------------------\n`;
         let rows = document.getElementById("mainTable").tBodies[0].rows;
         for (let r of rows) {
             let name = r.querySelector('.s-name').value;
@@ -185,7 +205,7 @@
             let rank = r.querySelector('.rank').innerText;
             if(name) txt += `${rank}. ${name}: ${score}\n`;
         }
-        navigator.clipboard.writeText(txt).then(() => alert("ውጤቱ ተገልብጧል (Copied)!"));
+        navigator.clipboard.writeText(txt).then(() => alert("ውጤቱ ተገልብጧል (Copied)! ለሚፈልጉት አካል ማጋራት ይችላሉ።"));
     }
 </script>
 
