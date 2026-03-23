@@ -9,33 +9,35 @@
         .container { max-width: 1300px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #1a73e8; margin-bottom: 15px; }
         
+        /* Stop-watch Style (Counting Up) */
         .timer-container { text-align: center; margin-bottom: 15px; background: #fff; border: 2px solid #1a73e8; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
-        #timer-display { font-size: 2rem; font-weight: bold; color: #d93025; cursor: pointer; border: none; background: transparent; text-align: center; width: 100px; outline: none; }
-        .timer-btn { padding: 5px 15px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 3px; }
+        #timer-display { font-size: 2.2rem; font-weight: bold; color: #d93025; min-width: 120px; display: inline-block; }
+        .timer-btn { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 5px; color: white; }
         
         .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .input-box { border: 1px solid #bdc1c6; padding: 5px; border-radius: 6px; background: #fff; display: flex; align-items: center; }
+        .input-box { border: 1px solid #bdc1c6; padding: 8px; border-radius: 6px; background: #fff; display: flex; align-items: center; }
+        .input-box label { font-weight: bold; margin-right: 10px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
         th, td { border: 1px solid #dadce0; padding: 5px; text-align: center; }
         th { background-color: #1a73e8; color: white; font-size: 11px; }
         .sub-head { background-color: #f8f9fa; font-size: 10px; }
 
-        .touch-cell { cursor: pointer; font-size: 16px; font-weight: bold; width: 35px; user-select: none; }
+        .touch-cell { cursor: pointer; font-size: 16px; font-weight: bold; width: 35px; user-select: none; transition: 0.2s; }
         .status-right { background: #e6f4ea; color: #1e8e3e; }
         .status-wrong { background: #fce8e6; color: #d93025; }
-        .eta-input { width: 25px; border: 0.5px solid #ccc; text-align: center; font-size: 10px; }
+        .eta-input { width: 30px; border: 1px solid #eee; text-align: center; font-size: 10px; padding: 2px; }
 
         .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 15px; }
-        .sig-box { width: 48%; line-height: 2.5; font-size: 13px; }
-        .judge-select { width: 60%; padding: 3px; border: 1px solid #ccc; font-weight: bold; }
+        .sig-box { width: 48%; line-height: 2.8; font-size: 13px; }
+        .judge-select { width: 65%; padding: 4px; border: 1px solid #ccc; font-weight: bold; }
 
-        .final-actions { text-align: center; margin-top: 20px; }
-        .action-btn { padding: 8px 20px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 3px; }
+        .final-actions { text-align: center; margin-top: 25px; }
+        .action-btn { padding: 10px 25px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; }
 
         @media print {
             .final-actions, .timer-container, .add-row-btn { display: none; }
-            .container { box-shadow: none; border: none; padding: 0; width: 100%; }
+            .container { box-shadow: none; border: none; padding: 0; }
         }
     </style>
 </head>
@@ -45,17 +47,27 @@
     <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
 
     <div class="timer-container">
-        <input type="text" id="timer-display" value="01:00">
+        <div id="timer-display">00:00</div>
         <br>
-        <button class="timer-btn" style="background:#1e8e3e; color:white" onclick="startTimer()">ጀምር</button>
-        <button class="timer-btn" style="background:#d93025; color:white" onclick="stopTimer()">ቁም</button>
+        <button class="timer-btn" style="background:#1e8e3e;" onclick="startTimer()">ጀምር</button>
+        <button class="timer-btn" style="background:#d93025;" onclick="stopTimer()">ቁም</button>
+        <button class="timer-btn" style="background:#f0ad4e;" onclick="resetTimer()">ቀይር</button>
     </div>
 
     <div class="info-grid">
-        <div class="input-box">ቀን፡ <input type="date" style="border:none; width:80%"></div>
-        <div class="input-box">ክፍል፡ <input type="text" style="border:none; width:80%"></div>
-        <div class="input-box">ሴሚስተር፡ 
-            <select style="border:none; width:70%; font-weight:bold;">
+        <div class="input-box"><label>ቀን፡</label><input type="date" style="border:none; width:100%"></div>
+        <div class="input-box">
+            <label>ክፍል፡</label>
+            <select style="border:none; width:100%; font-weight:bold;">
+                <option>1ኛ ሀ</option><option>1ኛ ለ</option>
+                <option>2ኛ ሀ</option><option>2ኛ ለ</option>
+                <option>3ኛ ሀ</option><option>4ኛ ሀ</option>
+                <option>5ኛ ሀ</option><option>6ኛ ሀ</option>
+            </select>
+        </div>
+        <div class="input-box">
+            <label>ሴሚስተር፡</label>
+            <select style="border:none; width:100%; font-weight:bold;">
                 <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
             </select>
         </div>
@@ -64,15 +76,15 @@
     <table id="resultsTable">
         <thead>
             <tr>
-                <th rowspan="2" style="width:25px">ቁጥር</th>
-                <th rowspan="2" style="width:140px">የተወዳዳሪዎች ስም</th>
+                <th rowspan="2" style="width:30px">ቁጥር</th>
+                <th rowspan="2" style="width:150px">የተወዳዳሪዎች ስም</th>
                 <th colspan="4">አማርኛ</th>
                 <th colspan="4">እንግሊዝኛ</th>
                 <th colspan="4">ሒሳብ</th>
                 <th colspan="4">አ/ሳይንስ</th>
                 <th colspan="4">ግብረገብ</th>
-                <th rowspan="2" style="width:60px">ድምር (10)</th>
-                <th rowspan="2" style="width:50px">ደረጃ</th>
+                <th rowspan="2" style="width:65px">ድምር (10)</th>
+                <th rowspan="2" style="width:55px">ደረጃ</th>
             </tr>
             <tr class="sub-head">
                 <th>እጣ1</th><th>1ኛ</th><th>እጣ2</th><th>2ኛ</th>
@@ -129,26 +141,28 @@
     </div>
 
     <div class="final-actions">
-        <button class="action-btn" style="background:#1e8e3e;">💾 Save</button>
+        <button class="action-btn" style="background:#28a745;">💾 Save</button>
         <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
     </div>
 </div>
 
 <script>
     let timerInterval;
+    let seconds = 0;
+
+    // Timer Logic (Count UP)
     function startTimer() {
         clearInterval(timerInterval);
-        let timeParts = document.getElementById('timer-display').value.split(':');
-        let totalSeconds = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
         timerInterval = setInterval(() => {
-            if (totalSeconds <= 0) { clearInterval(timerInterval); alert("ጊዜው አልቋል!"); return; }
-            totalSeconds--;
-            let m = Math.floor(totalSeconds / 60);
-            let s = totalSeconds % 60;
-            document.getElementById('timer-display').value = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            seconds++;
+            let m = Math.floor(seconds / 60);
+            let s = seconds % 60;
+            document.getElementById('timer-display').innerText = 
+                `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }, 1000);
     }
     function stopTimer() { clearInterval(timerInterval); }
+    function resetTimer() { stopTimer(); seconds = 0; document.getElementById('timer-display').innerText = "00:00"; }
 
     function toggleTouch(cell) {
         if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
@@ -162,9 +176,9 @@
         let rowCount = table.rows.length;
         let row = table.insertRow(rowCount);
         let html = `<td>${rowCount + 1}</td><td><input type="text" style="width:95%; border:none;"></td>`;
-        for(let i=0; i<10; i++) {
-            if(i%2==0) html += `<td><input type="text" class="eta-input"></td>`;
-            html += `<td class="touch-cell" onclick="toggleTouch(this)"></td>`;
+        for(let i=0; i<5; i++) {
+            html += `<td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>
+                     <td><input type="text" class="eta-input"></td><td class="touch-cell" onclick="toggleTouch(this)"></td>`;
         }
         html += `<td class="grand-total" style="font-weight:bold">0/10</td><td class="rank">-</td>`;
         row.innerHTML = html;
@@ -182,8 +196,7 @@
         }
         scores.sort((a, b) => b.score - a.score);
         scores.forEach((item, idx) => {
-            let rank = (idx + 1) + "ኛ";
-            rows[item.index].getElementsByClassName('rank')[0].innerText = rank;
+            rows[item.index].getElementsByClassName('rank')[0].innerText = (idx + 1) + "ኛ";
         });
     }
 </script>
