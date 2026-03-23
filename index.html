@@ -7,7 +7,23 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 10px; font-size: 13px; }
         
-        /* መጀመሪያ ገጹ ተደብቆ ይቆያል */
+        /* Login Box ዲዛይን */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a73e8; display: flex; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .login-box {
+            background: white; padding: 30px; border-radius: 15px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 300px;
+        }
+        .login-box input {
+            width: 80%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; text-align: center; font-size: 16px;
+        }
+        .login-box button {
+            padding: 10px 30px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+
+        /* ዋናው ይዘት መጀመሪያ ተደብቆ ይቆያል */
         #main-content { display: none; } 
 
         .container { max-width: 1250px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
@@ -17,33 +33,32 @@
         #timer-display { font-size: 2.5rem; font-weight: bold; color: #d93025; border: none; background: transparent; text-align: center; width: 120px; outline: none; }
         .timer-btn { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 5px; }
         
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .input-box { border: 1px solid #bdc1c6; padding: 8px; border-radius: 6px; background: #fff; display: flex; align-items: center; }
-
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
         th, td { border: 1px solid #dadce0; padding: 8px; text-align: center; }
-        th { background-color: #1a73e8; color: white; font-size: 12px; }
-        .sub-head { background-color: #f8f9fa; font-size: 11px; }
-
-        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 40px; height: 35px; user-select: none; transition: 0.2s; min-width: 35px; }
+        th { background-color: #1a73e8; color: white; }
+        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 40px; height: 35px; min-width: 35px; }
         .status-none { background: #fff; }
         .status-right { background: #e6f4ea; color: #1e8e3e; }
         .status-wrong { background: #fce8e6; color: #d93025; }
 
-        .footer-sigs { margin-top: 40px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 20px; }
-        .sig-box { width: 48%; line-height: 3; font-size: 14px; }
-        .judge-select { width: 65%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
-
-        .final-actions { text-align: center; margin-top: 30px; }
         .action-btn { padding: 10px 25px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; }
 
         @media print {
-            .final-actions, .timer-container, .add-row-btn, .reset-btn { display: none !important; }
-            .container { box-shadow: none; border: none; padding: 0; }
+            .final-actions, .timer-container, .add-row-btn, #login-overlay { display: none !important; }
         }
     </style>
 </head>
 <body>
+
+<div id="login-overlay">
+    <div class="login-box">
+        <h3>የውጤት መያዣ</h3>
+        <p>እባክዎ የይለፍ ቃል ያስገቡ</p>
+        <input type="password" id="pass-input" placeholder="Password...">
+        <br>
+        <button onclick="checkPass()">ግባ</button>
+    </div>
+</div>
 
 <div id="main-content">
     <div class="container">
@@ -56,22 +71,10 @@
             <button class="timer-btn" style="background:#d93025; color:white" onclick="stopTimer()">ቁም</button>
         </div>
 
-        <div class="info-grid">
-            <div class="input-box"><label>ቀን፡</label><input type="date" id="comp-date" oninput="autoSaveData()" style="border:none; width:100%"></div>
-            <div class="input-box"><label>ክፍል፡</label><input type="text" id="comp-class" oninput="autoSaveData()" style="border:none; width:100%"></div>
-            <div class="input-box">
-                <label>ሴሚስተር፡</label>
-                <select id="comp-sem" onchange="autoSaveData()" style="border:none; width:100%; font-weight:bold;">
-                    <option>1ኛ ሴሚስተር</option>
-                    <option>2ኛ ሴሚስተር</option>
-                </select>
-            </div>
-        </div>
-
         <table id="resultsTable">
             <thead>
                 <tr>
-                    <th rowspan="2" style="width:30px">ቁጥር</th>
+                    <th rowspan="2">ቁጥር</th>
                     <th rowspan="2" style="width:150px">የተወዳዳሪዎች ስም</th>
                     <th colspan="3">አማርኛ</th>
                     <th colspan="3">እንግሊዝኛ</th>
@@ -81,7 +84,7 @@
                     <th rowspan="2">ድምር</th>
                     <th rowspan="2">ደረጃ</th>
                 </tr>
-                <tr class="sub-head">
+                <tr style="background:#f8f9fa; font-size:11px">
                     <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
                     <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
                     <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
@@ -89,72 +92,40 @@
                     <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
                 </tr>
             </thead>
-            <tbody>
-                </tbody>
+            <tbody></tbody>
         </table>
 
-        <button class="add-row-btn action-btn" style="background:#1a73e8;" onclick="addRow()">+ ተማሪ ጨምር</button>
+        <br>
+        <button class="action-btn" style="background:#1a73e8;" onclick="addRow()">+ ተማሪ ጨምር</button>
 
-        <div class="footer-sigs">
-            <div class="sig-box">
-                1ኛ ዳኛ፡ <select class="judge-select" id="j1" onchange="autoSaveData()">
-                    <option value="">ምረጥ...</option>
-                    <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
-                    <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
-                    <option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
-                    <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
-                    <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
-                </select><br>
-                2ኛ ዳኛ፡ <select class="judge-select" id="j2" onchange="autoSaveData()">
-                    <option value="">ምረጥ...</option>
-                    <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
-                    <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
-                    <option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
-                    <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
-                    <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
-                </select>
-            </div>
-            <div class="sig-box">
-                ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
-                ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
-            </div>
-        </div>
-
-        <div class="final-actions">
-            <button class="action-btn reset-btn" style="background:#d93025;" onclick="clearAllData()">🗑️ Reset All</button>
-            <button class="action-btn" style="background:#1e8e3e;" onclick="secureAction('Save')">💾 Save</button>
-            <button class="action-btn" style="background:#1a73e8;" onclick="secureAction('Print')">🖨️ Print</button>
+        <div class="final-actions" style="text-align:center; margin-top:20px;">
+            <button class="action-btn" style="background:#d93025;" onclick="clearAllData()">🗑️ Reset</button>
+            <button class="action-btn" style="background:#1e8e3e;" onclick="autoSaveData(); alert('ተቀምጧል!')">💾 Save</button>
+            <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
         </div>
     </div>
 </div>
 
 <script>
     const MY_PASS = "Eshet21d";
-    let timerInterval;
 
-    // 1. የይለፍ ቃል ፍተሻ
-    window.onload = function() {
-        let entry = prompt("የጥያቄና መልስ ውጤት መያዣ፡ እባክዎ የይለፍ ቃል ያስገቡ");
-        if (entry === MY_PASS) {
-            document.getElementById('main-content').style.display = "block";
+    function checkPass() {
+        const input = document.getElementById('pass-input').value;
+        if (input === MY_PASS) {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
             loadSavedData();
         } else {
             alert("የተሳሳተ የይለፍ ቃል!");
-            window.location.reload();
-        }
-    };
-
-    function secureAction(type) {
-        let confirmPass = prompt(type + " ለማድረግ የይለፍ ቃል ያስገቡ፡");
-        if (confirmPass === MY_PASS) {
-            if (type === 'Print') window.print();
-            if (type === 'Save') { autoSaveData(); alert("ውጤቱ ተቀምጧል!"); }
-        } else {
-            alert("ያልተፈቀደ ሙከራ!");
         }
     }
 
-    // 2. Timer
+    // Enter ሲጫኑ እንዲከፍት
+    document.getElementById("pass-input").addEventListener("keyup", function(event) {
+        if (event.key === "Enter") { checkPass(); }
+    });
+
+    let timerInterval;
     function startTimer() {
         stopTimer();
         let timeParts = document.getElementById('timer-display').value.split(':');
@@ -169,7 +140,6 @@
     }
     function stopTimer() { clearInterval(timerInterval); }
 
-    // 3. Table Functions
     function toggleTouch(cell) {
         if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
         else if (cell.innerHTML === "✓") { cell.innerHTML = "X"; cell.className = "touch-cell status-wrong"; }
@@ -194,60 +164,57 @@
     }
 
     function calculateResults() {
-        const tableBody = document.querySelector("#resultsTable tbody");
-        const allRows = Array.from(tableBody.rows);
-        
+        const allRows = Array.from(document.querySelector("#resultsTable tbody").rows);
         let scores = allRows.map((row, index) => {
-            const touchCells = Array.from(row.getElementsByClassName('touch-cell'));
-            const total = touchCells.reduce((sum, cell) => sum + (cell.innerHTML === "✓" ? 1 : 0), 0);
+            const total = Array.from(row.getElementsByClassName('touch-cell')).reduce((sum, cell) => sum + (cell.innerHTML === "✓" ? 1 : 0), 0);
             row.querySelector('.grand-total').innerText = total;
             return { index, total };
         });
-
         let sorted = [...scores].sort((a, b) => b.total - a.total);
         scores.forEach(item => {
-            let rank = sorted.findIndex(s => s.total === item.total) + 1;
-            allRows[item.index].querySelector('.rank').innerText = rank;
+            allRows[item.index].querySelector('.rank').innerText = sorted.findIndex(s => s.total === item.total) + 1;
         });
     }
 
-    // 4. Auto-Save & Load
     function autoSaveData() {
         const rows = Array.from(document.querySelector("#resultsTable tbody").rows);
-        const data = {
-            date: document.getElementById('comp-date').value,
-            class: document.getElementById('comp-class').value,
-            sem: document.getElementById('comp-sem').value,
-            j1: document.getElementById('j1').value,
-            j2: document.getElementById('j2').value,
-            students: rows.map(row => ({
-                name: row.querySelectorAll('input')[0].value,
-                inputs: Array.from(row.querySelectorAll('input')).slice(1).map(i => i.value),
-                marks: Array.from(row.querySelectorAll('.touch-cell')).map(c => c.innerHTML)
-            }))
-        };
-        localStorage.setItem('quizAppData_v2', JSON.stringify(data));
+        const data = rows.map(row => ({
+            name: row.querySelectorAll('input')[0].value,
+            inputs: Array.from(row.querySelectorAll('input')).slice(1).map(i => i.value),
+            marks: Array.from(row.querySelectorAll('.touch-cell')).map(c => c.innerHTML)
+        }));
+        localStorage.setItem('quiz_final_save', JSON.stringify(data));
     }
 
     function loadSavedData() {
-        const saved = localStorage.getItem('quizAppData_v2');
+        const saved = localStorage.getItem('quiz_final_save');
         const tableBody = document.querySelector("#resultsTable tbody");
         tableBody.innerHTML = "";
-
         if (!saved) { addRow(); return; }
-        const data = JSON.parse(saved);
-        
-        document.getElementById('comp-date').value = data.date || "";
-        document.getElementById('comp-class').value = data.class || "";
-        document.getElementById('comp-sem').value = data.sem || "";
-        document.getElementById('j1').value = data.j1 || "";
-        document.getElementById('j2').value = data.j2 || "";
-
-        data.students.forEach((st, idx) => {
+        JSON.parse(saved).forEach((st, idx) => {
             const row = tableBody.insertRow();
-            let markIdx = 0, inpIdx = 0;
-            let cellsHTML = `<td>${idx + 1}</td>
-                             <td><input type="text" value="${st.name}" oninput="autoSaveData()" style="width:95%; border:none; outline:none;"></td>`;
+            let mIdx = 0, iIdx = 0;
+            let html = `<td>${idx+1}</td><td><input type="text" value="${st.name}" oninput="autoSaveData()" style="width:95%; border:none;"></td>`;
             for(let i=0; i<5; i++) {
-                cellsHTML += `<td><input type="text" value="${st.inputs[inpIdx++] || ''}" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
-                              <td class="touch-cell ${get
+                html += `<td><input type="text" value="${st.inputs[iIdx++] || ''}" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
+                         <td class="touch-cell ${getCls(st.marks[mIdx])}" onclick="toggleTouch(this)">${st.marks[mIdx++] || ''}</td>
+                         <td class="touch-cell ${getCls(st.marks[mIdx])}" onclick="toggleTouch(this)">${st.marks[mIdx++] || ''}</td>`;
+            }
+            html += `<td class="grand-total" style="font-weight:bold">0</td><td class="rank">-</td>`;
+            row.innerHTML = html;
+        });
+        calculateResults();
+    }
+
+    function getCls(v) { return v === "✓" ? "status-right" : v === "X" ? "status-wrong" : "status-none"; }
+    
+    function clearAllData() {
+        if (confirm("ሁሉንም ዳታ አጥፍቶ አዲስ ለመጀመር እርግጠኛ ነዎት?")) {
+            localStorage.removeItem('quiz_final_save');
+            window.location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>
