@@ -3,143 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
+    <title>Taitu Bitul Academy - Quiz Result Manager</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 10px; font-size: 13px; }
-        
-        /* Login Overlay Style */
-        #login-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #1a73e8; display: flex; justify-content: center; align-items: center; z-index: 9999;
-        }
-        .login-box {
-            background: white; padding: 30px; border-radius: 15px; text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 320px;
-        }
-        .login-box input {
-            width: 85%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; text-align: center; font-size: 16px;
-        }
-        .login-box button {
-            padding: 10px 40px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px;
-        }
-
-        /* Main Content Hidden Initially */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a73e8; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 320px; }
+        .login-box input { width: 85%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; text-align: center; font-size: 16px; }
         #main-content { display: none; }
-
-        .container { max-width: 1250px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #1a73e8; margin-bottom: 10px; }
+        .school-name { text-align: center; font-weight: bold; color: #555; margin-bottom: 20px; }
         
-        .timer-container { text-align: center; margin-bottom: 20px; background: #fff; border: 2px solid #1a73e8; padding: 15px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
-        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d93025; cursor: pointer; border: none; background: transparent; text-align: center; width: 120px; outline: none; }
-        .timer-btn { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 5px; }
+        .timer-container { text-align: center; margin-bottom: 20px; background: #fff; border: 2px solid #1a73e8; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
+        #timer-display { font-size: 2.2rem; font-weight: bold; color: #d93025; border: none; background: transparent; text-align: center; width: 110px; outline: none; }
         
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .input-box { border: 1px solid #bdc1c6; padding: 8px; border-radius: 6px; background: #fff; display: flex; align-items: center; }
-        .input-box label { font-weight: bold; margin-right: 10px; min-width: 50px; }
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .input-box { border: 1px solid #bdc1c6; padding: 8px; border-radius: 6px; display: flex; align-items: center; }
+        select, input[type="date"] { border: none; width: 100%; outline: none; background: transparent; font-family: inherit; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
-        th, td { border: 1px solid #dadce0; padding: 8px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #dadce0; padding: 6px; text-align: center; }
         th { background-color: #1a73e8; color: white; font-size: 12px; }
-        .sub-head { background-color: #f8f9fa; font-size: 11px; }
-
-        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 40px; height: 35px; user-select: none; transition: 0.2s; min-width: 35px; }
-        .status-none { background: #fff; }
+        .touch-cell { cursor: pointer; font-size: 16px; font-weight: bold; width: 35px; user-select: none; }
         .status-right { background: #e6f4ea; color: #1e8e3e; }
         .status-wrong { background: #fce8e6; color: #d93025; }
 
-        .footer-sigs { margin-top: 40px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 20px; }
-        .sig-box { width: 48%; line-height: 3; font-size: 14px; }
-        .judge-select { width: 65%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-weight: bold; }
+        .footer-sigs { margin-top: 30px; display: flex; justify-content: space-between; font-size: 13px; }
+        .sig-box { width: 45%; line-height: 2.5; }
+        .judge-select { width: 70%; padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; }
 
-        .final-actions { text-align: center; margin-top: 30px; }
-        .action-btn { padding: 10px 25px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; }
+        .final-actions { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; }
+        .action-btn { padding: 10px 20px; border-radius: 6px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; font-size: 14px; }
+        .dev-info { text-align: center; margin-top: 20px; font-size: 11px; color: #777; }
 
-        @media print {
-            .final-actions, .timer-container, .add-row-btn, #login-overlay { display: none !important; }
-            .container { box-shadow: none; border: none; padding: 0; }
-            .judge-select { border: none; appearance: none; -webkit-appearance: none; }
-        }
+        @media print { .final-actions, .timer-container, .add-row-btn, #login-overlay, .reset-btn { display: none !important; } }
     </style>
 </head>
 <body>
 
 <div id="login-overlay">
     <div class="login-box">
-        <h3>Taitu Bitul Academy</h3>
-        <p>የውጤት መያዣ (Password Required)</p>
-        <input type="password" id="pass-field" placeholder="የይለፍ ቃል ያስገቡ">
+        <h3 style="color:#1a73e8">Taitu Bitul Academy</h3>
+        <p>የውጤት መያዣ መተግበሪያ</p>
+        <input type="password" id="pass-field" placeholder="የይለፍ ቃል (Password)">
         <br>
-        <button onclick="unlockPage()">ግባ</button>
+        <button class="action-btn" style="background:#1a73e8" onclick="unlock()">ግባ</button>
     </div>
 </div>
 
 <div id="main-content">
     <div class="container">
         <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
+        <div class="school-name">© 2026 Taitu Bitul Academy</div>
 
         <div class="timer-container">
-            <input type="text" id="timer-display" value="01:00" title="ደቂቃ ለመቀየር እዚህ ይጫኑ">
+            <input type="text" id="timer-display" value="01:00">
             <br>
-            <button class="timer-btn" style="background:#1e8e3e; color:white" onclick="startTimer()">ጀምር</button>
-            <button class="timer-btn" style="background:#d93025; color:white" onclick="stopTimer()">ቁም</button>
+            <button onclick="startTimer()" style="color:green; cursor:pointer; background:none; border:none; font-weight:bold">ጀምር</button> | 
+            <button onclick="stopTimer()" style="color:red; cursor:pointer; background:none; border:none; font-weight:bold">ቁም</button> |
+            <button onclick="resetTimer()" style="color:blue; cursor:pointer; background:none; border:none; font-weight:bold">ቀይር</button>
         </div>
 
         <div class="info-grid">
-            <div class="input-box"><label>ቀን፡</label><input type="date" id="c-date" oninput="autoSaveData()" style="border:none; width:100%"></div>
-            <div class="input-box"><label>ክፍል፡</label><input type="text" id="c-class" placeholder="..." oninput="autoSaveData()" style="border:none; width:100%"></div>
-            <div class="input-box">
-                <label>ሴሚስተር፡</label>
-                <select id="c-sem" onchange="autoSaveData()" style="border:none; width:100%; font-weight:bold;">
-                    <option>1ኛ ሴሚስተር</option>
-                    <option>2ኛ ሴሚስተር</option>
+            <div class="input-box">📅 ቀን፡ <input type="date" id="comp-date" oninput="save()"></div>
+            <div class="input-box">🏫 ክፍል፡ 
+                <select id="comp-class" onchange="save()">
+                    <option>ምረጥ...</option><option>1ኛ ሀ</option><option>1ኛ ለ</option>
+                    <option>2ኛ ሀ</option><option>2ኛ ለ</option><option>3ኛ ሀ</option>
+                    <option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
+                </select>
+            </div>
+            <div class="input-box">📝 ሴሚ፡ 
+                <select id="comp-sem" onchange="save()">
+                    <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
                 </select>
             </div>
         </div>
 
-        <table id="resultsTable">
+        <table id="resTable">
             <thead>
                 <tr>
-                    <th rowspan="2" style="width:30px">ቁጥር</th>
-                    <th rowspan="2" style="width:150px">የተወዳዳሪዎች ስም</th>
-                    <th colspan="3">አማርኛ</th>
-                    <th colspan="3">እንግሊዝኛ</th>
-                    <th colspan="3">ሒሳብ</th>
-                    <th colspan="3">አ/ሳይንስ</th>
-                    <th colspan="3">ግብረገብ</th>
-                    <th rowspan="2">ድምር</th>
-                    <th rowspan="2">ደረጃ</th>
+                    <th rowspan="2">ቁጥር</th>
+                    <th rowspan="2" style="width:180px">የተወዳዳሪ ስም</th>
+                    <th colspan="2">አማርኛ</th><th colspan="2">እንግሊዝኛ</th><th colspan="2">ሒሳብ</th><th colspan="2">አ/ሳይንስ</th><th colspan="2">ግብረገብ</th>
+                    <th rowspan="2">ድምር</th><th rowspan="2">ደረጃ</th>
                 </tr>
-                <tr class="sub-head">
-                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
-                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                <tr style="background:#f8f9fa; font-size:10px; color:#333">
+                    <th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th><th>1ኛ</th><th>2ኛ</th>
                 </tr>
             </thead>
-            <tbody>
-                </tbody>
+            <tbody></tbody>
         </table>
 
-        <button class="add-row-btn action-btn" style="background:#1a73e8;" onclick="addRow()">+ ተማሪ ጨምር</button>
+        <button class="action-btn add-row-btn" style="background:#555; margin-top:10px" onclick="addRow()">+ ተማሪ ጨምር</button>
 
         <div class="footer-sigs">
             <div class="sig-box">
-                1ኛ ዳኛ፡ <select class="judge-select" id="j1" onchange="autoSaveData()">
-                    <option value="">ምረጥ...</option>
-                    <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
-                    <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
-                    <option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
-                    <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
-                    <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
+                👤 1ኛ ዳኛ፡ <select class="judge-select" id="j1" onchange="save()">
+                    <option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
                 </select><br>
-                2ኛ ዳኛ፡ <select class="judge-select" id="j2" onchange="autoSaveData()">
-                    <option value="">ምረጥ...</option>
-                    <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
-                    <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
-                    <option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
-                    <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
-                    <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
+                👤 2ኛ ዳኛ፡ <select class="judge-select" id="j2" onchange="save()">
+                    <option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
                 </select>
             </div>
             <div class="sig-box">
@@ -149,152 +113,109 @@
         </div>
 
         <div class="final-actions">
-            <button class="action-btn" style="background:#d93025;" onclick="resetAll()">🗑️ Reset All</button>
-            <button class="action-btn" style="background:#1e8e3e;" onclick="manualSave()">💾 Save</button>
-            <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ Print</button>
+            <button class="action-btn reset-btn" style="background:#d93025;" onclick="clearAll()">🗑️ RESET</button>
+            <button class="action-btn" style="background:#1e8e3e;" onclick="sendTelegram()">💾 SAVE & SEND (TELEGRAM)</button>
+            <button class="action-btn" style="background:#1a73e8;" onclick="window.print()">🖨️ PRINT (አትም)</button>
         </div>
+
+        <div class="dev-info">Developed by: <b>መ/ር ደለለኝ አጥላው</b> | © 2026 Taitu Bitul Academy</div>
     </div>
 </div>
 
 <script>
-    const SECRET = "Eshet21d";
-
-    function unlockPage() {
-        const val = document.getElementById('pass-field').value;
-        if (val === SECRET) {
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            loadSavedData();
-        } else {
-            alert("የተሳሳተ የይለፍ ቃል!");
-        }
+    const PASS = "Eshet21d";
+    function unlock() {
+        if(document.getElementById('pass-field').value === PASS) {
+            document.getElementById('login-overlay').style.display='none';
+            document.getElementById('main-content').style.display='block';
+            load();
+        } else { alert("የተሳሳተ የይለፍ ቃል!"); }
     }
 
-    // Enter Key support for login
-    document.getElementById("pass-field").addEventListener("keyup", (e) => {
-        if (e.key === "Enter") unlockPage();
-    });
-
-    let timerInterval;
+    let timer;
     function startTimer() {
-        clearInterval(timerInterval);
-        let timeParts = document.getElementById('timer-display').value.split(':');
-        let totalSeconds = (parseInt(timeParts[0]) * 60) + (parseInt(timeParts[1]) || 0);
-        timerInterval = setInterval(() => {
-            if (totalSeconds <= 0) { clearInterval(timerInterval); alert("ጊዜው አልቋል!"); return; }
-            totalSeconds--;
-            let m = Math.floor(totalSeconds / 60);
-            let s = totalSeconds % 60;
-            document.getElementById('timer-display').value = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        stopTimer();
+        let p = document.getElementById('timer-display').value.split(':');
+        let sec = (parseInt(p[0])*60) + (parseInt(p[1])||0);
+        timer = setInterval(() => {
+            if(sec<=0) { clearInterval(timer); alert("ጊዜው አልቋል!"); return; }
+            sec--;
+            document.getElementById('timer-display').value = Math.floor(sec/60).toString().padStart(2,'0')+":"+(sec%60).toString().padStart(2,'0');
         }, 1000);
     }
-    function stopTimer() { clearInterval(timerInterval); }
-
-    function toggleTouch(cell) {
-        if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
-        else if (cell.innerHTML === "✓") { cell.innerHTML = "X"; cell.className = "touch-cell status-wrong"; }
-        else { cell.innerHTML = ""; cell.className = "touch-cell status-none"; }
-        calculateResults();
-        autoSaveData();
-    }
+    function stopTimer() { clearInterval(timer); }
+    function resetTimer() { stopTimer(); document.getElementById('timer-display').value = "01:00"; }
 
     function addRow() {
-        let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-        let rowCount = table.rows.length;
-        let row = table.insertRow(rowCount);
-        let cellsHTML = `<td>${rowCount + 1}</td><td><input type="text" oninput="autoSaveData()" style="width:95%; border:none; outline:none;"></td>`;
-        for(let i=0; i<5; i++) {
-            cellsHTML += `<td><input type="text" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
-                          <td class="touch-cell status-none" onclick="toggleTouch(this)"></td>
-                          <td class="touch-cell status-none" onclick="toggleTouch(this)"></td>`;
-        }
-        cellsHTML += `<td class="grand-total" style="font-weight:bold">0</td><td class="rank">-</td>`;
-        row.innerHTML = cellsHTML;
-        autoSaveData();
+        const tb = document.querySelector("#resTable tbody");
+        const r = tb.insertRow();
+        let h = `<td>${tb.rows.length}</td><td><input type="text" oninput="save()" style="width:95%; border:none; outline:none;"></td>`;
+        for(let i=0; i<10; i++) h += `<td class="touch-cell" onclick="hit(this)"></td>`;
+        h += `<td class="total" style="font-weight:bold">0/10</td><td class="rank">-</td>`;
+        r.innerHTML = h;
+        save();
     }
 
-    function calculateResults() {
-        let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
-        let scores = [];
-        for (let i = 0; i < rows.length; i++) {
-            let touchCells = rows[i].getElementsByClassName('touch-cell');
-            let total = 0;
-            for (let cell of touchCells) { if (cell.innerHTML === "✓") total++; }
-            rows[i].getElementsByClassName('grand-total')[0].innerText = total;
-            scores.push({ index: i, score: total });
-        }
-        let sorted = [...scores].sort((a, b) => b.score - a.score);
-        scores.forEach((item) => {
-            let rank = sorted.findIndex(s => s.score === item.score) + 1;
-            rows[item.index].getElementsByClassName('rank')[0].innerText = rank;
+    function hit(c) {
+        if(c.innerText==="") { c.innerText="✓"; c.className="touch-cell status-right"; }
+        else if(c.innerText==="✓") { c.innerText="X"; c.className="touch-cell status-wrong"; }
+        else { c.innerText=""; c.className="touch-cell"; }
+        calc(); save();
+    }
+
+    function calc() {
+        const rows = Array.from(document.querySelector("#resTable tbody").rows);
+        let data = rows.map((r, i) => {
+            let marks = Array.from(r.querySelectorAll('.touch-cell')).filter(c => c.innerText==="✓").length;
+            r.querySelector('.total').innerText = marks + "/10";
+            return { i, marks };
+        });
+        let sorted = [...data].sort((a,b) => b.marks - a.marks);
+        data.forEach(d => {
+            rows[d.i].querySelector('.rank').innerText = (sorted.findIndex(s => s.marks === d.marks) + 1) + "ኛ";
         });
     }
 
-    // Auto-Save Logic
-    function autoSaveData() {
-        const rows = Array.from(document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows);
-        const appData = {
-            meta: {
-                date: document.getElementById('c-date').value,
-                class: document.getElementById('c-class').value,
-                sem: document.getElementById('c-sem').value,
-                j1: document.getElementById('j1').value,
-                j2: document.getElementById('j2').value
-            },
-            students: rows.map(r => ({
-                name: r.querySelectorAll('input')[0].value,
-                inputs: Array.from(r.querySelectorAll('input')).slice(1).map(i => i.value),
-                marks: Array.from(r.querySelectorAll('.touch-cell')).map(c => c.innerHTML)
-            }))
+    function save() {
+        const rows = Array.from(document.querySelector("#resTable tbody").rows);
+        const store = {
+            m: { d: document.getElementById('comp-date').value, c: document.getElementById('comp-class').value, s: document.getElementById('comp-sem').value, j1: document.getElementById('j1').value, j2: document.getElementById('j2').value },
+            st: rows.map(r => ({ n: r.querySelectorAll('input')[0].value, mk: Array.from(r.querySelectorAll('.touch-cell')).map(c => c.innerText) }))
         };
-        localStorage.setItem('taitu_quiz_data', JSON.stringify(appData));
+        localStorage.setItem('taitu_final_v3', JSON.stringify(store));
     }
 
-    function loadSavedData() {
-        const saved = localStorage.getItem('taitu_quiz_data');
-        const tbody = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-        tbody.innerHTML = "";
-
-        if (!saved) { addRow(); return; }
-
-        const data = JSON.parse(saved);
-        document.getElementById('c-date').value = data.meta.date || "";
-        document.getElementById('c-class').value = data.meta.class || "";
-        document.getElementById('c-sem').value = data.meta.sem || "";
-        document.getElementById('j1').value = data.meta.j1 || "";
-        document.getElementById('j2').value = data.meta.j2 || "";
-
-        data.students.forEach((st, idx) => {
-            const row = tbody.insertRow();
-            let mIdx = 0, iIdx = 0;
-            let html = `<td>${idx+1}</td><td><input type="text" value="${st.name}" oninput="autoSaveData()" style="width:95%; border:none;"></td>`;
-            for(let i=0; i<5; i++) {
-                html += `<td><input type="text" value="${st.inputs[iIdx++] || ''}" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
-                         <td class="touch-cell ${getCls(st.marks[mIdx])}" onclick="toggleTouch(this)">${st.marks[mIdx++] || ''}</td>
-                         <td class="touch-cell ${getCls(st.marks[mIdx])}" onclick="toggleTouch(this)">${st.marks[mIdx++] || ''}</td>`;
-            }
-            html += `<td class="grand-total" style="font-weight:bold">0</td><td class="rank">-</td>`;
-            row.innerHTML = html;
+    function load() {
+        const d = JSON.parse(localStorage.getItem('taitu_final_v3'));
+        if(!d) { addRow(); return; }
+        document.getElementById('comp-date').value = d.m.d;
+        document.getElementById('comp-class').value = d.m.c;
+        document.getElementById('comp-sem').value = d.m.s;
+        document.getElementById('j1').value = d.m.j1;
+        document.getElementById('j2').value = d.m.j2;
+        const tb = document.querySelector("#resTable tbody");
+        tb.innerHTML = "";
+        d.st.forEach((s, idx) => {
+            const r = tb.insertRow();
+            let h = `<td>${idx+1}</td><td><input type="text" value="${s.n}" oninput="save()" style="width:95%; border:none;"></td>`;
+            s.mk.forEach(m => { h += `<td class="touch-cell ${m==='✓'?'status-right':m==='X'?'status-wrong':''}" onclick="hit(this)">${m}</td>`; });
+            h += `<td class="total" style="font-weight:bold">0/10</td><td class="rank">-</td>`;
+            r.innerHTML = h;
         });
-        calculateResults();
+        calc();
     }
 
-    function getCls(v) {
-        return v === "✓" ? "status-right" : v === "X" ? "status-wrong" : "status-none";
+    function sendTelegram() {
+        save();
+        let txt = `🏆 *Taitu Bitul Academy Quiz Result*\n📅 ቀን፡ ${document.getElementById('comp-date').value}\n🏫 ክፍል፡ ${document.getElementById('comp-class').value}\n------------------------\n`;
+        Array.from(document.querySelector("#resTable tbody").rows).forEach(r => {
+            txt += `${r.cells[1].querySelector('input').value}: ${r.cells[12].innerText} (${r.cells[13].innerText})\n`;
+        });
+        txt += `\n------------------------\nDeveloped by: መ/ር ደለለኝ`;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(txt)}`, '_blank');
     }
 
-    function manualSave() {
-        autoSaveData();
-        alert("መረጃው በብሮውዘሩ ላይ ተቀምጧል!");
-    }
-
-    function resetAll() {
-        if(confirm("ሁሉንም መረጃ አጥፍቶ አዲስ ለመጀመር እርግጠኛ ነዎት?")) {
-            localStorage.removeItem('taitu_quiz_data');
-            window.location.reload();
-        }
-    }
+    function clearAll() { if(confirm("ሁሉንም ዳታ ማጥፋት ይፈልጋሉ?")) { localStorage.removeItem('taitu_final_v3'); window.location.reload(); } }
 </script>
-
 </body>
 </html>
