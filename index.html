@@ -1,99 +1,58 @@
-// --- 1. የይለፍ ቃል ጥበቃ ---
-function checkPassword() {
-    const password = prompt("እባክዎ መለያ ኮድ (Password) ያስገቡ:");
-    if (password === "Eshet21d") {
+// 1. Password Protection
+window.onload = function() {
+    let pw = prompt("Password ያስገቡ:");
+    if (pw === "Eshet21d") {
         document.body.style.display = "block";
-        loadData(); // ገጹ ሲከፈት የቆየ መረጃ ካለ እንዲያመጣ
     } else {
-        alert("የተሳሳተ የይለፍ ቃል!");
-        document.body.innerHTML = "<h1 style='text-align:center; margin-top:100px;'>መግባት አልተፈቀደልዎትም።</h1>";
+        alert("የተሳሳተ ፓስወርድ!");
+        document.body.innerHTML = "<h1>መግባት አልተፈቀደም</h1>";
     }
-}
-window.onload = checkPassword;
+};
 
-// --- 2. የጊዜ መቁጠሪያ (Timer) ---
-let timer, seconds = 0;
-const display = document.getElementById('display');
-
+// 2. Timer Logic
+let timer, sec = 0;
 document.getElementById('startBtn').onclick = () => {
     clearInterval(timer);
     timer = setInterval(() => {
-        seconds++;
-        let m = Math.floor(seconds / 60), s = seconds % 60;
-        display.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        sec++;
+        let m = Math.floor(sec/60), s = sec%60;
+        document.getElementById('display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     }, 1000);
 };
 document.getElementById('stopBtn').onclick = () => clearInterval(timer);
-document.getElementById('resetBtn').onclick = () => {
-    clearInterval(timer); seconds = 0; display.innerText = "00:00";
-};
+document.getElementById('resetBtn').onclick = () => { clearInterval(timer); sec = 0; document.getElementById('display').innerText = "00:00"; };
 
-// --- 3. ውጤት ማስላት እና ደረጃ ማውጣት ---
-function updateScores() {
-    const rows = document.querySelectorAll("#resultTable tbody tr");
-    let studentScores = [];
-
-    rows.forEach((row, index) => {
-        const checks = row.querySelectorAll(".check-box.checked").length;
-        row.cells[7].innerText = `${checks}/10`; // ድምር
-        studentScores.push({ index: index, score: checks });
-    });
-
-    // ደረጃን በከፍተኛ ውጤት መሰረት ማስተካከል
-    const sorted = [...studentScores].sort((a, b) => b.score - a.score);
-    studentScores.forEach(student => {
-        const rank = sorted.findIndex(s => s.score === student.score) + 1;
-        rows[student.index].cells[8].innerText = rank + "ኛ";
-    });
-    
-    saveData(); // ለውጥ ሲኖር ወዲያውኑ በብሮውዘሩ ላይ ሴቭ ያደርጋል
-}
-
-// Checkbox ንክኪ
-document.addEventListener('click', (e) => {
+// 3. Calculation Logic
+document.addEventListener('click', function(e) {
     if (e.target.classList.contains('check-box')) {
         e.target.classList.toggle('checked');
-        if (e.target.classList.contains('checked')) {
-            e.target.style.backgroundColor = "#28a745";
-            e.target.innerHTML = "✔";
-        } else {
-            e.target.style.backgroundColor = "transparent";
-            e.target.innerHTML = "";
-        }
-        updateScores();
+        calculateScores();
     }
 });
 
-// --- 4. መረጃን በቋሚነት መያዝ (Local Storage) ---
-function saveData() {
-    const tableHTML = document.querySelector("#resultTable tbody").innerHTML;
-    localStorage.setItem("quizResults", tableHTML);
+function calculateScores() {
+    let rows = document.querySelectorAll("#resultTable tbody tr");
+    let scores = [];
+
+    rows.forEach((row, i) => {
+        let count = row.querySelectorAll(".check-box.checked").length;
+        row.querySelector(".total-cell").innerText = count + "/10";
+        scores.push({ index: i, val: count });
+    });
+
+    // Rank Calculation
+    let sorted = [...scores].sort((a,b) => b.val - a.val);
+    scores.forEach(s => {
+        let rank = sorted.findIndex(x => x.val === s.val) + 1;
+        rows[s.index].querySelector(".rank-cell").innerText = rank + "ኛ";
+    });
 }
 
-function loadData() {
-    const savedData = localStorage.getItem("quizResults");
-    if (savedData) {
-        document.querySelector("#resultTable tbody").innerHTML = savedData;
+// 4. Clear Data
+function clearAllData() {
+    if(confirm("ሁሉንም መረጃ ማጥፋት ትፈልጋለህ?")) {
+        document.querySelectorAll('.check-box').forEach(b => b.classList.remove('checked'));
+        document.querySelectorAll('.student-name').forEach(i => i.value = "");
+        calculateScores();
     }
 }
-
-// --- 5. ተማሪ ለመጨመር ---
-document.querySelector(".add-student").onclick = () => {
-    const table = document.querySelector("#resultTable tbody");
-    const rowCount = table.rows.length + 1;
-    const newRow = document.createElement("tr");
-
-    newRow.innerHTML = `
-        <td>${rowCount}</td>
-        <td><input type="text" placeholder="ስም..." oninput="saveData()"></td>
-        <td><div class="check-box"></div></td>
-        <td><div class="check-box"></div></td>
-        <td><div class="check-box"></div></td>
-        <td><div class="check-box"></div></td>
-        <td><div class="check-box"></div></td>
-        <td>0/10</td>
-        <td>-</td>
-    `;
-    table.appendChild(newRow);
-    saveData();
-};
