@@ -5,38 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 20px; direction: ltr; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 20px; }
         .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #333; }
         
+        /* Timer Section - Removed default text */
         .timer-section { text-align: center; background: #eef; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d9534f; margin-bottom: 10px; }
+        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d9534f; margin-bottom: 10px; min-height: 50px; }
         
-        .btn { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .btn { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
         .btn-start { background: #5cb85c; color: white; }
         .btn-stop { background: #d9534f; color: white; }
         .btn-reset { background: #f0ad4e; color: white; }
         .btn-action { background: #007bff; color: white; min-width: 120px; }
-        .btn:hover { opacity: 0.8; }
 
+        /* Info Grid with Date Box */
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .date-box { border: 2px solid #333; padding: 10px; border-radius: 5px; background: #fff; }
         label { font-weight: bold; display: block; margin-bottom: 5px; }
-        select, input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        select, input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         th { background-color: #007bff; color: white; }
-        input[type="number"], input[type="text"] { width: 90%; border: none; background: transparent; text-align: center; font-size: 1rem; }
+        input[type="number"], input[type="text"] { width: 90%; border: none; background: transparent; text-align: center; }
 
         .footer-sigs { margin-top: 40px; display: flex; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #eee; padding-top: 20px; }
         .sig-box { width: 45%; margin-bottom: 15px; line-height: 2; }
 
-        /* Actions Section at the very bottom */
         .final-actions { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #333; }
         
         @media print {
             .timer-section, .final-actions, .add-btn-container { display: none; }
-            body { background: white; padding: 0; }
+            body { background: white; }
             .container { box-shadow: none; width: 100%; border: none; }
         }
     </style>
@@ -48,8 +49,7 @@
 
     <div class="timer-section">
         <label>የጥያቄ ሰዓት</label>
-        <div id="timer-display">01:00</div>
-        <button class="btn btn-reset" onclick="setTimer(1)">1 ደቂቃ</button>
+        <div id="timer-display"></div> <button class="btn btn-reset" onclick="setTimer(1)">1 ደቂቃ</button>
         <button class="btn btn-reset" onclick="setTimer(2)">2 ደቂቃ</button>
         <br>
         <button class="btn btn-start" onclick="startTimer()">ጀምር</button>
@@ -58,10 +58,13 @@
     </div>
 
     <div class="info-grid">
-        <div><label>ቀን፡</label><input type="date" id="compDate"></div>
+        <div class="date-box">
+            <label>ቀን፡</label>
+            <input type="date" id="compDate">
+        </div>
         <div>
             <label>ክፍል፡</label>
-            <select id="gradeLevel">
+            <select>
                 <option>1ኛ ሀ</option> <option>1ኛ ለ</option>
                 <option>2ኛ ሀ</option> <option>2ኛ ለ</option>
                 <option>3ኛ ሀ</option> <option>4ኛ ሀ</option>
@@ -69,7 +72,7 @@
         </div>
         <div>
             <label>ሴሚስተር፡</label>
-            <select id="semester">
+            <select>
                 <option>1ኛ ሴሚስተር</option>
                 <option>2ኛ ሴሚስተር</option>
             </select>
@@ -119,7 +122,7 @@
     </div>
 
     <div class="final-actions">
-        <button class="btn btn-action" style="background:#28a745;" onclick="saveData()">💾 ውጤቱን መዝግብ (Save)</button>
+        <button class="btn btn-action" style="background:#28a745;">💾 ውጤቱን መዝግብ (Save)</button>
         <button class="btn btn-action" style="background:#17a2b8;" onclick="window.print()">🖨️ አትም (Print)</button>
         <button class="btn btn-action" style="background:#6f42c1;" onclick="shareResults()">🔗 አጋራ (Share)</button>
     </div>
@@ -127,25 +130,35 @@
 
 <script>
     let timerInterval;
-    let timeLeft = 60;
+    let timeLeft = 0;
 
     function updateDisplay() {
+        if (timeLeft <= 0 && !timerInterval) {
+            document.getElementById('timer-display').innerText = "";
+            return;
+        }
         let mins = Math.floor(timeLeft / 60);
         let secs = timeLeft % 60;
         document.getElementById('timer-display').innerText = 
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    function setTimer(m) { timeLeft = m * 60; updateDisplay(); }
+    function setTimer(m) { 
+        timeLeft = m * 60; 
+        updateDisplay(); 
+    }
+
     function startTimer() {
+        if (timeLeft <= 0) return;
         clearInterval(timerInterval);
         timerInterval = setInterval(() => {
             if (timeLeft > 0) { timeLeft--; updateDisplay(); }
-            else { clearInterval(timerInterval); alert("ጊዜው አልቋል!"); }
+            else { clearInterval(timerInterval); timerInterval = null; alert("ጊዜው አልቋል!"); }
         }, 1000);
     }
-    function stopTimer() { clearInterval(timerInterval); }
-    function resetTimer() { stopTimer(); timeLeft = 60; updateDisplay(); }
+
+    function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
+    function resetTimer() { stopTimer(); timeLeft = 0; updateDisplay(); }
 
     function addRow() {
         let table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
@@ -177,22 +190,15 @@
         });
     }
 
-    function saveData() {
-        alert("ውጤቱ በጊዜያዊነት ተቀምጧል! (ለቋሚ መዝገብ Print ማድረጉ ይመከራል)");
-    }
-
     function shareResults() {
-        let text = "የውድድር ውጤት ዝርዝር:\n";
+        let text = "የውድድር ውጤት:\n";
         let rows = document.getElementById("resultsTable").getElementsByTagName('tbody')[0].rows;
         for (let row of rows) {
-            let name = row.querySelector('.student-name').value || "---";
+            let name = row.querySelector('.student-name').value || "-";
             let total = row.querySelector('.total').innerText;
-            let rank = row.querySelector('.rank').innerText;
-            text += `${name}: ድምር=${total}, ደረጃ=${rank}\n`;
+            text += `${name}: ${total}\n`;
         }
-        navigator.clipboard.writeText(text).then(() => {
-            alert("ውጤቱ ተገልብጧል (Copied)! አሁን በፈለጉበት ቦታ Paste አድርገው ማጋራት ይችላሉ።");
-        });
+        navigator.clipboard.writeText(text).then(() => alert("ተገልብጧል!"));
     }
 </script>
 
