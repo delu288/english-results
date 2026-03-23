@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
+    <title>የጥያቄና መልስ ውጤት መያዣ</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 10px; font-size: 13px; }
-        #main-content { display: none; } /* መጀመሪያ እንዳይታይ መደበቂያ */
+        
+        /* መጀመሪያ ገጹ ተደብቆ ይቆያል */
+        #main-content { display: none; } 
+
         .container { max-width: 1250px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-bottom: 20px; text-transform: uppercase; }
+        h2 { text-align: center; color: #1a73e8; margin-bottom: 20px; }
         
         .timer-container { text-align: center; margin-bottom: 20px; background: #fff; border: 2px solid #1a73e8; padding: 15px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
-        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d93025; cursor: pointer; border: none; background: transparent; text-align: center; width: 120px; outline: none; }
+        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d93025; border: none; background: transparent; text-align: center; width: 120px; outline: none; }
         .timer-btn { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 5px; }
         
         .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
@@ -22,7 +25,7 @@
         th { background-color: #1a73e8; color: white; font-size: 12px; }
         .sub-head { background-color: #f8f9fa; font-size: 11px; }
 
-        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 40px; height: 35px; user-select: none; transition: 0.2s; }
+        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 40px; height: 35px; user-select: none; transition: 0.2s; min-width: 35px; }
         .status-none { background: #fff; }
         .status-right { background: #e6f4ea; color: #1e8e3e; }
         .status-wrong { background: #fce8e6; color: #d93025; }
@@ -35,9 +38,8 @@
         .action-btn { padding: 10px 25px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; }
 
         @media print {
-            .final-actions, .timer-container, .add-row-btn { display: none !important; }
+            .final-actions, .timer-container, .add-row-btn, .reset-btn { display: none !important; }
             .container { box-shadow: none; border: none; padding: 0; }
-            #main-content { display: block !important; }
         }
     </style>
 </head>
@@ -55,8 +57,8 @@
         </div>
 
         <div class="info-grid">
-            <div class="input-box"><label>ቀን፡</label><input type="date" oninput="autoSaveData()" id="comp-date" style="border:none; width:100%"></div>
-            <div class="input-box"><label>ክፍል፡</label><input type="text" oninput="autoSaveData()" id="comp-class" style="border:none; width:100%"></div>
+            <div class="input-box"><label>ቀን፡</label><input type="date" id="comp-date" oninput="autoSaveData()" style="border:none; width:100%"></div>
+            <div class="input-box"><label>ክፍል፡</label><input type="text" id="comp-class" oninput="autoSaveData()" style="border:none; width:100%"></div>
             <div class="input-box">
                 <label>ሴሚስተር፡</label>
                 <select id="comp-sem" onchange="autoSaveData()" style="border:none; width:100%; font-weight:bold;">
@@ -95,7 +97,7 @@
 
         <div class="footer-sigs">
             <div class="sig-box">
-                1ኛ ዳኛ፡ <select class="judge-select" onchange="autoSaveData()" id="j1">
+                1ኛ ዳኛ፡ <select class="judge-select" id="j1" onchange="autoSaveData()">
                     <option value="">ምረጥ...</option>
                     <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
                     <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
@@ -103,7 +105,7 @@
                     <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
                     <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
                 </select><br>
-                2ኛ ዳኛ፡ <select class="judge-select" onchange="autoSaveData()" id="j2">
+                2ኛ ዳኛ፡ <select class="judge-select" id="j2" onchange="autoSaveData()">
                     <option value="">ምረጥ...</option>
                     <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
                     <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
@@ -119,9 +121,9 @@
         </div>
 
         <div class="final-actions">
-            <button class="action-btn" style="background:#d93025;" onclick="clearAllData()">🗑️ Reset All</button>
-            <button class="action-btn" style="background:#1e8e3e;" onclick="secureAction('Save')">💾 Save Data</button>
-            <button class="action-btn" style="background:#1a73e8;" onclick="secureAction('Print')">🖨️ Print Result</button>
+            <button class="action-btn reset-btn" style="background:#d93025;" onclick="clearAllData()">🗑️ Reset All</button>
+            <button class="action-btn" style="background:#1e8e3e;" onclick="secureAction('Save')">💾 Save</button>
+            <button class="action-btn" style="background:#1a73e8;" onclick="secureAction('Print')">🖨️ Print</button>
         </div>
     </div>
 </div>
@@ -130,7 +132,7 @@
     const MY_PASS = "Eshet21d";
     let timerInterval;
 
-    // 1. የይለፍ ቃል ጥበቃ እና Load
+    // 1. የይለፍ ቃል ፍተሻ
     window.onload = function() {
         let entry = prompt("የጥያቄና መልስ ውጤት መያዣ፡ እባክዎ የይለፍ ቃል ያስገቡ");
         if (entry === MY_PASS) {
@@ -146,18 +148,17 @@
         let confirmPass = prompt(type + " ለማድረግ የይለፍ ቃል ያስገቡ፡");
         if (confirmPass === MY_PASS) {
             if (type === 'Print') window.print();
-            if (type === 'Save') { autoSaveData(); alert("ውጤቱ በBrowser ተቀምጧል!"); }
+            if (type === 'Save') { autoSaveData(); alert("ውጤቱ ተቀምጧል!"); }
         } else {
             alert("ያልተፈቀደ ሙከራ!");
         }
     }
 
-    // 2. Timer Logic
+    // 2. Timer
     function startTimer() {
         stopTimer();
         let timeParts = document.getElementById('timer-display').value.split(':');
         let totalSeconds = (parseInt(timeParts[0]) * 60) + (parseInt(timeParts[1]) || 0);
-        
         timerInterval = setInterval(() => {
             if (totalSeconds <= 0) { clearInterval(timerInterval); alert("ጊዜው አልቋል!"); return; }
             totalSeconds--;
@@ -168,7 +169,7 @@
     }
     function stopTimer() { clearInterval(timerInterval); }
 
-    // 3. Table Logic
+    // 3. Table Functions
     function toggleTouch(cell) {
         if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
         else if (cell.innerHTML === "✓") { cell.innerHTML = "X"; cell.className = "touch-cell status-wrong"; }
@@ -193,7 +194,6 @@
     }
 
     function calculateResults() {
-        const rows = Array.from(document.querySelectorAll("#resultsTable tbody rows") || []);
         const tableBody = document.querySelector("#resultsTable tbody");
         const allRows = Array.from(tableBody.rows);
         
@@ -211,7 +211,7 @@
         });
     }
 
-    // 4. Auto-Save Logic
+    // 4. Auto-Save & Load
     function autoSaveData() {
         const rows = Array.from(document.querySelector("#resultsTable tbody").rows);
         const data = {
@@ -226,11 +226,14 @@
                 marks: Array.from(row.querySelectorAll('.touch-cell')).map(c => c.innerHTML)
             }))
         };
-        localStorage.setItem('quizAppData', JSON.stringify(data));
+        localStorage.setItem('quizAppData_v2', JSON.stringify(data));
     }
 
     function loadSavedData() {
-        const saved = localStorage.getItem('quizAppData');
+        const saved = localStorage.getItem('quizAppData_v2');
+        const tableBody = document.querySelector("#resultsTable tbody");
+        tableBody.innerHTML = "";
+
         if (!saved) { addRow(); return; }
         const data = JSON.parse(saved);
         
@@ -240,14 +243,11 @@
         document.getElementById('j1').value = data.j1 || "";
         document.getElementById('j2').value = data.j2 || "";
 
-        const tableBody = document.querySelector("#resultsTable tbody");
-        tableBody.innerHTML = "";
         data.students.forEach((st, idx) => {
             const row = tableBody.insertRow();
-            let markIdx = 0;
-            let inpIdx = 0;
+            let markIdx = 0, inpIdx = 0;
             let cellsHTML = `<td>${idx + 1}</td>
                              <td><input type="text" value="${st.name}" oninput="autoSaveData()" style="width:95%; border:none; outline:none;"></td>`;
             for(let i=0; i<5; i++) {
                 cellsHTML += `<td><input type="text" value="${st.inputs[inpIdx++] || ''}" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
-                              <td class="touch-cell ${getCls(st.marks[markIdx
+                              <td class="touch-cell ${get
