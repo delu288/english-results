@@ -6,87 +6,69 @@
     <title>ውጤት መያዣ - Taitu Bitul Academy</title>
     <style>
         :root {
-            --primary: #1a237e;
-            --accent: #00e5ff;
-            --grad: linear-gradient(135deg, #1a237e 0%, #4a148c 100%);
-            --glass: rgba(255, 255, 255, 0.95);
+            --primary: #0f172a; /* Midnight Blue */
+            --accent: #fbbf24; /* Gold */
+            --bg: #f1f5f9;
         }
         body { 
             font-family: 'Segoe UI', sans-serif; 
-            background: #eef2f7; 
-            background-image: radial-gradient(#d1d9e6 1px, transparent 1px);
-            background-size: 20px 20px;
-            margin: 0; padding: 20px; font-size: 11px; color: #2c3e50;
+            background: var(--bg); 
+            margin: 0; padding: 20px; font-size: 11px; color: #334155;
         }
         .container { 
-            max-width: 900px; margin: auto; background: var(--glass); 
+            max-width: 900px; margin: auto; background: white; 
             padding: 30px; border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 2px solid var(--primary);
+            position: relative;
         }
-        .container::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--grad);
-        }
-        h2 { text-align: center; color: var(--primary); font-size: 22px; font-weight: 800; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 1px; }
+        h2 { text-align: center; color: var(--primary); font-size: 22px; margin-bottom: 20px; border-bottom: 3px solid var(--accent); display: inline-block; position: relative; left: 50%; transform: translateX(-50%); padding-bottom: 5px; }
 
-        /* Timer Section */
+        /* Timer */
         .timer-wrapper { text-align: center; margin-bottom: 20px; }
         .timer-box { 
-            background: #fff; padding: 15px 30px; border-radius: 50px; 
-            display: inline-block; border: 3px solid var(--primary);
-            box-shadow: 0 5px 15px rgba(26,35,126,0.15);
+            background: var(--primary); padding: 10px 25px; border-radius: 12px; 
+            display: inline-block; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        #timer-display { font-size: 2.2rem; font-weight: bold; color: #ff1744; font-family: 'Courier New', monospace; }
-        .t-btn { 
-            padding: 6px 15px; border-radius: 20px; border: none; cursor: pointer; 
-            color: #fff; font-size: 10px; font-weight: bold; transition: 0.3s; margin: 5px 2px 0;
-        }
+        #timer-display { font-size: 2.2rem; font-weight: bold; color: var(--accent); font-family: monospace; }
+        .t-btn { padding: 5px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 10px; font-weight: bold; margin: 5px 2px; }
 
-        .info-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .field { 
-            background: #f8f9fa; border: 1.5px solid #d1d9e6; padding: 8px; 
-            border-radius: 10px; display: flex; align-items: center; transition: 0.3s;
-        }
-        .field:focus-within { border-color: var(--accent); box-shadow: 0 0 8px rgba(0,229,255,0.2); }
+        .info-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .field { border: 1.5px solid #cbd5e1; padding: 8px; border-radius: 8px; background: #fff; }
 
-        /* Table */
-        table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        th { background: var(--primary); color: #fff; padding: 12px 5px; font-size: 10px; border: none; }
-        td { background: #fff; border-bottom: 1px solid #edf2f7; padding: 6px; text-align: center; }
+        /* Table Design */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; border-radius: 10px; overflow: hidden; }
+        th { background: var(--primary); color: white; padding: 12px 5px; font-size: 10px; }
+        td { border: 1px solid #e2e8f0; padding: 5px; text-align: center; background: #fff; }
         
         .box-stack { display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .item-pair { display: flex; align-items: center; gap: 4px; }
 
-        .num-in { width: 24px; height: 20px; border: 1.5px solid #d1d9e6; text-align: center; border-radius: 4px; outline: none; }
+        .num-in { width: 22px; height: 18px; border: 1px solid #94a3b8; text-align: center; border-radius: 3px; }
         .check-box { 
-            cursor: pointer; width: 28px; height: 26px; border: 1.5px solid #d1d9e6; 
-            border-radius: 6px; background: #fff; display: flex; align-items: center; 
-            justify-content: center; font-weight: bold; transition: 0.2s;
+            cursor: pointer; width: 28px; height: 24px; border: 1.5px solid #cbd5e1; 
+            border-radius: 5px; background: #f8fafc; display: flex; align-items: center; 
+            justify-content: center; font-weight: bold; font-size: 14px;
         }
-        .check-box:hover { transform: scale(1.1); border-color: var(--accent); }
-        .correct { background: #00c853 !important; color: #fff; border-color: #00c853 !important; }
-        .wrong { background: #ff3d00 !important; color: #fff; border-color: #ff3d00 !important; }
+        .correct { background: #22c55e !important; color: white; border-color: #16a34a !important; }
+        .wrong { background: #ef4444 !important; color: white; border-color: #dc2626 !important; }
 
-        /* Footer */
-        .footer-info { 
-            margin-top: 25px; padding: 20px; background: #f1f3f9; 
-            border-radius: 15px; display: flex; justify-content: space-between; 
-        }
         .btn-group { text-align: center; margin-top: 25px; }
         .main-btn { 
-            padding: 12px 30px; border-radius: 10px; border: none; color: #fff; 
-            font-weight: bold; margin: 5px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 12px 30px; border-radius: 10px; border: none; color: white; 
+            font-weight: bold; margin: 5px; cursor: pointer; transition: 0.3s; font-size: 12px;
         }
-        .main-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .main-btn:active { transform: scale(0.95); }
+
+        .footer-sigs { margin-top: 20px; display: flex; justify-content: space-between; padding: 15px; background: #f8fafc; border-radius: 10px; }
 
         .dev-credit { 
-            margin-top: 40px; text-align: center; font-size: 13px; color: #5c6bc0; 
-            border-top: 1px solid #d1d9e6; padding-top: 20px; font-weight: 600;
+            margin-top: 30px; text-align: center; font-size: 13px; color: #64748b; 
+            border-top: 1px solid #e2e8f0; padding-top: 15px; font-weight: bold;
         }
         .dev-credit a { color: var(--primary); text-decoration: none; border-bottom: 2px solid var(--accent); }
 
-        @media print { .btn-group, .timer-wrapper, .dev-credit, .main-btn { display: none; } }
+        @media print { .btn-group, .timer-wrapper, .dev-credit, .add-row-btn { display: none; } }
     </style>
 </head>
 <body>
@@ -97,22 +79,22 @@
     <div class="timer-wrapper">
         <div class="timer-box">
             <div id="timer-display">00:00</div>
-            <button class="t-btn" style="background:#00c853;" onclick="startT()">ጀምር</button>
-            <button class="t-btn" style="background:#ff3d00;" onclick="stopT()">ቁም</button>
-            <button class="t-btn" style="background:#ffa000;" onclick="resetT()">ቀይር</button>
+            <button class="t-btn" style="background:#22c55e;" onclick="startT()">ጀምር</button>
+            <button class="t-btn" style="background:#ef4444;" onclick="stopT()">ቁም</button>
+            <button class="t-btn" style="background:var(--accent); color:black;" onclick="resetT()">ቀይር</button>
         </div>
     </div>
 
     <div class="info-bar">
-        <div class="field">📅 ቀን፡ <input type="date" id="qDate" style="border:none; width:85%; background:transparent; font-weight:bold;"></div>
+        <div class="field">📅 ቀን፡ <input type="date" id="qDate" style="border:none; width:80%; outline:none;"></div>
         <div class="field">🏫 ክፍል፡ 
-            <select id="qClass" style="border:none; width:85%; font-weight:bold; background:transparent;">
+            <select id="qClass" style="border:none; width:80%; font-weight:bold; outline:none;">
                 <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option><option>2ኛ ለ</option>
                 <option>3ኛ ሀ</option><option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
             </select>
         </div>
         <div class="field">📝 ሴሚ፡ 
-            <select id="qSem" style="border:none; width:85%; font-weight:bold; background:transparent;">
+            <select id="qSem" style="border:none; width:80%; font-weight:bold; outline:none;">
                 <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
             </select>
         </div>
@@ -121,16 +103,16 @@
     <table id="scoreTable">
         <thead>
             <tr>
-                <th style="width:30px">ቁ</th>
+                <th style="width:25px">ቁ</th>
                 <th style="width:140px">የተወዳዳሪ ስም</th>
                 <th>አማርኛ</th><th>እንግሊዝኛ</th><th>ሒሳብ</th><th>አ/ሳይንስ</th><th>ግብረገብ</th>
-                <th style="width:55px">ድምር</th><th style="width:50px">ደረጃ</th>
+                <th style="width:55px">ድምር</th><th style="width:45px">ደረጃ</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td style="font-weight:bold; color:#7f8c8d;">1</td>
-                <td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:600;" placeholder="ስም..."></td>
+                <td>1</td>
+                <td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>
                 <script>
                     for(let i=0; i<5; i++){
                         document.write(`<td><div class="box-stack">
@@ -139,28 +121,28 @@
                         </div></td>`);
                     }
                 </script>
-                <td class="res-total" style="font-weight:bold; color:var(--primary); font-size:14px;">0/10</td>
-                <td class="res-rank" style="font-weight:bold; color:#2c3e50;">-</td>
+                <td class="res-total" style="font-weight:800; color:var(--primary); font-size:14px;">0/10</td>
+                <td class="res-rank" style="font-weight:bold;">-</td>
             </tr>
         </tbody>
     </table>
 
-    <button class="main-btn" style="background:var(--primary); padding:6px 15px; font-size:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
+    <button class="main-btn add-row-btn" style="background:var(--primary); padding:6px 12px; font-size:10px; margin-top:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
 
-    <div class="footer-info">
-        <div style="line-height:2.5">
-            👤 1ኛ ዳኛ፡ <select class="field" style="display:inline; width:130px; padding:2px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select><br>
-            👤 2ኛ ዳኛ፡ <select class="field" style="display:inline; width:130px; padding:2px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select>
+    <div class="footer-sigs">
+        <div style="line-height:2.2">
+            👤 1ኛ ዳኛ፡ <select class="field" style="padding:2px; font-size:10px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select><br>
+            👤 2ኛ ዳኛ፡ <select class="field" style="padding:2px; font-size:10px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select>
         </div>
-        <div style="text-align: right; line-height:2.5">
+        <div style="text-align: right; line-height:2.2">
             ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
             ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
         </div>
     </div>
 
     <div class="btn-group">
-        <button class="main-btn" style="background:#00c853;" onclick="saveAndTele()">💾 SAVE & SEND (ቴሌግራም)</button>
-        <button class="main-btn" style="background:#1a237e;" onclick="window.print()">🖨️ PRINT (አትም)</button>
+        <button class="main-btn" style="background:#22c55e;" onclick="sendToTelegram()">💾 SAVE & SEND (TELEGRAM)</button>
+        <button class="main-btn" style="background:var(--primary);" onclick="window.print()">🖨️ PRINT (አትም)</button>
     </div>
 
     <div class="dev-credit">
@@ -184,11 +166,11 @@
     function addRow() {
         let tb = document.getElementById("scoreTable").tBodies[0];
         let r = tb.insertRow();
-        let html = `<td style="font-weight:bold; color:#7f8c8d;">${tb.rows.length}</td><td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:600;" placeholder="ስም..."></td>`;
+        let html = `<td>${tb.rows.length}</td><td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>`;
         for(let i=0; i<5; i++){
             html += `<td><div class="box-stack"><div class="item-pair"><input type="text" class="num-in"><div class="check-box" onclick="hit(this)"></div></div><div class="item-pair"><input type="text" class="num-in"><div class="check-box" onclick="hit(this)"></div></div></div></td>`;
         }
-        html += `<td class="res-total" style="font-weight:bold; color:var(--primary); font-size:14px;">0/10</td><td class="res-rank" style="font-weight:bold;">-</td>`;
+        html += `<td class="res-total" style="font-weight:800; color:var(--primary); font-size:14px;">0/10</td><td class="res-rank" style="font-weight:bold;">-</td>`;
         r.innerHTML = html;
     }
 
@@ -202,28 +184,23 @@
         sorted.forEach((item, i) => { item.r.querySelector('.res-rank').innerText = (i+1) + "ኛ"; });
     }
 
-    function saveAndTele() {
+    function sendToTelegram() {
         let cls = document.getElementById('qClass').value;
-        let date = document.getElementById('qDate').value || "ያልተጠቀሰ ቀን";
-        let sem = document.getElementById('qSem').value;
+        let date = document.getElementById('qDate').value || "ቀን አልተሞላም";
         
-        let report = `🏆 የውድድር ውጤት ሪፖርት\n***********************\n📅 ቀን፡ ${date}\n🏫 ክፍል፡ ${cls}\n📝 ሴሚስተር፡ ${sem}\n\nየውጤት ዝርዝር፡\n`;
+        let msg = `🏆 የውድድር ውጤት ሪፖርት\n--------------------------\n📅 ቀን፡ ${date}\n🏫 ክፍል፡ ${cls}\n--------------------------\n`;
         
         let rows = document.getElementById("scoreTable").tBodies[0].rows;
         for (let r of rows) {
             let name = r.querySelector('.st-name').value;
             let score = r.querySelector('.res-total').innerText;
             let rank = r.querySelector('.res-rank').innerText;
-            if(name) report += `${rank}. ${name} -> ${score}\n`;
+            if(name) msg += `${rank}. ${name} -> ${score}\n`;
         }
+        msg += `\nDeveloped by: መ/ር ደለለኝ አጥላው`;
         
-        report += `\nDeveloped by: መ/ር ደለለኝ አጥላው`;
-        
-        // Telegram Link logic
-        let teleLink = `https://t.me/del21A?text=${encodeURIComponent(report)}`;
-        window.open(teleLink, '_blank');
-        
-        alert("መረጃው ተዘጋጅቷል! ወደ ቴሌግራም እየተመራህ ነው...");
+        let teleUrl = `https://t.me/del21A?text=${encodeURIComponent(msg)}`;
+        window.open(teleUrl, '_blank');
     }
 </script>
 
