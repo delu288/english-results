@@ -3,208 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ውጤት መያዣ - Taitu Bitul Academy</title>
+    <title>የጥያቄና መልስ ውድድር ውጤት መያዣ</title>
     <style>
-        :root {
-            --primary: #002366;
-            --accent: #ffd700;
-            --bg: #f0f2f5;
-        }
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            background: var(--bg); margin: 0; padding: 10px; font-size: 11px;
-        }
-        .container { 
-            max-width: 900px; margin: auto; background: white; 
-            padding: 25px; border-radius: 15px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 10px solid var(--primary);
-        }
-        h2 { text-align: center; color: var(--primary); font-size: 20px; border-bottom: 2px solid var(--accent); display: inline-block; position: relative; left: 50%; transform: translateX(-50%); padding-bottom: 5px; }
-
-        /* Timer */
-        .timer-wrapper { text-align: center; margin-bottom: 15px; }
-        .timer-box { 
-            background: var(--primary); padding: 8px 20px; border-radius: 50px; 
-            display: inline-block; color: white;
-        }
-        #timer-display { font-size: 1.8rem; font-weight: bold; color: var(--accent); font-family: monospace; }
-        .t-btn { padding: 4px 10px; border-radius: 15px; border: none; cursor: pointer; font-size: 9px; font-weight: bold; margin: 2px; }
-
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .field-box { border: 1.5px solid #dcdde1; padding: 6px; border-radius: 8px; background: #fff; }
-
-        /* Table */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background: var(--primary); color: white; padding: 10px 2px; font-size: 10px; border: 1px solid #fff; }
-        td { border: 1px solid #dcdde1; padding: 4px; text-align: center; background: #fff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 10px; font-size: 13px; }
+        #main-content { display: none; } /* መጀመሪያ እንዳይታይ መደበቂያ */
+        .container { max-width: 1250px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #1a73e8; margin-bottom: 20px; text-transform: uppercase; }
         
-        .box-stack { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .pair { display: flex; align-items: center; gap: 3px; }
+        .timer-container { text-align: center; margin-bottom: 20px; background: #fff; border: 2px solid #1a73e8; padding: 15px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); }
+        #timer-display { font-size: 2.5rem; font-weight: bold; color: #d93025; cursor: pointer; border: none; background: transparent; text-align: center; width: 120px; outline: none; }
+        .timer-btn { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; margin: 0 5px; }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .input-box { border: 1px solid #bdc1c6; padding: 8px; border-radius: 6px; background: #fff; display: flex; align-items: center; }
 
-        .eta-in { width: 22px; height: 18px; border: 1px solid #7f8c8d; text-align: center; border-radius: 3px; outline: none; }
-        .check { 
-            cursor: pointer; width: 26px; height: 24px; border: 1px solid #bdc3c7; 
-            border-radius: 5px; background: #f8f9fa; display: flex; align-items: center; 
-            justify-content: center; font-weight: bold; font-size: 14px;
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
+        th, td { border: 1px solid #dadce0; padding: 8px; text-align: center; }
+        th { background-color: #1a73e8; color: white; font-size: 12px; }
+        .sub-head { background-color: #f8f9fa; font-size: 11px; }
+
+        .touch-cell { cursor: pointer; font-size: 18px; font-weight: bold; width: 40px; height: 35px; user-select: none; transition: 0.2s; }
+        .status-none { background: #fff; }
+        .status-right { background: #e6f4ea; color: #1e8e3e; }
+        .status-wrong { background: #fce8e6; color: #d93025; }
+
+        .footer-sigs { margin-top: 40px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 20px; }
+        .sig-box { width: 48%; line-height: 3; font-size: 14px; }
+        .judge-select { width: 65%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+
+        .final-actions { text-align: center; margin-top: 30px; }
+        .action-btn { padding: 10px 25px; border-radius: 5px; border: none; color: white; cursor: pointer; font-weight: bold; margin: 5px; }
+
+        @media print {
+            .final-actions, .timer-container, .add-row-btn { display: none !important; }
+            .container { box-shadow: none; border: none; padding: 0; }
+            #main-content { display: block !important; }
         }
-        .right { background: #27ae60 !important; color: white; border-color: #2ecc71 !important; }
-        .wrong { background: #c0392b !important; color: white; border-color: #e74c3c !important; }
-
-        .sigs { margin-top: 20px; display: flex; justify-content: space-between; padding: 12px; background: #f9f9f9; border-radius: 10px; border-left: 4px solid var(--accent); }
-        .sig-col { font-size: 11px; line-height: 2.2; }
-
-        .actions { text-align: center; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
-        .btn-main { 
-            padding: 10px 25px; border-radius: 8px; border: none; color: white; 
-            font-weight: bold; margin: 5px; cursor: pointer; font-size: 11px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-main:active { transform: scale(0.98); }
-
-        .dev-footer { 
-            margin-top: 30px; text-align: center; font-size: 12px; color: #7f8c8d; 
-            border-top: 1px solid #eee; padding-top: 15px; font-weight: bold;
-        }
-        .dev-footer a { color: var(--primary); text-decoration: none; border-bottom: 2px solid var(--accent); }
-
-        @media print { .actions, .timer-wrapper, .dev-footer, .add-row-btn { display: none; } .container { border: none; box-shadow: none; } }
     </style>
 </head>
 <body>
 
-<div class="container" id="captureArea">
-    <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
+<div id="main-content">
+    <div class="container">
+        <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
 
-    <div class="timer-wrapper">
-        <div class="timer-box">
-            <div id="timer-display">00:00</div>
-            <button class="t-btn" style="background:#27ae60;" onclick="startT()">ጀምር</button>
-            <button class="t-btn" style="background:#c0392b;" onclick="stopT()">ቁም</button>
-            <button class="t-btn" style="background:var(--accent); color:black;" onclick="resetT()">ቀይር</button>
+        <div class="timer-container">
+            <input type="text" id="timer-display" value="01:00">
+            <br>
+            <button class="timer-btn" style="background:#1e8e3e; color:white" onclick="startTimer()">ጀምር</button>
+            <button class="timer-btn" style="background:#d93025; color:white" onclick="stopTimer()">ቁም</button>
         </div>
-    </div>
 
-    <div class="info-grid">
-        <div class="field-box">📅 ቀን፡ <input type="date" id="qDate" style="border:none; width:80%; outline:none; font-weight:bold;"></div>
-        <div class="field-box">🏫 ክፍል፡ 
-            <select id="qClass" style="border:none; width:80%; font-weight:bold; outline:none;">
-                <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option><option>2ኛ ለ</option>
-                <option>3ኛ ሀ</option><option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
-            </select>
+        <div class="info-grid">
+            <div class="input-box"><label>ቀን፡</label><input type="date" oninput="autoSaveData()" id="comp-date" style="border:none; width:100%"></div>
+            <div class="input-box"><label>ክፍል፡</label><input type="text" oninput="autoSaveData()" id="comp-class" style="border:none; width:100%"></div>
+            <div class="input-box">
+                <label>ሴሚስተር፡</label>
+                <select id="comp-sem" onchange="autoSaveData()" style="border:none; width:100%; font-weight:bold;">
+                    <option>1ኛ ሴሚስተር</option>
+                    <option>2ኛ ሴሚስተር</option>
+                </select>
+            </div>
         </div>
-        <div class="field-box">📝 ሴሚ፡ 
-            <select id="qSem" style="border:none; width:80%; font-weight:bold; outline:none;">
-                <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
-            </select>
+
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th rowspan="2" style="width:30px">ቁጥር</th>
+                    <th rowspan="2" style="width:150px">የተወዳዳሪዎች ስም</th>
+                    <th colspan="3">አማርኛ</th>
+                    <th colspan="3">እንግሊዝኛ</th>
+                    <th colspan="3">ሒሳብ</th>
+                    <th colspan="3">አ/ሳይንስ</th>
+                    <th colspan="3">ግብረገብ</th>
+                    <th rowspan="2">ድምር</th>
+                    <th rowspan="2">ደረጃ</th>
+                </tr>
+                <tr class="sub-head">
+                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                    <th>እጣ</th><th>1ኛ</th><th>2ኛ</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+
+        <button class="add-row-btn action-btn" style="background:#1a73e8;" onclick="addRow()">+ ተማሪ ጨምር</button>
+
+        <div class="footer-sigs">
+            <div class="sig-box">
+                1ኛ ዳኛ፡ <select class="judge-select" onchange="autoSaveData()" id="j1">
+                    <option value="">ምረጥ...</option>
+                    <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
+                    <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
+                    <option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
+                    <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
+                    <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
+                </select><br>
+                2ኛ ዳኛ፡ <select class="judge-select" onchange="autoSaveData()" id="j2">
+                    <option value="">ምረጥ...</option>
+                    <option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option>
+                    <option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option>
+                    <option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option>
+                    <option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option>
+                    <option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option>
+                </select>
+            </div>
+            <div class="sig-box">
+                ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
+                ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
+            </div>
         </div>
-    </div>
 
-    <table id="scoreTable">
-        <thead>
-            <tr>
-                <th style="width:25px">ቁ</th>
-                <th style="width:140px">የተወዳዳሪ ስም</th>
-                <th>አማርኛ</th><th>እንግሊዝኛ</th><th>ሒሳብ</th><th>አ/ሳይንስ</th><th>ግብረገብ</th>
-                <th style="width:55px">ድምር</th><th style="width:45px">ደረጃ</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="font-weight:bold; color:#7f8c8d;">1</td>
-                <td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>
-                <script>
-                    for(let i=0; i<5; i++){
-                        document.write(`<td><div class="box-stack">
-                            <div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div>
-                            <div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div>
-                        </div></td>`);
-                    }
-                </script>
-                <td class="res-total" style="font-weight:bold; color:var(--primary); font-size:13px;">0/10</td>
-                <td class="res-rank" style="font-weight:bold;">-</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <button class="btn-main add-row-btn" style="background:var(--primary); padding:5px 12px; font-size:10px; margin-top:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
-
-    <div class="sigs">
-        <div class="sig-col">
-            👤 1ኛ ዳኛ፡ <select class="field-box" id="j1" style="padding:2px; font-size:10px; width:120px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select><br>
-            👤 2ኛ ዳኛ፡ <select class="field-box" id="j2" style="padding:2px; font-size:10px; width:120px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select>
+        <div class="final-actions">
+            <button class="action-btn" style="background:#d93025;" onclick="clearAllData()">🗑️ Reset All</button>
+            <button class="action-btn" style="background:#1e8e3e;" onclick="secureAction('Save')">💾 Save Data</button>
+            <button class="action-btn" style="background:#1a73e8;" onclick="secureAction('Print')">🖨️ Print Result</button>
         </div>
-        <div class="sig-col" style="text-align: right;">
-            ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
-            ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
-        </div>
-    </div>
-
-    <div class="actions">
-        <button class="btn-main" style="background:#27ae60;" onclick="sendTelegram()">💾 SAVE & SEND (Telegram)</button>
-        <button class="btn-main" style="background:var(--primary);" onclick="window.print()">🖨️ PRINT / SCREENSHOT</button>
-    </div>
-
-    <div class="dev-footer">
-        Developed by: <a href="https://rose-kit-24.tiiny.site" target="_blank">መ/ር ደለለኝ አጥላው</a> | © 2026 Taitu Bitul Academy
     </div>
 </div>
 
 <script>
-    let timer; let sec = 0;
-    function startT() { clearInterval(timer); timer = setInterval(() => { sec++; let m = Math.floor(sec/60); let s = sec%60; document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }, 1000); }
-    function stopT() { clearInterval(timer); }
-    function resetT() { stopT(); sec = 0; document.getElementById('timer-display').innerText = "00:00"; }
+    const MY_PASS = "Eshet21d";
+    let timerInterval;
 
-    function hit(el) {
-        if (el.innerHTML === "") { el.innerHTML = "✓"; el.className = "check right"; }
-        else if (el.innerHTML === "✓") { el.innerHTML = "X"; el.className = "check wrong"; }
-        else { el.innerHTML = ""; el.className = "check"; }
-        recalc();
+    // 1. የይለፍ ቃል ጥበቃ እና Load
+    window.onload = function() {
+        let entry = prompt("የጥያቄና መልስ ውጤት መያዣ፡ እባክዎ የይለፍ ቃል ያስገቡ");
+        if (entry === MY_PASS) {
+            document.getElementById('main-content').style.display = "block";
+            loadSavedData();
+        } else {
+            alert("የተሳሳተ የይለፍ ቃል!");
+            window.location.reload();
+        }
+    };
+
+    function secureAction(type) {
+        let confirmPass = prompt(type + " ለማድረግ የይለፍ ቃል ያስገቡ፡");
+        if (confirmPass === MY_PASS) {
+            if (type === 'Print') window.print();
+            if (type === 'Save') { autoSaveData(); alert("ውጤቱ በBrowser ተቀምጧል!"); }
+        } else {
+            alert("ያልተፈቀደ ሙከራ!");
+        }
+    }
+
+    // 2. Timer Logic
+    function startTimer() {
+        stopTimer();
+        let timeParts = document.getElementById('timer-display').value.split(':');
+        let totalSeconds = (parseInt(timeParts[0]) * 60) + (parseInt(timeParts[1]) || 0);
+        
+        timerInterval = setInterval(() => {
+            if (totalSeconds <= 0) { clearInterval(timerInterval); alert("ጊዜው አልቋል!"); return; }
+            totalSeconds--;
+            let m = Math.floor(totalSeconds / 60);
+            let s = totalSeconds % 60;
+            document.getElementById('timer-display').value = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }, 1000);
+    }
+    function stopTimer() { clearInterval(timerInterval); }
+
+    // 3. Table Logic
+    function toggleTouch(cell) {
+        if (cell.innerHTML === "") { cell.innerHTML = "✓"; cell.className = "touch-cell status-right"; }
+        else if (cell.innerHTML === "✓") { cell.innerHTML = "X"; cell.className = "touch-cell status-wrong"; }
+        else { cell.innerHTML = ""; cell.className = "touch-cell status-none"; }
+        calculateResults();
+        autoSaveData();
     }
 
     function addRow() {
-        let tb = document.getElementById("scoreTable").tBodies[0];
-        let r = tb.insertRow();
-        let html = `<td>${tb.rows.length}</td><td><input type="text" class="st-name" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>`;
-        for(let i=0; i<5; i++){
-            html += `<td><div class="box-stack"><div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div><div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div></div></td>`;
+        const tableBody = document.querySelector("#resultsTable tbody");
+        const row = tableBody.insertRow();
+        let cellsHTML = `<td>${tableBody.rows.length}</td>
+                         <td><input type="text" oninput="autoSaveData()" style="width:95%; border:none; outline:none;"></td>`;
+        for(let i=0; i<5; i++) {
+            cellsHTML += `<td><input type="text" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
+                          <td class="touch-cell status-none" onclick="toggleTouch(this)"></td>
+                          <td class="touch-cell status-none" onclick="toggleTouch(this)"></td>`;
         }
-        html += `<td class="res-total" style="font-weight:bold; color:var(--primary); font-size:13px;">0/10</td><td class="res-rank" style="font-weight:bold;">-</td>`;
-        r.innerHTML = html;
+        cellsHTML += `<td class="grand-total" style="font-weight:bold">0</td><td class="rank">-</td>`;
+        row.innerHTML = cellsHTML;
+        autoSaveData();
     }
 
-    function recalc() {
-        let rows = Array.from(document.getElementById("scoreTable").tBodies[0].rows);
-        rows.forEach(r => {
-            let score = r.getElementsByClassName('right').length;
-            r.querySelector('.res-total').innerText = score + "/10";
+    function calculateResults() {
+        const rows = Array.from(document.querySelectorAll("#resultsTable tbody rows") || []);
+        const tableBody = document.querySelector("#resultsTable tbody");
+        const allRows = Array.from(tableBody.rows);
+        
+        let scores = allRows.map((row, index) => {
+            const touchCells = Array.from(row.getElementsByClassName('touch-cell'));
+            const total = touchCells.reduce((sum, cell) => sum + (cell.innerHTML === "✓" ? 1 : 0), 0);
+            row.querySelector('.grand-total').innerText = total;
+            return { index, total };
         });
-        let sorted = rows.map(r => ({ r, s: parseInt(r.querySelector('.res-total').innerText) })).sort((a,b) => b.s - a.s);
-        sorted.forEach((item, i) => { item.r.querySelector('.res-rank').innerText = (i+1) + "ኛ"; });
+
+        let sorted = [...scores].sort((a, b) => b.total - a.total);
+        scores.forEach(item => {
+            let rank = sorted.findIndex(s => s.total === item.total) + 1;
+            allRows[item.index].querySelector('.rank').innerText = rank;
+        });
     }
 
-    function sendTelegram() {
-        let date = document.getElementById('qDate').value || "ያልተጠቀሰ ቀን";
-        let cls = document.getElementById('qClass').value;
-        let j1 = document.getElementById('j1').value;
-        let j2 = document.getElementById('j2').value;
-        
-        let report = `🏆 የጥያቄና መልስ ውድድር ሪፖርት\n--------------------------\n📅 ቀን፡ ${date}\n🏫 ክፍል፡ ${cls}\n--------------------------\n📊 የውጤት ዝርዝር፡\n`;
-        
-        let rows = document.getElementById("scoreTable").tBodies[0].rows;
-        for (let r of rows) {
-            let name = r.querySelector('.st-name').value;
-            let score = r.querySelector('.res-total').innerText;
-            let rank = r.querySelector('.res-rank').innerText;
-            if(name) report += `✅ ${rank}. ${name} -> ${score}\n`;
-        }
-        
-        report += `--------------------------\n👤 ዳኞች፡ ${j1}, ${j2}\n👤 ሰብሳቢ፡ መ/ር ደለለኝ አጥላው\n--------------------------\nDeveloped by: መ/ር ደለለኝ አጥላው`;
-        
-        window.open(`https://t.me/del21A?text=${encodeURIComponent(report)}`, '_blank');
-        alert("ሙሉ መረጃው በሪፖርት መልክ ተዘጋጅቷል! ወደ ቴሌግራም ይላካል። ለፎቶው ገጹን Screenshot ያንሱት።");
+    // 4. Auto-Save Logic
+    function autoSaveData() {
+        const rows = Array.from(document.querySelector("#resultsTable tbody").rows);
+        const data = {
+            date: document.getElementById('comp-date').value,
+            class: document.getElementById('comp-class').value,
+            sem: document.getElementById('comp-sem').value,
+            j1: document.getElementById('j1').value,
+            j2: document.getElementById('j2').value,
+            students: rows.map(row => ({
+                name: row.querySelectorAll('input')[0].value,
+                inputs: Array.from(row.querySelectorAll('input')).slice(1).map(i => i.value),
+                marks: Array.from(row.querySelectorAll('.touch-cell')).map(c => c.innerHTML)
+            }))
+        };
+        localStorage.setItem('quizAppData', JSON.stringify(data));
     }
-</script>
 
-</body>
-</html>
+    function loadSavedData() {
+        const saved = localStorage.getItem('quizAppData');
+        if (!saved) { addRow(); return; }
+        const data = JSON.parse(saved);
+        
+        document.getElementById('comp-date').value = data.date || "";
+        document.getElementById('comp-class').value = data.class || "";
+        document.getElementById('comp-sem').value = data.sem || "";
+        document.getElementById('j1').value = data.j1 || "";
+        document.getElementById('j2').value = data.j2 || "";
+
+        const tableBody = document.querySelector("#resultsTable tbody");
+        tableBody.innerHTML = "";
+        data.students.forEach((st, idx) => {
+            const row = tableBody.insertRow();
+            let markIdx = 0;
+            let inpIdx = 0;
+            let cellsHTML = `<td>${idx + 1}</td>
+                             <td><input type="text" value="${st.name}" oninput="autoSaveData()" style="width:95%; border:none; outline:none;"></td>`;
+            for(let i=0; i<5; i++) {
+                cellsHTML += `<td><input type="text" value="${st.inputs[inpIdx++] || ''}" oninput="autoSaveData()" style="width:30px; border:none; text-align:center;"></td>
+                              <td class="touch-cell ${getCls(st.marks[markIdx
