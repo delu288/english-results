@@ -1,58 +1,150 @@
-// 1. Password Protection
-window.onload = function() {
-    let pw = prompt("Password ያስገቡ:");
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የጥያቄና መልስ ውጤት መያዣ</title>
+    <style>
+        /* CSS - ዲዛይን */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; display: none; padding: 20px; justify-content: center; }
+        .container { width: 95%; max-width: 900px; background: white; border: 2px solid #002d5b; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: auto; }
+        header { text-align: center; }
+        header h2 { color: #002d5b; border-bottom: 3px solid #ffcc00; padding-bottom: 10px; }
+        .timer-box { background: #1a1a2e; color: #ffcc00; width: fit-content; margin: 15px auto; padding: 15px 25px; border-radius: 12px; text-align: center; }
+        #display { font-size: 2.5rem; font-weight: bold; margin-bottom: 10px; }
+        .timer-controls button { border: none; padding: 8px 15px; border-radius: 5px; color: white; cursor: pointer; font-weight: bold; margin: 0 5px; }
+        .btn-green { background: #28a745; }
+        .btn-red { background: #dc3545; }
+        .btn-orange { background: #ffc107; color: black !important; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #002d5b; color: white; padding: 12px; font-size: 0.9rem; }
+        td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        
+        .check-box { width: 25px; height: 25px; border: 2px solid #002d5b; margin: auto; cursor: pointer; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s; }
+        .check-box.checked { background-color: #28a745; color: white; border-color: #28a745; }
+        .check-box.checked::after { content: "✔"; }
+        
+        input[type="text"] { width: 90%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .add-student { background: #002d5b; color: white; border: none; padding: 10px 20px; border-radius: 20px; margin-top: 15px; cursor: pointer; }
+        .action-buttons { display: flex; justify-content: space-around; margin-top: 30px; gap: 10px; }
+        .btn-action { flex: 1; padding: 15px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
+        .btn-save { background: #2ecc71; }
+        .btn-print { background: #1a1a2e; }
+        
+        footer { text-align: center; margin-top: 20px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
+        <div class="timer-box">
+            <div id="display">00:00</div>
+            <div class="timer-controls">
+                <button onclick="startTimer()" class="btn-green">ጀምር</button>
+                <button onclick="stopTimer()" class="btn-red">ቁም</button>
+                <button onclick="resetTimer()" class="btn-orange">ዜሮ አድርግ</button>
+            </div>
+        </div>
+    </header>
+
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>የተወዳዳሪ ስም</th>
+                <th>አማርኛ</th>
+                <th>እንግሊዝኛ</th>
+                <th>ሂሳብ</th>
+                <th>ሳይንስ</th>
+                <th>ህብረተሰብ</th>
+                <th>ድምር</th>
+                <th>ደረጃ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><input type="text" placeholder="ስም..."></td>
+                <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                <td><div class="check-box" onclick="toggleCheck(this)"></div></td>
+                <td class="total-cell">0/10</td>
+                <td class="rank-cell">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="add-student" onclick="addStudent()">+ ተማሪ ጨምር</button>
+
+    <div class="action-buttons">
+        <button class="btn-action btn-save" onclick="alert('ውጤቱ ተቀምጧል!')">💾 SAVE (ሴቭ)</button>
+        <button class="btn-action btn-print" onclick="window.print()">🖨️ PRINT (አትም)</button>
+    </div>
+
+    <footer>
+        Developed by: <strong>መ/ር ደሳለኝ አጥላው</strong> | © 2026 Taitu Bitul Academy
+    </footer>
+</div>
+
+<script>
+    // 1. Password Protection
+    const pw = prompt("እባክዎ መለያ ኮድ (Password) ያስገቡ:");
     if (pw === "Eshet21d") {
-        document.body.style.display = "block";
+        document.body.style.display = "flex";
     } else {
-        alert("የተሳሳተ ፓስወርድ!");
-        document.body.innerHTML = "<h1>መግባት አልተፈቀደም</h1>";
+        alert("የተሳሳተ የይለፍ ቃል!");
+        document.body.innerHTML = "<h1 style='text-align:center; margin-top:100px;'>መግባት አልተፈቀደልዎትም።</h1>";
+        document.body.style.display = "block";
     }
-};
 
-// 2. Timer Logic
-let timer, sec = 0;
-document.getElementById('startBtn').onclick = () => {
-    clearInterval(timer);
-    timer = setInterval(() => {
-        sec++;
-        let m = Math.floor(sec/60), s = sec%60;
-        document.getElementById('display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-    }, 1000);
-};
-document.getElementById('stopBtn').onclick = () => clearInterval(timer);
-document.getElementById('resetBtn').onclick = () => { clearInterval(timer); sec = 0; document.getElementById('display').innerText = "00:00"; };
-
-// 3. Calculation Logic
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('check-box')) {
-        e.target.classList.toggle('checked');
-        calculateScores();
+    // 2. Timer Logic
+    let timer, seconds = 0;
+    function startTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+            seconds++;
+            let m = Math.floor(seconds / 60), s = seconds % 60;
+            document.getElementById('display').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }, 1000);
     }
-});
+    function stopTimer() { clearInterval(timer); }
+    function resetTimer() { clearInterval(timer); seconds = 0; document.getElementById('display').innerText = "00:00"; }
 
-function calculateScores() {
-    let rows = document.querySelectorAll("#resultTable tbody tr");
-    let scores = [];
-
-    rows.forEach((row, i) => {
-        let count = row.querySelectorAll(".check-box.checked").length;
-        row.querySelector(".total-cell").innerText = count + "/10";
-        scores.push({ index: i, val: count });
-    });
-
-    // Rank Calculation
-    let sorted = [...scores].sort((a,b) => b.val - a.val);
-    scores.forEach(s => {
-        let rank = sorted.findIndex(x => x.val === s.val) + 1;
-        rows[s.index].querySelector(".rank-cell").innerText = rank + "ኛ";
-    });
-}
-
-// 4. Clear Data
-function clearAllData() {
-    if(confirm("ሁሉንም መረጃ ማጥፋት ትፈልጋለህ?")) {
-        document.querySelectorAll('.check-box').forEach(b => b.classList.remove('checked'));
-        document.querySelectorAll('.student-name').forEach(i => i.value = "");
-        calculateScores();
+    // 3. Calculation & Rank
+    function toggleCheck(el) {
+        el.classList.toggle('checked');
+        updateAll();
     }
-}
+
+    function updateAll() {
+        let rows = document.querySelectorAll("#resultTable tbody tr");
+        let results = [];
+
+        rows.forEach((row, i) => {
+            let count = row.querySelectorAll(".check-box.checked").length;
+            row.querySelector(".total-cell").innerText = count + "/10";
+            results.push({ index: i, score: count });
+        });
+
+        // ደረጃን ማስላት
+        let sorted = [...results].sort((a, b) => b.score - a.score);
+        results.forEach(item => {
+            let rank = sorted.findIndex(x => x.score === item.score) + 1;
+            rows[item.index].querySelector(".rank-cell").innerText = rank + "ኛ";
+        });
+    }
+
+    // 4. Add Student Row
+    function addStudent() {
+        let table = document.querySelector("#resultTable tbody");
+        let rowCount = table.rows.length + 1;
+        let row = table.insertRow();
+        row.innerHTML = `
+            <td>${rowCount}</td>
+            <td><input type="text" placeholder="ስም..."></td>
+            <td><div class
