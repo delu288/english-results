@@ -1,245 +1,324 @@
 <!DOCTYPE html>
-<html lang="am">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ውጤት መያዣ - Taitu Bitul Academy</title>
+    <title>Del AT Roster - Professional Edition</title>
     <style>
-        :root {
-            --primary: #002366;
-            --accent: #ffd700;
-            --bg: #f0f2f5;
-        }
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            background: var(--bg); margin: 0; padding: 10px; font-size: 11px;
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto+Condensed:wght@700;900&display=swap');
+        
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: 'Montserrat', sans-serif; 
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #0b3c5d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            /* Scroll እንዲሰራ እነዚህ ተስተካክለዋል */
+            overflow: auto !important;
+            width: 100%;
         }
 
-        /* --- የመግቢያ ገጽ (Login CSS) --- */
-        #login-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary); display: flex; align-items: center;
-            justify-content: center; z-index: 1000; transition: 0.5s;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .login-box {
-            background: white; padding: 30px; border-radius: 15px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            max-width: 320px; width: 90%; border-bottom: 5px solid var(--accent);
-        }
-        .login-box h3 { color: var(--primary); margin-top: 0; }
-        .login-box input {
-            width: 80%; padding: 12px; margin: 15px 0;
-            border: 2px solid #ddd; border-radius: 8px; outline: none;
-            text-align: center; font-size: 16px;
-        }
-        .login-box button {
-            background: var(--primary); color: white; border: none;
-            padding: 10px 25px; border-radius: 8px; cursor: pointer;
-            font-weight: bold; width: 88%;
-        }
-        .error-msg { color: red; font-size: 12px; margin-top: 10px; display: none; }
 
-        /* --- ዋናው ማሳያ (Main UI) --- */
-        .container { 
-            max-width: 950px; margin: auto; background: white; 
-            padding: 25px; border-radius: 15px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 10px solid var(--primary);
-            display: none; /* መጀመሪያ ተደብቆ ይቆያል */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; z-index: 5000; }
+        .login-box { background: rgba(255, 255, 255, 0.95); padding: 45px; border-radius: 30px; text-align: center; width: 380px; border: 8px solid #d4af37; }
+        .login-box input { width: 100%; padding: 14px; margin-bottom: 20px; border: 2px solid #0b3c5d; border-radius: 12px; font-weight: 900; }
+        .login-box button { width: 100%; padding: 14px; background: #0b3c5d; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; }
+
+        /* Main content scroll እንዲሆን ተስተካክሏል */
+        #main-content { 
+            display: none; 
+            padding: 40px; 
+            width: fit-content; 
+            margin: 0 auto;
+            min-width: 100%;
+        }
+
+        .watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 110px; color: rgba(0, 0, 0, 0.02); white-space: nowrap; pointer-events: none; z-index: 0; font-weight: 900; text-transform: uppercase;
+        }
+
+        .cover-card {
+            width: 297mm; height: 210mm; background: #fff; padding: 35px; border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5); border: 12px solid #d4af37; outline: 4px solid #0b3c5d; outline-offset: -22px;
+            position: relative; display: flex; flex-direction: column; justify-content: space-between; margin: 0 auto 40px auto; overflow: hidden;
+            page-break-after: always;
+        }
+
+        .roster-container { 
+            background: white; width: 297mm; height: 210mm; padding: 8mm 12mm; margin: 0 auto 40px auto; 
+            border: 10pt double #0b3c5d; border-radius: 40px; position: relative; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            page-break-after: always;
+        }
+
+        table { 
+            width: 100%; border-collapse: separate; border-spacing: 0; 
+            table-layout: fixed; position: relative; z-index: 1; 
+            border: 2pt solid #000; border-radius: 15px; overflow: hidden; 
         }
         
-        h2 { text-align: center; color: var(--primary); font-size: 20px; border-bottom: 2px solid var(--accent); display: inline-block; position: relative; left: 50%; transform: translateX(-50%); padding-bottom: 5px; }
-        .timer-wrapper { text-align: center; margin-bottom: 15px; }
-        .timer-box { background: var(--primary); padding: 8px 20px; border-radius: 50px; display: inline-block; color: white; }
-        #timer-display { font-size: 1.8rem; font-weight: bold; color: var(--accent); font-family: monospace; }
-        .t-btn { padding: 4px 10px; border-radius: 15px; border: none; cursor: pointer; font-size: 9px; font-weight: bold; margin: 2px; }
-        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .field-box { border: 1.5px solid #dcdde1; padding: 6px; border-radius: 8px; background: #fff; }
-        .table-container { overflow-x: auto; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: var(--primary); color: white; padding: 10px 2px; font-size: 10px; border: 1px solid #fff; }
-        td { border: 1px solid #dcdde1; padding: 4px; text-align: center; background: #fff; }
-        .box-stack { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .pair { display: flex; align-items: center; gap: 3px; }
-        .eta-in { width: 22px; height: 18px; border: 1px solid #7f8c8d; text-align: center; border-radius: 3px; outline: none; }
-        .check { cursor: pointer; width: 26px; height: 24px; border: 1px solid #bdc3c7; border-radius: 5px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; transition: 0.2s; }
-        .right { background: #27ae60 !important; color: white; border-color: #2ecc71 !important; }
-        .wrong { background: #c0392b !important; color: white; border-color: #e74c3c !important; }
-        .sigs { margin-top: 20px; display: flex; justify-content: space-between; padding: 12px; background: #f9f9f9; border-radius: 10px; border-left: 4px solid var(--accent); }
-        .sig-col { font-size: 11px; line-height: 2.2; }
-        .actions { text-align: center; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
-        .btn-main { padding: 10px 25px; border-radius: 8px; border: none; color: white; font-weight: bold; margin: 5px; cursor: pointer; font-size: 11px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .dev-footer { margin-top: 30px; text-align: center; font-size: 12px; color: #7f8c8d; border-top: 1px solid #eee; padding-top: 15px; font-weight: bold; }
-        .dev-footer a { color: var(--primary); text-decoration: none; border-bottom: 2px solid var(--accent); }
+        th, td { border: 1pt solid #000; text-align: center; font-weight: 900; color: #000; font-size: 8.5px; }
+        
+        th { background: #0b3c5d !important; color: white !important; height: 32px; }
+        td { height: 33px; }
+        
+        .logo-box { width: 95px; height: 120px; border: 3px double #d4af37; margin: 0 auto; display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 12px; background: #fff; }
+        .styled-box { width: 100%; height: 38px; border: 2px solid #d4af37; border-radius: 10px; padding: 5px 12px; font-weight: bold; outline: none; background: #fff; }
 
-        @media print { .actions, .timer-wrapper, .dev-footer, .add-row-btn, #login-overlay { display: none; } .container { border: none; box-shadow: none; display: block !important; } }
+        .total-blue { background: #eef5ff !important; }
+        .total-mid { background: #fffdf0 !important; }
+        .total-final { background: #f9f4ff !important; }
+        .avg-row { background: #f0f0f0 !important; }
+
+        input { width: 100%; height: 100%; border: none; text-align: center; font-weight: 900; background: transparent; outline: none; color: #000; }
+
+        .page-footer { margin-top: auto; display: flex; flex-direction: column; align-items: center; width: 100%; padding-top: 10px; }
+        .signature-row { display: flex; justify-content: space-around; width:100%; margin-bottom: 5px; }
+        .sig-box { border-top: 2pt solid #000; width: 240px; text-align: center; font-weight: 900; font-size: 11px; padding-top: 5px; color: #000; }
+
+        .btn-action { position: fixed; bottom: 30px; right: 30px; padding: 18px 35px; background: #d4af37; color: #000; border-radius: 50px; cursor: pointer; font-weight: 900; z-index: 1000; border: 3px solid #0b3c5d; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+        @media print { 
+            @page { size: A4 landscape; margin: 0; }
+            body { background: white !important; overflow: hidden !important; } 
+            .no-print { display: none !important; } 
+            #main-content { padding: 0; margin: 0; width: 100%; display: block; }
+            .cover-card, .roster-container { 
+                box-shadow: none !important; margin: 0 !important; 
+                width: 297mm !important; height: 210mm !important; 
+                border-radius: 0 !important; page-break-after: always; 
+            }
+            .cover-card { border: 8pt solid #d4af37 !important; outline: 2pt solid #0b3c5d !important; outline-offset: -12px !important; }
+            .roster-container { border: 6pt double #000 !important; padding: 5mm 10mm !important; }
+            table { border: 1.5pt solid #000 !important; border-radius: 10px !important; }
+            th { color: #000 !important; background: #f0f0f0 !important; }
+        }
     </style>
 </head>
 <body>
 
 <div id="login-overlay">
     <div class="login-box">
-        <img src="https://img.icons8.com/ios-filled/50/002366/lock.png" alt="lock"><br>
-        <h3>Taitu Bitul Academy</h3>
-        <p>እባክዎ የይለፍ ቃል ያስገቡ</p>
-        <input type="password" id="passInput" placeholder="Password..." onkeypress="handleEnter(event)">
-        <button onclick="checkPass()">ግባ</button>
-        <p id="err" class="error-msg">❌ የተሳሳተ የይለፍ ቃል ነው!</p>
+        <h2 style="color:#0b3c5d;">DEL AT <span style="color:#d4af37">PREMIUM</span></h2>
+        <input type="password" id="passInput" placeholder="Security Key">
+        <button onclick="checkPass()">ENTER SYSTEM</button>
     </div>
 </div>
 
-<div class="container" id="mainApp">
-    <h2>የጥያቄና መልስ ውድድር ውጤት መያዣ</h2>
+<div id="main-content">
+    <div class="cover-card">
+        <div class="watermark">English Dep't</div>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <div class="logo-box" onclick="document.getElementById('fileInput').click()">
+            <img id="logoImg" src="" alt="UPLOAD LOGO" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.opacity='0.3';">
+        </div>
+        
+        <div style="text-align:center;">
+            <div style="font-size: 38px; font-weight: 900; color: #0b3c5d;">TAYITU BITUL ACADEMY</div>
+            <div style="font-size: 24px; font-weight: 900; color: #d4af37; margin-top: 5px;">ENGLISH CONTINUOUS ASSESSMENT</div>
+        </div>
 
-    <div class="timer-wrapper">
-        <div class="timer-box">
-            <div id="timer-display">00:00</div>
-            <button class="t-btn" style="background:#27ae60;" onclick="startT()">ጀምር</button>
-            <button class="t-btn" style="background:#c0392b;" onclick="stopT()">ቁም</button>
-            <button class="t-btn" style="background:var(--accent); color:black;" onclick="resetT()">ቀይር</button>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0;">
+            <div><span style="font-size:11px; font-weight:900; color:#0b3c5d;">Academic Year</span><input type="text" class="styled-box" id="yearInput" value="2018 E.C"></div>
+            <div><span style="font-size:11px; font-weight:900; color:#0b3c5d;">Semester</span><select class="styled-box"><option>First Semester</option><option>Second Semester</option></select></div>
+            <div><span style="font-size:11px; font-weight:900; color:#0b3c5d;">Grade / Section</span>
+                <select class="styled-box" id="sectionSelect" onchange="load()">
+                    <option value="1A">Grade 1A</option>
+                    <option value="1B">Grade 1B</option>
+                    <option value="2A">Grade 2A</option>
+                    <option value="2B">Grade 2B</option>
+                    <option value="3A">Grade 3A</option>
+                    <option value="4A">Grade 4A</option>
+                    <option value="5A">Grade 5A</option>
+                    <option value="6A">Grade 6A</option>
+                    <option value="7A">Grade 7A</option>
+                    <option value="8A">Grade 8A</option>
+                </select>
+            </div>
+            <div><span style="font-size:11px; font-weight:900; color:#0b3c5d;">Instructor</span><input type="text" class="styled-box" value="Delelegn Atlaw"></div>
+        </div>
+
+        <div style="text-align: center; font-size: 22px; font-weight: 900; color: #0b3c5d; border-top: 2px solid #d4af37; border-bottom: 2px solid #d4af37; padding: 10px 0;">"EDUCATION IS THE KEY TO SUCCESS"</div>
+        
+        <div class="signature-row">
+            <div class="sig-box">Teacher: Delelegn Atlaw</div>
+            <div class="sig-box">Director: Amare Asefa</div>
+        </div>
+        <div style="text-align:center; font-size:11px; font-weight:900; color: #0b3c5d;">
+            Contact: delelegnatlaw@gmail.com<br>
+            <span style="font-size:9px; color:#d4af37;">© DEL AT PREMIUM ROSTER SYSTEM 2018 E.C</span>
         </div>
     </div>
 
-    <div class="info-grid">
-        <div class="field-box">📅 ቀን፡ <input type="date" id="qDate" style="border:none; width:80%; outline:none; font-weight:bold;"></div>
-        <div class="field-box">🏫 ክፍል፡ 
-            <select id="qClass" style="border:none; width:80%; font-weight:bold; outline:none;">
-                <option>1ኛ ሀ</option><option>1ኛ ለ</option><option>2ኛ ሀ</option><option>2ኛ ለ</option>
-                <option>3ኛ ሀ</option><option>4ኛ ሀ</option><option>5ኛ ሀ</option><option>6ኛ ሀ</option>
-            </select>
-        </div>
-        <div class="field-box">📝 ሴሚ፡ 
-            <select id="qSem" style="border:none; width:80%; font-weight:bold; outline:none;">
-                <option>1ኛ ሴሚስተር</option><option>2ኛ ሴሚስተር</option>
-            </select>
-        </div>
+    <div id="roster-wrapper">
+        <script>
+            const studentsPerPage = 5, totalPages = 9;
+            const crit = [
+                ['Behav 2%', 'Ex.Bk 3%', 'Cl.Wk 2%', 'H.Wk 3%', 'Test 10%', 'T20'],
+                ['Ex.Bk 3%', 'Cl.Wk 2%', 'H.Wk 3%', 'Proj 2%', 'Test 10%', 'T20'],
+                ['Parti 3%', 'Ex.Bk 3%', 'Cl.Wk 2%', 'H.Wk 2%', 'Test 10%', 'T20']
+            ];
+            for (let p = 0; p < totalPages; p++) {
+                document.write(`
+                <div class="roster-container">
+                    <div class="watermark">English Dep't</div>
+                    <div style="text-align:center; font-weight:900; margin-bottom:5px; font-size:11px; color:#0b3c5d;">TAYITU BITUL ACADEMY - ENGLISH ASSESSMENT <span class="year-sync">2018 E.C</span></div>
+                    <div style="text-align:center; font-weight:900; margin-bottom:8px; font-size:10px;">GRADE <span class="current-sec">1A</span> - PAGE ${p+1}</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th rowspan="3" style="width:28px;">R.No</th>
+                                <th rowspan="3" style="width:170px;">STUDENTS' FULL NAME</th>
+                                <th rowspan="3" style="width:26px;">Sex</th>
+                                <th rowspan="3" style="width:26px;">Age</th>
+                                <th rowspan="3" style="width:26px;">Sem</th>
+                                <th colspan="18">ASSESSMENT CRITERIA (ENGLISH)</th>
+                                <th rowspan="3" style="width:38px;"><span class="tTotalLabel" style="writing-mode: vertical-rl; transform: rotate(180deg);">Total 40%</span></th>
+                                <th rowspan="3" style="width:38px;"><span style="writing-mode: vertical-rl; transform: rotate(180deg);">Mid 20%</span></th>
+                                <th rowspan="3" style="width:38px;"><span class="tSumLabel" style="writing-mode: vertical-rl; transform: rotate(180deg);">Total 60%</span></th>
+                                <th rowspan="3" style="width:38px;"><span class="tFinLabel" style="writing-mode: vertical-rl; transform: rotate(180deg);">Final 40%</span></th>
+                                <th rowspan="3" style="width:38px;">Total 100%</th>
+                            </tr>
+                            <tr><th colspan="6">OCT/MAR</th><th colspan="6">NOV/APR</th><th colspan="6">DEC/MAY</th></tr>
+                            <tr>${crit.map((cSet) => cSet.map(cName => `<th style="width:16px;" class="${cName==='T20'?'total-blue':''}"><span style="writing-mode: vertical-rl; transform: rotate(180deg);">${cName}</span></th>`).join('')).join('')}</tr>
+                        </thead>
+                        <tbody>`);
+                for (let i = 1; i <= studentsPerPage; i++) {
+                    const sIdx = (p * studentsPerPage) + i;
+                    ['I', 'II', 'AVG'].forEach(sem => {
+                        const isAvg = sem === 'AVG';
+                        document.write(`
+                        <tr class="${isAvg ? 'avg-row' : ''}">
+                            ${sem === 'I' ? `<td rowspan="3">${sIdx}</td><td rowspan="3" id="name-${sIdx}" contenteditable="true" oninput="saveManual(${sIdx},'name')" style="text-align:left; padding-left:10px;"></td><td rowspan="3" id="sex-${sIdx}" contenteditable="true" oninput="saveManual(${sIdx},'sex')"></td><td rowspan="3" id="age-${sIdx}" contenteditable="true" oninput="saveManual(${sIdx},'age')"></td>` : ''}
+                            <td>${sem}</td>
+                            ${[1,2,3].map((m) => `${[0,1,2,3,4].map(c => `<td><input type="number" step="0.1" id="m${m}-${sIdx}-${sem}-${c}" oninput="calc(${sIdx},'${sem}')" ${isAvg?'readonly':''}></td>`).join('')}<td class="total-blue"><input type="number" step="0.1" id="tM${m}-${sIdx}-${sem}" readonly></td>`).join('')}
+                            <td class="total-mid"><input type="number" id="t40-${sIdx}-${sem}" readonly></td>
+                            <td class="total-mid"><input type="number" id="mid-${sIdx}-${sem}" oninput="calc(${sIdx},'${sem}')" ${isAvg?'readonly':''}></td>
+                            <td class="total-mid"><input type="number" id="t60-${sIdx}-${sem}" readonly></td>
+                            <td class="total-mid"><input type="number" id="fin-${sIdx}-${sem}" oninput="calc(${sIdx},'${sem}')" ${isAvg?'readonly':''}></td>
+                            <td class="total-final"><input type="number" id="t100-${sIdx}-${sem}" readonly></td>
+                        </tr>`);
+                    });
+                }
+                document.write(`</tbody></table>
+                    <div class="page-footer">
+                        <div class="signature-row">
+                            <div class="sig-box">Teacher: Delelegn Atlaw</div>
+                            <div class="sig-box">Director: Amare Asefa</div>
+                        </div>
+                        <div style="font-size:9px; font-weight:900; color: #555;">Email: delelegnatlaw@gmail.com | Page ${p+1}</div>
+                    </div>
+                </div>`);
+            }
+        </script>
     </div>
-
-    <div class="table-container">
-        <table id="scoreTable">
-            <thead>
-                <tr>
-                    <th style="width:25px">ቁ</th>
-                    <th style="width:140px">የተወዳዳሪ ስም</th>
-                    <th>አማርኛ</th><th>እንግሊዝኛ</th><th>ሒሳብ</th><th>አ/ሳይንስ</th><th>ግብረገብ</th>
-                    <th style="width:55px">ድምር</th><th style="width:45px">ደረጃ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="font-weight:bold; color:#7f8c8d;">1</td>
-                    <td><input type="text" class="st-name" oninput="recalc()" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>
-                    <script>
-                        for(let i=0; i<5; i++){
-                            document.write(`<td><div class="box-stack">
-                                <div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div>
-                                <div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div>
-                            </div></td>`);
-                        }
-                    </script>
-                    <td class="res-total" style="font-weight:bold; color:var(--primary); font-size:13px;">0/10</td>
-                    <td class="res-rank" style="font-weight:bold;">1ኛ</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <button class="btn-main add-row-btn" style="background:var(--primary); padding:5px 12px; font-size:10px; margin-top:10px;" onclick="addRow()">+ ተማሪ ጨምር</button>
-
-    <div class="sigs">
-        <div class="sig-col">
-            👤 1ኛ ዳኛ፡ <select class="field-box" id="j1" style="padding:2px; font-size:10px; width:120px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select><br>
-            👤 2ኛ ዳኛ፡ <select class="field-box" id="j2" style="padding:2px; font-size:10px; width:120px;"><option>ምረጥ...</option><option>መ/ር ደለለኝ አጥላው</option><option>መ/ር ዳዊት የማነ</option><option>መ/ር ባየልኝ አይተንፍሱ</option><option>መ/ር ተፈሪ ታደሰ</option><option>መ/ር እሸቱ አለሙ</option><option>መ/ር አሰጋኸኝ በሻህ</option><option>መ/ር ተፈራ ፈቀደው</option><option>መ/ርት መሰረት ፋንታ</option><option>መ/ርት መሰረት ግዛቸው</option><option>ር/መ/ር አማረ አሰፋ</option></select>
-        </div>
-        <div class="sig-col" style="text-align: right;">
-            ሰብሳቢ፡ <b>መ/ር ደለለኝ አጥላው</b><br>
-            ፀሀፊ፡ <b>መ/ርት መሰረት ፋንታ</b>
-        </div>
-    </div>
-
-    <div class="actions">
-        <button class="btn-main" style="background:#27ae60;" onclick="sendTelegram()">💾 SAVE & SEND (Telegram)</button>
-        <button class="btn-main" style="background:var(--primary);" onclick="window.print()">🖨️ PRINT / SCREENSHOT</button>
-    </div>
-
-    <div class="dev-footer">
-        Developed by: <a href="https://rose-kit-24.tiiny.site" target="_blank">መ/ር ደለለኝ አጥላው</a> | © 2026 Taitu Bitul Academy
-    </div>
+    <button class="btn-action no-print" onclick="window.print()">⎙ PRINT PREMIUM ROSTER</button>
 </div>
 
 <script>
-    // Login Logic
-    function checkPass() {
-        const pass = document.getElementById('passInput').value;
-        if(pass === "eshet21d") {
-            document.getElementById('login-overlay').style.opacity = "0";
-            setTimeout(() => {
-                document.getElementById('login-overlay').style.display = "none";
-                document.getElementById('mainApp').style.display = "block";
-            }, 500);
-        } else {
-            document.getElementById('err').style.display = "block";
-        }
+    document.getElementById('yearInput').oninput = function() {
+        document.querySelectorAll('.year-sync').forEach(el => el.innerText = this.value);
+    };
+
+    function checkPass() { if (document.getElementById('passInput').value === "Eshet21d") { document.getElementById('login-overlay').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; load(); } }
+    function getDBKey() { return "DB_" + document.getElementById('sectionSelect').value; }
+    function saveManual(idx, type) {
+        let d = JSON.parse(localStorage.getItem(getDBKey()) || '{}');
+        d[type+'_'+idx] = document.getElementById(type+'-'+idx).innerText;
+        localStorage.setItem(getDBKey(), JSON.stringify(d));
     }
-    function handleEnter(e) { if(e.key === "Enter") checkPass(); }
-
-    // App Logic
-    let timer; let sec = 0;
-    function startT() { clearInterval(timer); timer = setInterval(() => { sec++; let m = Math.floor(sec/60); let s = sec%60; document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }, 1000); }
-    function stopT() { clearInterval(timer); }
-    function resetT() { stopT(); sec = 0; document.getElementById('timer-display').innerText = "00:00"; }
-
-    function hit(el) {
-        if (el.innerHTML === "") { el.innerHTML = "✓"; el.className = "check right"; }
-        else if (el.innerHTML === "✓") { el.innerHTML = "X"; el.className = "check wrong"; }
-        else { el.innerHTML = ""; el.className = "check"; }
-        recalc();
+    function calc(idx, sem) {
+        if (sem === 'AVG') return;
+        let d = JSON.parse(localStorage.getItem(getDBKey()) || '{}');
+        [1,2,3].forEach(m => { for(let c=0; c<5; c++) { d[`v_${idx}_${sem}_${m}_${c}`] = document.getElementById(`m${m}-${idx}-${sem}-${c}`).value; } });
+        d[`mid_${idx}_${sem}`] = document.getElementById(`mid-${idx}-${sem}`).value;
+        d[`fin_${idx}_${sem}`] = document.getElementById(`fin-${idx}-${sem}`).value;
+        localStorage.setItem(getDBKey(), JSON.stringify(d));
+        refreshTotals(idx);
     }
-
-    function addRow() {
-        let tb = document.getElementById("scoreTable").tBodies[0];
-        let r = tb.insertRow();
-        let html = `<td>${tb.rows.length}</td><td><input type="text" class="st-name" oninput="recalc()" style="width:95%; border:none; outline:none; font-weight:bold;" placeholder="ስም..."></td>`;
-        for(let i=0; i<5; i++){
-            html += `<td><div class="box-stack"><div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div><div class="pair"><input type="text" class="eta-in"><div class="check" onclick="hit(this)"></div></div></div></td>`;
-        }
-        html += `<td class="res-total" style="font-weight:bold; color:var(--primary); font-size:13px;">0/10</td><td class="res-rank" style="font-weight:bold;">-</td>`;
-        r.innerHTML = html;
-        recalc();
-    }
-
-    function recalc() {
-        let rows = Array.from(document.getElementById("scoreTable").tBodies[0].rows);
-        rows.forEach(r => {
-            let score = r.getElementsByClassName('right').length;
-            r.querySelector('.res-total').innerText = score + "/10";
+    function refreshTotals(idx) {
+        const sec = document.getElementById('sectionSelect').value;
+        let ratio = 40/60; 
+        if (sec.startsWith('1')) ratio = 1; 
+        if (sec.startsWith('2') || sec.startsWith('3')) ratio = 50/60;
+        ['I', 'II'].forEach(sem => {
+            let rawSum = 0;
+            [1,2,3].forEach(m => {
+                let tm = 0;
+                for(let c=0; c<5; c++) tm += parseFloat(document.getElementById(`m${m}-${idx}-${sem}-${c}`).value) || 0;
+                document.getElementById(`tM${m}-${idx}-${sem}`).value = tm.toFixed(1);
+                rawSum += tm;
+            });
+            let tTotal = (rawSum * ratio).toFixed(1);
+            document.getElementById(`t40-${idx}-${sem}`).value = tTotal;
+            let mid = parseFloat(document.getElementById(`mid-${idx}-${sem}`).value) || 0;
+            let tSum = (parseFloat(tTotal) + mid).toFixed(1);
+            document.getElementById(`t60-${idx}-${sem}`).value = tSum;
+            let fin = parseFloat(document.getElementById(`fin-${idx}-${sem}`).value) || 0;
+            document.getElementById(`t100-${idx}-${sem}`).value = (parseFloat(tSum) + fin).toFixed(1);
         });
-        let sortedData = rows.map(r => ({ row: r, score: parseInt(r.querySelector('.res-total').innerText) })).sort((a, b) => b.score - a.score);
-        let rank = 1;
-        sortedData.forEach((item, i) => {
-            if (i > 0 && item.score < sortedData[i-1].score) rank = i + 1;
-            item.row.querySelector('.res-rank').innerText = rank + "ኛ";
+        [1,2,3].forEach(m => { for(let c=0; c<5; c++) {
+            let v1 = parseFloat(document.getElementById(`m${m}-${idx}-I-${c}`).value) || 0;
+            let v2 = parseFloat(document.getElementById(`m${m}-${idx}-II-${c}`).value) || 0;
+            document.getElementById(`m${m}-${idx}-AVG-${c}`).value = ((v1+v2)/2).toFixed(1);
+        }});
+        ['tM1','tM2','tM3','t40','mid','t60','fin','t100'].forEach(f => {
+            let v1 = parseFloat(document.getElementById(`${f}-${idx}-I`).value) || 0;
+            let v2 = parseFloat(document.getElementById(`${f}-${idx}-II`).value) || 0;
+            document.getElementById(`${f}-${idx}-AVG`).value = ((v1+v2)/2).toFixed(1);
         });
     }
-
-    function sendTelegram() {
-        let date = document.getElementById('qDate').value || "ያልተጠቀሰ ቀን";
-        let cls = document.getElementById('qClass').value;
-        let j1 = document.getElementById('j1').value;
-        let j2 = document.getElementById('j2').value;
-        let report = `🏆 የጥያቄና መልስ ውድድር ሪፖርት\n--------------------------\n📅 ቀን፡ ${date}\n🏫 ክፍል፡ ${cls}\n--------------------------\n📊 የውጤት ዝርዝር፡\n`;
-        let rows = document.getElementById("scoreTable").tBodies[0].rows;
-        for (let r of rows) {
-            let name = r.querySelector('.st-name').value;
-            let score = r.querySelector('.res-total').innerText;
-            let rank = r.querySelector('.res-rank').innerText;
-            if(name) report += `✅ ${rank}. ${name} -> ${score}\n`;
+    function load() {
+        const sec = document.getElementById('sectionSelect').value;
+        document.querySelectorAll('.current-sec').forEach(el => el.innerText = sec);
+        let label40 = "Total 40%", label60 = "Total 60%", labelFin = "Final 40%";
+        if (sec.startsWith('1')) { label40 = "Total 60%"; label60 = "Total 80%"; labelFin = "Final 20%"; }
+        else if (sec.startsWith('2') || sec.startsWith('3')) { label40 = "Total 50%"; label60 = "Total 70%"; labelFin = "Final 30%"; }
+        document.querySelectorAll('.tTotalLabel').forEach(el => el.innerText = label40);
+        document.querySelectorAll('.tSumLabel').forEach(el => el.innerText = label60);
+        document.querySelectorAll('.tFinLabel').forEach(el => el.innerText = labelFin);
+        document.querySelectorAll('input[type=number]').forEach(i => i.value = '');
+        document.querySelectorAll('[contenteditable=true]').forEach(i => i.innerText = '');
+        let d = JSON.parse(localStorage.getItem(getDBKey()) || '{}');
+        for (let k in d) {
+            if (k.includes('name_') || k.includes('sex_') || k.includes('age_')) {
+                let el = document.getElementById(k.replace('_', '-'));
+                if (el) el.innerText = d[k];
+            } else if (k.startsWith('v_')) {
+                let p = k.split('_');
+                let el = document.getElementById(`m${p[3]}-${p[1]}-${p[2]}-${p[4]}`);
+                if (el) el.value = d[k];
+            } else if (k.startsWith('mid_') || k.startsWith('fin_')) {
+                let p = k.split('_');
+                let el = document.getElementById(`${p[0]}-${p[1]}-${p[2]}`);
+                if (el) el.value = d[k];
+            }
         }
-        report += `--------------------------\n👤 ዳኞች፡ ${j1}, ${j2}\n👤 ሰብሳቢ፡ መ/ር ደለለኝ አጥላው\n--------------------------\nDeveloped by: መ/ር ደለለኝ አጥላው`;
-        window.open(`https://t.me/del21A?text=${encodeURIComponent(report)}`, '_blank');
-        alert("ሙሉ መረጃው ተዘጋጅቷል! ወደ ቴሌግራም ይላካል።");
+        for (let i = 1; i <= studentsPerPage * totalPages; i++) { if(document.getElementById(`mid-${i}-I`)) refreshTotals(i); }
     }
+    document.getElementById('fileInput').onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('logoImg').src = ev.target.result;
+                document.getElementById('logoImg').style.opacity = '1';
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 </script>
-
 </body>
 </html>
